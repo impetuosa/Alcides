@@ -8,10 +8,10 @@ Class {
 BaselineOfAlcIDE >> baseline: spec [
 	<baseline>
 	spec
-		project: #SimpleDDS
+		baseline: #SimpleDDS
 		with: [ spec repository: 'github://pharo-robotics/SimpleDDS/src' ].
 	spec
-		project: #Alce
+		baseline: #Alce
 		with: [ spec repository: 'github://impetuosa/Alce/src' ].
 	spec package: #AlcIDE with: [ spec requires: #(SimpleDDS Alce) ].
 	
