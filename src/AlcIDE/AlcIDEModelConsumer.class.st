@@ -28,6 +28,14 @@ AlcIDEModelConsumer >> modelName: aString [
 	modelName := aString 
 ]
 
+{ #category : #accessing }
+AlcIDEModelConsumer >> requestNewVersion [
+	updateServiceCaller call: [ :req | 
+		req
+			name: modelName;
+			version: version ].
+]
+
 { #category : #'as yet unclassified' }
 AlcIDEModelConsumer >> updateModel: aVersionedModelMessage [
 
