@@ -24,9 +24,22 @@ AlcIDEComApplication class >> instance [
 		ifNil: [ instance := AlcIDEComApplication new.
 			instance
 				startWith: 'norwind'
-				myIp: '192.168.1.36'
-				masterHttpUrl: 'http://192.168.1.25:11311'.
+				myIp: self ip 
+				masterHttpUrl: self masterUrl.
 			instance ]
+]
+
+{ #category : #accessing }
+AlcIDEComApplication class >> ip [
+
+	^ OSPlatform current resolveIp ifNil: [ 
+		  self error: 'impossible to obtain ip' ]
+]
+
+{ #category : #accessing }
+AlcIDEComApplication class >> masterUrl [
+
+	^ 'http://192.168.1.25:11311'
 ]
 
 { #category : #'as yet unclassified' }
@@ -41,8 +54,15 @@ AlcIDEComApplication class >> provideNorthwind [
 	provider provide
 ]
 
+{ #category : #accessing }
+AlcIDEComApplication class >> stopAll [ 
+	instance ifNotNil: [  instance stopAll  ].
+	instance := nil.
+]
+
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> worldMenuOn: aBuilder [
+
 	<worldMenu>
 	(aBuilder item: #'Provide northwind to the network')
 		parent: #Tools;
@@ -52,6 +72,11 @@ AlcIDEComApplication class >> worldMenuOn: aBuilder [
 	(aBuilder item: #'Load northwind from the network')
 		parent: #Tools;
 		action: [ self consumeNorthwind ];
+		order: 0;
+		help: 'System browser to browse and edit code.'.
+	(aBuilder item: #'Stop all')
+		parent: #Tools;
+		action: [ self stopAll ];
 		order: 0;
 		help: 'System browser to browse and edit code.'
 ]
@@ -149,6 +174,13 @@ AlcIDEComApplication >> startWith: aName myIp: aStringWithIp masterHttpUrl: anUr
 	domain registerTypeDefinition: self versionedModelType.
 	domain registerTypeDefinition: self serviceUpdateType.
 	started := true
+]
+
+{ #category : #initialization }
+AlcIDEComApplication >> stopAll [ 
+	domain destroy. 
+	domain := nil. 
+	providers removeAll.
 ]
 
 { #category : #'as yet unclassified' }
