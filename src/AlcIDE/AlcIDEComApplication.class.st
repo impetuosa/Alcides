@@ -29,44 +29,44 @@ AlcIDEComApplication >> modelTopic: aModelName [
 
 { #category : #initialization }
 AlcIDEComApplication >> newModelConsumerNodeFor: aModelName [
+
 	| modelTopic updateService consumer |
-	providers
-		at: aModelName
-		ifAbsentPut: [ modelTopic := self modelTopic: aModelName.
-			updateService := self updateService: aModelName.
-			consumer := AlcIDEModelConsumer new
-				modelName: aModelName;
-				yourself.
-			consumer
-				updateServiceCaller: (updateService callerFor: participant).
-			consumer
-				updateModelSubscription:
-					(modelTopic subscriber
-						forParticipant: participant
-						onRead: (MessageSend receiver: consumer selector: #updateModel:)
-						onFailure: (MessageSend receiver: self selector: #manageError:)) ]
+	^ providers at: aModelName ifAbsentPut: [ 
+		  modelTopic := self modelTopic: aModelName.
+		  updateService := self updateService: aModelName.
+		  consumer := AlcIDEModelConsumer new
+			              modelName: aModelName;
+			              yourself.
+		  consumer updateServiceCaller:
+			  (updateService callerFor: participant).
+		  consumer updateModelSubscription: (modelTopic subscriber
+				   forParticipant: participant
+				   onRead:
+				   (MessageSend receiver: consumer selector: #updateModel:)
+				   onFailure: (MessageSend receiver: self selector: #manageError:)) ]
 ]
 
 { #category : #initialization }
 AlcIDEComApplication >> newModelProviderNodeFor: aModelName [
+
 	| modelTopic updateService provider |
-	providers
-		at: aModelName
-		ifAbsentPut: [ 
-			modelTopic := self modelTopic: aModelName.
-			updateService := self updateService: aModelName.
-			provider := AlcIDEModelProvider new
-				publication:
-					((modelTopic publisher publishing: participant)
-						setLatched: true;
-						yourself);
-				modelName: aModelName;
-				yourself.
-			updateService
-				serve: (MessageSend receiver: provider selector: #updateRequest:response:)
-				for: participant.
-			provider 
-		]
+	^ providers at: aModelName ifAbsentPut: [ 
+		  modelTopic := self modelTopic: aModelName.
+		  updateService := self updateService: aModelName.
+		  provider := AlcIDEModelProvider new
+			              publication:
+				              ((modelTopic publisher publishing: participant)
+					               setLatched: true;
+					               yourself);
+			              modelName: aModelName;
+			              yourself.
+		  updateService
+			  serve:
+			  (MessageSend
+				   receiver: provider
+				   selector: #updateRequest:response:)
+			  for: participant.
+		  provider ]
 ]
 
 { #category : #initialization }
