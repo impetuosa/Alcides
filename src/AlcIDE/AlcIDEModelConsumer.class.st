@@ -6,10 +6,22 @@ Class {
 		'updateModelSubscription',
 		'model',
 		'version',
-		'modelName'
+		'modelName',
+		'modelString'
 	],
 	#category : #AlcIDE
 }
+
+{ #category : #accessing }
+AlcIDEModelConsumer >> model [
+
+	^ model ifNil: [ 
+		  modelString ifNil: [ ^ self error: 'no model available' ].
+		  model := AlcixModel importFromMSEStream: modelString readStream.
+		  modelString := nil.
+		  model.
+		 ]
+]
 
 { #category : #'as yet unclassified' }
 AlcIDEModelConsumer >> modelName: aString [ 
@@ -18,7 +30,12 @@ AlcIDEModelConsumer >> modelName: aString [
 
 { #category : #'as yet unclassified' }
 AlcIDEModelConsumer >> updateModel: aVersionedModelMessage [
-	self halt
+
+	(version isNil or: [ version < aVersionedModelMessage version ]) 
+		ifTrue: [ 
+			modelString := aVersionedModelMessage model.
+			model := nil.
+			version := aVersionedModelMessage version ]
 ]
 
 { #category : #accessing }
