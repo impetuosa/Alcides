@@ -15,7 +15,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> consumeNorthwind [
-	^ instance newModelConsumerNodeFor: 'norwind'
+	^ self instance newModelConsumerNodeFor: 'norwind'
 ]
 
 { #category : #accessing }
@@ -31,13 +31,13 @@ AlcIDEComApplication class >> instance [
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> northwindModel [
-	^ (instance newModelConsumerNodeFor: 'norwind') model
+	^ self consumeNorthwind model
 ]
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> provideNorthwind [
 	| provider |
-	provider := instance newModelProviderNodeFor: 'norwind'.
+	provider := self instance newModelProviderNodeFor: 'norwind'.
 	provider provide
 ]
 
