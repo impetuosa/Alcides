@@ -8,11 +8,26 @@ Class {
 BaselineOfAlcIDE >> baseline: spec [
 	<baseline>
 	spec
-		baseline: #SimpleDDS
-		with: [ spec repository: 'github://pharo-robotics/SimpleDDS/src' ].
+		for: #'pharo8.x'
+		do: [ spec
+				baseline: #TaskIt
+				with: [ spec repository: 'github://pharo-contributions/taskit/src' ].
+			spec
+				baseline: #SimpleDDS
+				with: [ spec repository: 'github://pharo-robotics/SimpleDDS/src' ].
+			spec
+				baseline: #Alce
+				with: [ spec repository: 'github://impetuosa/Alce/src' ].
+			spec
+				package: #AlcIDE
+				with: [ spec requires: #(TaskIt SimpleDDS Alce) ] ].
 	spec
-		baseline: #Alce
-		with: [ spec repository: 'github://impetuosa/Alce/src' ].
-	spec package: #AlcIDE with: [ spec requires: #(SimpleDDS Alce) ].
-	
+		for: #'pharo9.x'
+		do: [ spec
+				baseline: #SimpleDDS
+				with: [ spec repository: 'github://pharo-robotics/SimpleDDS/src' ].
+			spec
+				baseline: #Alce
+				with: [ spec repository: 'github://impetuosa/Alce/src' ].
+			spec package: #AlcIDE with: [ spec requires: #(SimpleDDS Alce) ] ]
 ]
