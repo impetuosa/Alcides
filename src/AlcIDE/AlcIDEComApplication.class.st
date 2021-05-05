@@ -16,25 +16,45 @@ AlcIDEComApplication >> initialize [
 	providers := Dictionary new 
 ]
 
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication >> modelTopic: aModelName [
+	^ domain
+		findOrRegisterTopicByName:
+			('{1}/models/{2}'
+				format:
+					{participant name asString.
+					aModelName})
+		type: 'Alce/VersionedModel'
+]
+
+{ #category : #initialization }
+AlcIDEComApplication >> newModelConsumerNodeFor: aModelName [
+	| modelTopic updateService consumer |
+	providers
+		at: aModelName
+		ifAbsentPut: [ modelTopic := self modelTopic: aModelName.
+			updateService := self updateService: aModelName.
+			consumer := AlcIDEModelConsumer new
+				modelName: aModelName;
+				yourself.
+			consumer
+				updateServiceCaller: (updateService callerFor: participant).
+			consumer
+				updateModelSubscription:
+					(modelTopic subscriber
+						forParticipant: participant
+						onRead: (MessageSend receiver: consumer selector: #updateModel:)
+						onFailure: (MessageSend receiver: self selector: #manageError:)) ]
+]
+
 { #category : #initialization }
 AlcIDEComApplication >> newModelProviderNodeFor: aModelName [
 	| modelTopic updateService provider |
 	providers
 		at: aModelName
-		ifAbsentPut: [ modelTopic := domain
-				findOrRegisterTopicByName:
-					('{1}/models/{2}'
-						format:
-							{participant name asString.
-							aModelName})
-				type: 'Alce/VersionedModel'.
-			updateService := domain
-				findOrRegisterServiceByName:
-					('{1}/models/update'
-						format:
-							{participant name asString.
-							aModelName})
-				type: 'Alce/UpdateService'.
+		ifAbsentPut: [ 
+			modelTopic := self modelTopic: aModelName.
+			updateService := self updateService: aModelName.
 			provider := AlcIDEModelProvider new
 				publication:
 					((modelTopic publisher publishing: participant)
@@ -45,7 +65,8 @@ AlcIDEComApplication >> newModelProviderNodeFor: aModelName [
 			updateService
 				serve: (MessageSend receiver: provider selector: #updateRequest:response:)
 				for: participant.
-			provider ]
+			provider 
+		]
 ]
 
 { #category : #initialization }
@@ -85,6 +106,17 @@ AlcIDEComApplication >> startWith: aName myIp: aStringWithIp masterHttpUrl: anUr
 	domain registerTypeDefinition: self versionedModelType.
 	domain registerTypeDefinition: self serviceUpdateType.
 	started := true
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication >> updateService: aModelName [
+	^ domain
+		findOrRegisterServiceByName:
+			('{1}/models/update'
+				format:
+					{participant name asString.
+					aModelName})
+		type: 'Alce/UpdateService'
 ]
 
 { #category : #initialization }
