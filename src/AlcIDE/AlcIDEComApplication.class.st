@@ -49,6 +49,7 @@ AlcIDEComApplication class >> northwindModel [
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> provideNorthwind [
 	| provider |
+	
 	provider := self instance newModelProviderNodeFor: 'norwind'.
 	provider provide
 ]
@@ -61,23 +62,35 @@ AlcIDEComApplication class >> stopAll [
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> worldMenuOn: aBuilder [
-
 	<worldMenu>
-	(aBuilder item: #'Provide northwind to the network')
-		parent: #Tools;
+	(aBuilder item: #'Distributed Moose')
+		order: 20;
+		target: self;
+		help: 'Jenkins CI Trigger'.
+	(aBuilder item: #'Share Norwind')
+		parent: #'Distributed Moose';
 		action: [ self provideNorthwind ];
 		order: 0;
-		help: 'System browser to browse and edit code.'.
-	(aBuilder item: #'Load northwind from the network')
-		parent: #Tools;
+		help: 'provide a model through a simple dds network';
+		icon: (self iconNamed: #up).
+	(aBuilder item: #'Load Norwind')
+		parent: #'Distributed Moose';
 		action: [ self consumeNorthwind ];
 		order: 0;
-		help: 'System browser to browse and edit code.'.
+		help: 'System browser to browse and edit code.';
+		icon: (self iconNamed: #bottom).
+	(aBuilder item: #'Request Norwind Update')
+		parent: #'Distributed Moose';
+		action: [ self consumeNorthwind requestNewVersion ];
+		order: 0;
+		help: 'System browser to browse and edit code.';
+		icon: (self iconNamed: #refresh).
 	(aBuilder item: #'Stop all')
-		parent: #Tools;
+		parent: #'Distributed Moose';
 		action: [ self stopAll ];
 		order: 0;
-		help: 'System browser to browse and edit code.'
+		help: 'System browser to browse and edit code.';
+		icon: (self iconNamed: #stop)
 ]
 
 { #category : #initialization }
