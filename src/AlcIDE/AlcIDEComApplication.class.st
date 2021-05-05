@@ -18,13 +18,10 @@ AlcIDEComApplication >> initialize [
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication >> modelTopic: aModelName [
+
 	^ domain
-		findOrRegisterTopicByName:
-			('{1}/models/{2}'
-				format:
-					{participant name asString.
-					aModelName})
-		type: 'Alce/VersionedModel'
+		  findOrRegisterTopicByName: ('/models/{1}' format: { aModelName })
+		  type: 'Alce/VersionedModel'
 ]
 
 { #category : #initialization }
@@ -110,13 +107,11 @@ AlcIDEComApplication >> startWith: aName myIp: aStringWithIp masterHttpUrl: anUr
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication >> updateService: aModelName [
+
 	^ domain
-		findOrRegisterServiceByName:
-			('{1}/models/update'
-				format:
-					{participant name asString.
-					aModelName})
-		type: 'Alce/UpdateService'
+		  findOrRegisterServiceByName:
+		  ('/models/{1}/update' format: { aModelName })
+		  type: 'Alce/UpdateService'
 ]
 
 { #category : #initialization }
