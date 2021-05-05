@@ -15,9 +15,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> consumeNorthwind [
-
-	^ instance newModelConsumerNodeFor: 'norwind'.
-
+	^ instance newModelConsumerNodeFor: 'norwind'
 ]
 
 { #category : #accessing }
@@ -33,9 +31,7 @@ AlcIDEComApplication class >> instance [
 
 { #category : #'as yet unclassified' }
 AlcIDEComApplication class >> northwindModel [
-
-	^ (instance newModelConsumerNodeFor: 'norwind') model.
-
+	^ (instance newModelConsumerNodeFor: 'norwind') model
 ]
 
 { #category : #'as yet unclassified' }
@@ -43,6 +39,21 @@ AlcIDEComApplication class >> provideNorthwind [
 	| provider |
 	provider := instance newModelProviderNodeFor: 'norwind'.
 	provider provide
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication class >> worldMenuOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #'Provide northwind to the network')
+		parent: #Tools;
+		action: [ self provideNorthwind ];
+		order: 0;
+		help: 'System browser to browse and edit code.'.
+	(aBuilder item: #'Load northwind from the network')
+		parent: #Tools;
+		action: [ self consumeNorthwind ];
+		order: 0;
+		help: 'System browser to browse and edit code.'
 ]
 
 { #category : #initialization }
