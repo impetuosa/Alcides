@@ -78,7 +78,6 @@ AlcIDEModelProvider >> publishModel [
 
 { #category : #'as yet unclassified' }
 AlcIDEModelProvider >> updateRequest: aRequest response: aResponse [
-	self halt. 
 	aRequest name = modelName ifFalse: [ 
 		aResponse version: -1.
 		aResponse errorText: 'This model provider does not provide ' , aRequest name.
@@ -90,12 +89,12 @@ AlcIDEModelProvider >> updateRequest: aRequest response: aResponse [
 	].
 	[ 
 	   self processNewVersion.
-   	   aResponse version: lastVersion.
+   	   aResponse nextVersion: lastVersion.
 	   ^ aResponse 
 	]
 		on: Error
 		do: [ :e | 
-			aResponse version: -1.
+			aResponse nextVersion: -1.
 			aResponse errorText: ' Error processing new version! ' , e messageText 
 		]
 ]
