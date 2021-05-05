@@ -53,7 +53,7 @@ AlcIDEModelProvider >> processNewVersion [
 			                    self forceRegenerate ].
 	                    self loadMSEModel.
 	                    self publishModel ] ensure: [ 
-		                    processingFuture := nil ] ] future
+		                     ] ] future
 ]
 
 { #category : #'as yet unclassified' }

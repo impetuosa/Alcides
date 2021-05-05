@@ -7,8 +7,43 @@ Class {
 		'started',
 		'providers'
 	],
+	#classInstVars : [
+		'instance'
+	],
 	#category : #AlcIDE
 }
+
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication class >> consumeNorthwind [
+
+	^ instance newModelConsumerNodeFor: 'norwind'.
+
+]
+
+{ #category : #accessing }
+AlcIDEComApplication class >> instance [
+	^ instance
+		ifNil: [ instance := AlcIDEComApplication new.
+			instance
+				startWith: 'norwind'
+				myIp: '192.168.1.36'
+				masterHttpUrl: 'http://192.168.1.25:11311'.
+			instance ]
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication class >> northwindModel [
+
+	^ (instance newModelConsumerNodeFor: 'norwind') model.
+
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEComApplication class >> provideNorthwind [
+	| provider |
+	provider := instance newModelProviderNodeFor: 'norwind'.
+	provider provide
+]
 
 { #category : #initialization }
 AlcIDEComApplication >> initialize [
