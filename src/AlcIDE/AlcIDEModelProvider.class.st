@@ -41,19 +41,17 @@ AlcIDEModelProvider >> modelName: aName [
 
 { #category : #'as yet unclassified' }
 AlcIDEModelProvider >> processNewVersion [
-
 	self assert: modelName = 'norwind'.
-	processingFuture ifNotNil: [ ^ self "Already processing" ].
-	processingFuture := [ 
-	                    [ 
-	                    modelString
-		                    ifNil: [ lastVersion := 0 ]
-		                    ifNotNil: [ 
-			                    self forceCodeReload.
-			                    self forceRegenerate ].
-	                    self loadMSEModel.
-	                    self publishModel ] ensure: [ 
-		                     ] ] future
+	processingFuture
+		ifNotNil: [ processingFuture isFinished
+				ifFalse: [ ^ self	"Already processing" ] ].
+	processingFuture := [ [ modelString
+		ifNil: [ lastVersion := 0 ]
+		ifNotNil: [ self forceCodeReload.
+			self forceRegenerate ].
+	self loadMSEModel.
+	self publishModel ]
+		ensure: [  ] ] future
 ]
 
 { #category : #'as yet unclassified' }
