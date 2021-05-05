@@ -31,9 +31,8 @@ AlcIDEComApplication class >> instance [
 
 { #category : #accessing }
 AlcIDEComApplication class >> ip [
-
-	^ OSPlatform current resolveIp ifNil: [ 
-		  self error: 'impossible to obtain ip' ]
+	^ OSPlatform current resolveIp
+		ifNil: [ self error: 'impossible to obtain ip' ]
 ]
 
 { #category : #accessing }
