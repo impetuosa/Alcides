@@ -23,8 +23,8 @@ AlcIDEComApplication class >> instance [
 	^ instance
 		ifNil: [ instance := AlcIDEComApplication new.
 			instance
-				startWith: 'norwind'
-				myIp: self ip 
+				startWith: OSPlatform current name , '-norwind'
+				myIp: self ip
 				masterHttpUrl: self masterUrl.
 			instance ]
 ]
