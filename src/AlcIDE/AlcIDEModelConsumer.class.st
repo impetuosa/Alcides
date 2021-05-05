@@ -55,4 +55,3 @@ AlcIDEModelConsumer >> updateModelSubscription: aMDDSSubscription [
 AlcIDEModelConsumer >> updateServiceCaller: aDDSServiceCaller [ 
 	updateServiceCaller := aDDSServiceCaller
 ]
-

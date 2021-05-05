@@ -5,10 +5,34 @@ Class {
 		'publication',
 		'modelName',
 		'modelString',
-		'lastVersion'
+		'lastVersion',
+		'processingFuture'
 	],
 	#category : #AlcIDE
 }
+
+{ #category : #'as yet unclassified' }
+AlcIDEModelProvider >> forceCodeReload [
+
+	Metacello new
+		baseline: 'Alce';
+		repository: 'github://impetuosa/Alce';
+		onConflictUseIncoming;
+		load
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEModelProvider >> forceRegenerate [
+
+	AlceNorthwindCachedModelAbstractTest resetNorwindCachedModel.
+	AlceNorthwindCachedModelAbstractTest regenerateCacheModel.
+	lastVersion := lastVersion + 1
+]
+
+{ #category : #'as yet unclassified' }
+AlcIDEModelProvider >> loadMSEModel [
+	modelString := AlceNorthwindCachedModelAbstractTest cachedModelMSE.
+]
 
 { #category : #'as yet unclassified' }
 AlcIDEModelProvider >> modelName: aName [
@@ -17,22 +41,19 @@ AlcIDEModelProvider >> modelName: aName [
 
 { #category : #'as yet unclassified' }
 AlcIDEModelProvider >> processNewVersion [
+
 	self assert: modelName = 'norwind'.
-	modelString
-		ifNil: [ lastVersion := 0 ]
-		ifNotNil: [ Metacello new
-				baseline: 'Alce';
-				repository: 'github://impetuosa/Alce';
-				onConflictUseIncoming;
-				load.
-			AlceNorthwindCachedModelAbstractTest resetNorwindCachedModel.
-			AlceNorthwindCachedModelAbstractTest regenerateCacheModel.
-			lastVersion := lastVersion + 1 ].
-	modelString := AlceNorthwindCachedModelAbstractTest cachedModelMSE.
-	publication publish: [ : versionedModel |
-		versionedModel version: lastVersion. 
-		versionedModel model: modelString. 
-		 ]
+	processingFuture ifNotNil: [ ^ self "Already processing" ].
+	processingFuture := [ 
+	                    [ 
+	                    modelString
+		                    ifNil: [ lastVersion := 0 ]
+		                    ifNotNil: [ 
+			                    self forceCodeReload.
+			                    self forceRegenerate ].
+	                    self loadMSEModel.
+	                    self publishModel ] ensure: [ 
+		                    processingFuture := nil ] ] future
 ]
 
 { #category : #'as yet unclassified' }
@@ -48,21 +69,33 @@ AlcIDEModelProvider >> publication: aPublication [
 ]
 
 { #category : #'as yet unclassified' }
+AlcIDEModelProvider >> publishModel [
+
+	publication publish: [ :versionedModel | 
+		versionedModel version: lastVersion.
+		versionedModel model: modelString ]
+]
+
+{ #category : #'as yet unclassified' }
 AlcIDEModelProvider >> updateRequest: aRequest response: aResponse [
-	aRequest name = modelName
-		ifFalse: [ aResponse version: -1.
-			aResponse
-				errorText: 'This model provider does not provide ' , aRequest name.
-			^ aResponse ].
-	aRequest version < lastVersion
-		ifTrue: [ aResponse version: lastVersion.
-			^ aResponse ].
-	[ self processNewVersion.
-	aResponse version: lastVersion.
-	^ aResponse ]
+	self halt. 
+	aRequest name = modelName ifFalse: [ 
+		aResponse version: -1.
+		aResponse errorText: 'This model provider does not provide ' , aRequest name.
+		^ aResponse 
+	].
+	aRequest version < lastVersion ifTrue: [ 
+		aResponse version: lastVersion.
+			^ aResponse 
+	].
+	[ 
+	   self processNewVersion.
+   	   aResponse version: lastVersion.
+	   ^ aResponse 
+	]
 		on: Error
 		do: [ :e | 
 			aResponse version: -1.
-			aResponse
-				errorText: ' Error processing new version! ' , e messageText ]
+			aResponse errorText: ' Error processing new version! ' , e messageText 
+		]
 ]
