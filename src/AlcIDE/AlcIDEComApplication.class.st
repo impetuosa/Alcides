@@ -31,8 +31,10 @@ AlcIDEComApplication class >> instance [
 
 { #category : #accessing }
 AlcIDEComApplication class >> ip [
-	^ OSPlatform current resolveIp
-		ifNil: [ self error: 'impossible to obtain ip' ]
+
+	^ ((OSPlatform current interfaces select: #hasIpV4)
+		   detect: [ :i | i ipV4 ~= '127.0.0.1' ]
+		   ifNone: [ self error: 'impossible to obtain ip' ]) ipV4
 ]
 
 { #category : #accessing }
