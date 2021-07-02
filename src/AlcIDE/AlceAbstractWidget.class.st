@@ -1,10 +1,11 @@
 Class {
 	#name : #AlceAbstractWidget,
-	#superclass : #MiPresenter,
+	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
 		'selection',
 		'toSelect',
-		'browser'
+		'browser',
+		'drndr'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -30,6 +31,8 @@ AlceAbstractWidget class >> buildCommandsGroupWith: presenterInstance forRoot: r
 AlceAbstractWidget class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
+		  add: #drndr ;
+		  yourself
 ]
 
 { #category : #commands }
@@ -108,6 +111,17 @@ AlceAbstractWidget >> colorForTable: anEntity [
 AlceAbstractWidget >> freezeAction [
 
 	^ self
+]
+
+{ #category : #opening }
+AlceAbstractWidget >> initializePresenters [
+
+	super initializePresenters.
+	drndr := self newLabel
+		         label: 'drag';
+		         dragEnabled: true;
+		         yourself.
+	self dragEnabled: true
 ]
 
 { #category : #testing }

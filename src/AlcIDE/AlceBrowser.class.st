@@ -2,10 +2,10 @@ Class {
 	#name : #AlceBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'selection',
 		'widget',
 		'widgetClass',
-		'window'
+		'window',
+		'drndr'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -42,12 +42,6 @@ AlceBrowser class >> runMeWith: aClass following: aBus [
 ]
 
 { #category : #initialization }
-AlceBrowser >> accept: anEntity [
-
-	^ widget accept: anEntity
-]
-
-{ #category : #initialization }
 AlceBrowser >> followAction [
 
 	^ widget followAction
@@ -57,6 +51,8 @@ AlceBrowser >> followAction [
 AlceBrowser >> initializePresenters [
 
 	super initializePresenters.
+
+
 	self widgetClass ifNotNil: [ 
 		widget := self instantiate: self widgetClass ]
 ]

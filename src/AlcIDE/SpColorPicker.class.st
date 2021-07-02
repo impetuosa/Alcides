@@ -26,6 +26,12 @@ SpColorPicker class >> defaultSpec [
 		  height: 70
 ]
 
+{ #category : #specs }
+SpColorPicker class >> open [ 
+	<script> 
+	^ self new openWithSpec 
+]
+
 { #category : #actions }
 SpColorPicker >> acceptColor [
 
@@ -49,9 +55,18 @@ SpColorPicker >> initializePresenters [
 	ok := self newButton
 		      icon: (self iconNamed: #smallOk);
 		      action: [ self acceptColor ].
+
+
+
+
+
 	setNil := self newButton
 		           label:'Nil';
 		           action: [ self setNilColor ].
+		
+	setNil:= self instantiate: SpDragger.
+	setNil passenger: self.
+	setNil label:'dragme'. 
 	cancel := self newButton
 		          icon: (self iconNamed: #smallCancel);
 		          action: [ self cancelColor ].
