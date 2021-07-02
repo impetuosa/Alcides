@@ -9,7 +9,7 @@ Class {
 		'modelName',
 		'modelString'
 	],
-	#category : #AlcIDE
+	#category : #'AlcIDE-Hooves'
 }
 
 { #category : #accessing }

@@ -4,7 +4,7 @@ Norwind is a basic publisher aiming to publish the Microsoft Access project thro
 Class {
 	#name : #AlcIDENorwindPublisher,
 	#superclass : #HoovesModelPublisher,
-	#category : #AlcIDE
+	#category : #'AlcIDE-Hooves'
 }
 
 { #category : #accessing }

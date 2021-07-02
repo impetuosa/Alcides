@@ -10,7 +10,7 @@ Class {
 	#classInstVars : [
 		'instance'
 	],
-	#category : #AlcIDE
+	#category : #'AlcIDE-Hooves'
 }
 
 { #category : #'as yet unclassified' }

@@ -8,7 +8,7 @@ Class {
 		'lastVersion',
 		'processingFuture'
 	],
-	#category : #AlcIDE
+	#category : #'AlcIDE-Hooves'
 }
 
 { #category : #'as yet unclassified' }
