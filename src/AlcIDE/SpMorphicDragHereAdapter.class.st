@@ -16,7 +16,10 @@ SpMorphicDragHereAdapter >> buildWidget [
 		  hResizing: #spaceFill;
 		  dragEnabled: self dragEnabled;
 		  dropEnabled: self dropEnabled;
+		  borderWidth: self borderWidth;
+		  borderColor: self borderColor;
 		  wantsDroppedMorph: [ :t | self presenter wantsDrop value: t ];
 		  acceptDroppingMorph:
-			  [ :t | self presenter acceptDrop value: t ] yourself
+			  [ :t | self presenter acceptDrop cull: t cull: self presenter ]
+				  yourself
 ]

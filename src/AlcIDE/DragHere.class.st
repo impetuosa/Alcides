@@ -15,11 +15,10 @@ DragHere >> acceptDroppingMorph: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
-DragHere >> acceptDroppingMorph: aTransferMorph event: anEvent [ 
+DragHere >> acceptDroppingMorph: aTransferMorph event: anEvent [
 
-	^ onPrompteForAccepting
-		  ifNil: [ self dropEnabled ]
-		  ifNotNil: [ onPrompteForDragging cull: aTransferMorph cull: anEvent ]
+	^ onPrompteForAccepting ifNotNil: [ 
+		  onPrompteForAccepting cull: aTransferMorph cull: anEvent ]
 ]
 
 { #category : #'as yet unclassified' }

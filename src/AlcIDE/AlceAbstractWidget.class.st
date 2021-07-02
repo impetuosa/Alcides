@@ -5,7 +5,9 @@ Class {
 		'selection',
 		'toSelect',
 		'browser',
-		'drndr'
+		'drndr',
+		'dragMe',
+		'close'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -31,6 +33,12 @@ AlceAbstractWidget class >> buildCommandsGroupWith: presenterInstance forRoot: r
 AlceAbstractWidget class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
+		  add: (SpBoxLayout newLeftToRight
+				   add: #dragMe;
+				   add: #close width: self iconWidth;
+				   yourself)
+		  height: self toolbarHeight;
+		  yourself
 ]
 
 { #category : #commands }
@@ -72,6 +80,12 @@ AlceAbstractWidget >> accept: anEntity [
 ]
 
 { #category : #opening }
+AlceAbstractWidget >> adaptToAlcIDE [
+	owner hasLeft: self. 
+	^ self
+]
+
+{ #category : #opening }
 AlceAbstractWidget >> browse: anAlcixLocalVariable [
 
 	(anAlcixLocalVariable respondsTo: #invocable)
@@ -99,16 +113,52 @@ AlceAbstractWidget >> browser: aBrowser [
 	browser := aBrowser 
 ]
 
+{ #category : #testing }
+AlceAbstractWidget >> canBeAdaptedToAlcIDE [
+	^ true
+]
+
 { #category : #accessing }
 AlceAbstractWidget >> colorForTable: anEntity [
 
 	^ anEntity color
 ]
 
+{ #category : #testing }
+AlceAbstractWidget >> dragTilte [
+
+	dragMe label: self title
+]
+
+{ #category : #opening }
+AlceAbstractWidget >> followAction [
+
+	self subclassResponsibility
+]
+
 { #category : #actions }
 AlceAbstractWidget >> freezeAction [
 
 	^ self
+]
+
+{ #category : #opening }
+AlceAbstractWidget >> hasBeenReinstalled [
+
+	selection := toSelect.
+	selection ifNotNil: [ self followAction ]
+]
+
+{ #category : #actions }
+AlceAbstractWidget >> initializePresenters [
+
+	super initializePresenters.
+	dragMe := self instantiate: SpDragMe.
+	dragMe passenger: self.
+	dragMe label: 'Drag'.
+	close := self newButton. 
+	close label:'X'.
+
 ]
 
 { #category : #testing }
@@ -130,7 +180,7 @@ AlceAbstractWidget >> miSelectedItem [
 { #category : #testing }
 AlceAbstractWidget >> propagate [
 
-	browser ifNotNil: [ browser propagate ]
+	browser ifNotNil: [ browser propagate: self  ]
 ]
 
 { #category : #accessing }
@@ -151,4 +201,10 @@ AlceAbstractWidget >> selection: aSelection [
 { #category : #testing }
 AlceAbstractWidget >> title [
  	^ self class title. 
+]
+
+{ #category : #actions }
+AlceAbstractWidget >> whenClose: aBlock [
+
+	close action: [ aBlock value: self ]
 ]

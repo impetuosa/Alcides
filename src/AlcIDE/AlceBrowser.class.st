@@ -5,11 +5,15 @@ Class {
 		'widget',
 		'widgetClass',
 		'window',
-		'drndr',
-		'dragMe'
+		'drndr'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
+
+{ #category : #specs }
+AlceBrowser class >> currentApplication [
+	^ MiApplication current
+]
 
 { #category : #specs }
 AlceBrowser class >> defaultSpec [
@@ -25,7 +29,6 @@ AlceBrowser class >> defaultSpec [
 				add: #buttonInspect width: self iconWidth;
 				add: #buttonPropagate expand: false;
 				add: #buttonHelp width: self iconWidth;
-				add: #dragMe width: self iconWidth;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		  add: #widget;
@@ -55,19 +58,45 @@ AlceBrowser class >> runMeWith: aClass following: aBus [
 		  yourself
 ]
 
+{ #category : #'as yet unclassified' }
+AlceBrowser >> adaptToAlcIDE [
+
+	window close.
+	^ widget
+]
+
+{ #category : #initialization }
+AlceBrowser >> application [
+	 ^ application
+]
+
+{ #category : #'as yet unclassified' }
+AlceBrowser >> canBeAdaptedToAlcIDE [
+	^ true
+]
+
+{ #category : #initialization }
+AlceBrowser >> close [ 
+	 window close 
+]
+
 { #category : #initialization }
 AlceBrowser >> followAction [
 
 	^ widget followAction
 ]
 
+{ #category : #testing }
+AlceBrowser >> hasLeft: anAlceSourceCodeWidget [
+
+	widget = anAlceSourceCodeWidget ifTrue: [ self close ]
+]
+
 { #category : #initialization }
 AlceBrowser >> initializePresenters [
 
 	super initializePresenters.
-	dragMe := self instantiate: SpDragMe.
-	dragMe passenger: self.
-	dragMe label: 'Drag'.
+	
 	self widgetClass ifNotNil: [ 
 		widget := self instantiate: self widgetClass ]
 ]
@@ -93,6 +122,11 @@ AlceBrowser >> instantiateWidget: aWidget [
 AlceBrowser >> miSelectedItem [
 
 	^ widget miSelectedItem
+]
+
+{ #category : #initialization }
+AlceBrowser >> propagate: aWidget [ 
+	 self propagate. 
 ]
 
 { #category : #initialization }
