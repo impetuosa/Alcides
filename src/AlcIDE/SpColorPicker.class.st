@@ -64,7 +64,7 @@ SpColorPicker >> initializePresenters [
 		           label:'Nil';
 		           action: [ self setNilColor ].
 		
-	setNil:= self instantiate: SpDragger.
+	setNil:= self instantiate: SpDragMe.
 	setNil passenger: self.
 	setNil label:'dragme'. 
 	cancel := self newButton

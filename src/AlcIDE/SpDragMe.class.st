@@ -1,5 +1,5 @@
 Class {
-	#name : #SpDragger,
+	#name : #SpDragMe,
 	#superclass : #SpButtonPresenter,
 	#instVars : [
 		'passenger'
@@ -8,18 +8,18 @@ Class {
 }
 
 { #category : #specs }
-SpDragger class >> adapterName [
+SpDragMe class >> adapterName [
 
 	^ #SpMorphicDraggerAdapter
 ]
 
 { #category : #accessing }
-SpDragger >> passenger: aSpColorPicker [ 
+SpDragMe >> passenger: aSpColorPicker [ 
 	passenger := aSpColorPicker
 ]
 
 { #category : #'as yet unclassified' }
-SpDragger >> transferPassenger [
+SpDragMe >> transferPassenger [
 
 	^ SpTransferPresenter new
 		  transfer: passenger;

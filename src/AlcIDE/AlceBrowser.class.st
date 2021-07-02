@@ -5,15 +5,29 @@ Class {
 		'widget',
 		'widgetClass',
 		'window',
-		'drndr'
+		'drndr',
+		'dragMe'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
 
 { #category : #specs }
 AlceBrowser class >> defaultSpec [
-
-	^ super defaultSpec
+	^ SpBoxLayout newVertical
+		add:
+			(SpBoxLayout newHorizontal
+				add: #buttonFollow width: 65;
+				add: #buttonFreeze width: 60;
+				add: #buttonHighlight width: 80;
+				add: SpBoxLayout newHorizontal expand: true;
+				add: #busButton;
+				add: SpBoxLayout newHorizontal expand: true;
+				add: #buttonInspect width: self iconWidth;
+				add: #buttonPropagate expand: false;
+				add: #buttonHelp width: self iconWidth;
+				add: #dragMe width: self iconWidth;
+				yourself)
+			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		  add: #widget;
 		  yourself
 ]
@@ -51,8 +65,9 @@ AlceBrowser >> followAction [
 AlceBrowser >> initializePresenters [
 
 	super initializePresenters.
-
-
+	dragMe := self instantiate: SpDragMe.
+	dragMe passenger: self.
+	dragMe label: 'Drag'.
 	self widgetClass ifNotNil: [ 
 		widget := self instantiate: self widgetClass ]
 ]
