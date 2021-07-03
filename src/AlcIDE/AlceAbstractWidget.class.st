@@ -80,8 +80,9 @@ AlceAbstractWidget >> accept: anEntity [
 ]
 
 { #category : #opening }
-AlceAbstractWidget >> adaptToAlcIDE [
-	owner hasLeft: self. 
+AlceAbstractWidget >> adaptToDropInto: aDropDestination [
+
+	owner hasLeft: self.
 	^ self
 ]
 
@@ -114,7 +115,7 @@ AlceAbstractWidget >> browser: aBrowser [
 ]
 
 { #category : #testing }
-AlceAbstractWidget >> canBeAdaptedToAlcIDE [
+AlceAbstractWidget >> canBeAdaptedToDropInto: aDestination [
 	^ true
 ]
 
@@ -144,9 +145,9 @@ AlceAbstractWidget >> freezeAction [
 
 { #category : #opening }
 AlceAbstractWidget >> hasBeenReinstalled [
-
+	self dragTilte.
 	selection := toSelect.
-	selection ifNotNil: [ self followAction ]
+	selection ifNotNil: [ self followAction ].
 ]
 
 { #category : #actions }
@@ -206,5 +207,5 @@ AlceAbstractWidget >> title [
 { #category : #actions }
 AlceAbstractWidget >> whenClose: aBlock [
 
-	close action: [ aBlock value: self ]
+	close action: [ aBlock cull: self cull: self owner ]
 ]

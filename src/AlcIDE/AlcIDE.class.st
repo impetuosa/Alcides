@@ -118,7 +118,8 @@ AlcIDE >> newContainer [
 	^ ((self instantiate: SpDropIn)
 		   borderWidth: 2;
 		   dropEnabled: true;
-		   wantsDrop: [ :transfer | self shouldAcceptTransfer: transfer ];
+		   wantsDrop: [ :transfer :destination | 
+			   self shouldAcceptTransfer: transfer into: destination ];
 		   acceptDrop: [ :transfer :destination | 
 			   self installTransfer: transfer into: destination ]) yourself
 ]
@@ -146,4 +147,11 @@ AlcIDE >> shouldAcceptTransfer: aTransfer [
 
 	(aTransfer isKindOf: SpTransferMorph) ifFalse: [ ^ false ].
 	^ aTransfer passenger canBeAdaptedToAlcIDE
+]
+
+{ #category : #'instance creation' }
+AlcIDE >> shouldAcceptTransfer: aTransfer into: aDestination [
+
+	(aTransfer isKindOf: SpTransferMorph) ifFalse: [ ^ false ].
+	^ aTransfer passenger canBeAdaptedToDropInto: aDestination
 ]

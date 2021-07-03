@@ -38,10 +38,19 @@ SpDropIn >> hasLeft: aPresenter [
 SpDropIn >> initializePresenters [
 
 	super initializePresenters.
-	presenters := OrderedCollection new. 
+	presenters := OrderedCollection new.
 	dragHere := self instantiate: SpDragHere.
 	dragHere borderWidth: 2.
 	dragHere dropInto: self.
+
+	self wantsDrop: [ :transfer :destination | 
+		transfer canBeAdaptedToDropInto: destination ].
+	self acceptDrop: [ :transfer :destination | 
+		(destination install: transfer passenger)
+			browser: self;
+			whenClose: [ :widget | destination hasLeft: widget ];
+			hasBeenReinstalled ].
+
 	layout := self newLayout.
 	layout add: dragHere
 ]
@@ -50,7 +59,7 @@ SpDropIn >> initializePresenters [
 SpDropIn >> install: aPresenter [
 
 	| newPresenter |
-	newPresenter := aPresenter adaptToAlcIDE.
+	newPresenter := aPresenter adaptToDropInto: self.
 	newPresenter owner: self.
 	presenters add: newPresenter.
 

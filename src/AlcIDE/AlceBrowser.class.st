@@ -59,7 +59,7 @@ AlceBrowser class >> runMeWith: aClass following: aBus [
 ]
 
 { #category : #'as yet unclassified' }
-AlceBrowser >> adaptToAlcIDE [
+AlceBrowser >> adaptToDropInto: aDropDestination [
 
 	window close.
 	^ widget
@@ -71,7 +71,7 @@ AlceBrowser >> application [
 ]
 
 { #category : #'as yet unclassified' }
-AlceBrowser >> canBeAdaptedToAlcIDE [
+AlceBrowser >> canBeAdaptedToDropInto: aDestination [
 	^ true
 ]
 
