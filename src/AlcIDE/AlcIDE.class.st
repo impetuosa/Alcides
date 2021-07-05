@@ -19,6 +19,12 @@ Class {
 }
 
 { #category : #specs }
+AlcIDE class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #specs }
 AlcIDE class >> currentApplication [
 	^ MiApplication current
 ]
@@ -45,6 +51,18 @@ AlcIDE class >> defaultSpec [
 ]
 
 { #category : #specs }
+AlcIDE class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	<miBrowsers>
+	(aBuilder item: #alceIdeBrowser)
+		parent: self alceBrowsers;
+		label: (self title);
+		icon: (self iconNamed: #mooseTree); 
+		help: (self helpMessage);
+		action: [ self runMe ]
+]
+
+{ #category : #specs }
 AlcIDE class >> open [ 
 	<script> 
 	self new openWithSpec 
@@ -54,6 +72,11 @@ AlcIDE class >> open [
 AlcIDE class >> runMe [
 	<script>
 	^ self runMeFollowing: self currentApplication defaultBus
+]
+
+{ #category : #specs }
+AlcIDE class >> title [ 
+	 ^ 'AlcIDE'
 ]
 
 { #category : #'instance creation' }

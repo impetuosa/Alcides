@@ -50,6 +50,24 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	^ self iconTableIcon
 ]
 
+{ #category : #'GT-InspectorExtensions' }
+MiAlceIdeIcons class >> iconForEntryName: anEntryName [
+
+	| aClass |
+	aClass := AlcixEntity allSubclasses detect: [ :a | 
+		          a entryName = anEntryName ] ifNone: [self haltOnce] . 
+	aClass = AlcixForm ifTrue: [ ^ self iconFormIcon ].
+	aClass = AlcixTable ifTrue: [ ^ self iconTableIcon ].
+	aClass = AlcixReport ifTrue: [ ^ self iconReportIcon ].
+	aClass = AlcixQuery ifTrue: [ ^ self iconQueryIcon ].
+	aClass = AlcixMacro ifTrue: [ ^ self iconMacroIcon ].
+	aClass = AlcixModule ifTrue: [ ^ self iconModuleIcon ].
+	aClass = AlcixClass ifTrue: [ ^ self iconModuleIcon ].
+	aClass = AlcixLibrary ifTrue: [ ^ self iconNamed: #smallRedo ].
+	aClass = AlcixAlias ifTrue: [ ^ 'A=>B' asMorph asForm ].
+	^ self iconTableIcon
+]
+
 { #category : #'accessing - icons' }
 MiAlceIdeIcons class >> iconFormIcon [
 	"Private - Generated method"

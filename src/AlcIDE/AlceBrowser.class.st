@@ -136,6 +136,11 @@ AlceBrowser >> selectEntity: anEntity [
 
 ]
 
+{ #category : #accessing }
+AlceBrowser >> widget: anAlceInvocableWidget [ 
+	widget := anAlceInvocableWidget.
+]
+
 { #category : #initialization }
 AlceBrowser >> widgetClass [
 

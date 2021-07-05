@@ -5,8 +5,8 @@ Class {
 		'selection',
 		'toSelect',
 		'browser',
-		'drndr',
 		'dragMe',
+		'dragMeOut',
 		'close'
 	],
 	#category : #'AlcIDE-MidasWidgets'
@@ -35,6 +35,7 @@ AlceAbstractWidget class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newLeftToRight
 				   add: #dragMe;
+				   add: #dragMeOut width: self iconWidth;
 				   add: #close width: self iconWidth;
 				   yourself)
 		  height: self toolbarHeight;
@@ -157,9 +158,16 @@ AlceAbstractWidget >> initializePresenters [
 	dragMe := self instantiate: SpDragMe.
 	dragMe passenger: self.
 	dragMe label: 'Drag'.
-	close := self newButton. 
-	close label:'X'.
-
+	dragMeOut := self newButton.
+	dragMeOut action: [ 
+		owner hasLeft: self. 
+		AlceBrowser new
+			widget: self;
+			openWithSpec.
+ ].
+	dragMeOut label:'->'.
+	close := self newButton.
+	close label: 'X'
 ]
 
 { #category : #testing }
@@ -171,6 +179,12 @@ AlceAbstractWidget >> isFollow [
 { #category : #testing }
 AlceAbstractWidget >> isFreeze [
 	 ^ browser ifNotNil: [ browser isFreeze. ] ifNil: [ true ]
+]
+
+{ #category : #testing }
+AlceAbstractWidget >> isMiBrowser [
+
+	^ false
 ]
 
 { #category : #accessing }
