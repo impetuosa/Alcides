@@ -151,6 +151,14 @@ AlceAbstractWidget >> hasBeenReinstalled [
 	selection ifNotNil: [ self followAction ].
 ]
 
+{ #category : #testing }
+AlceAbstractWidget >> iconFor: anEntity [
+
+	(anEntity respondsTo: #type) ifNil: [ 
+		^ MiAlceIdeIcons untypedfieldIcon ].
+	^ MiAlceIdeIcons iconFor: anEntity
+]
+
 { #category : #actions }
 AlceAbstractWidget >> initializePresenters [
 
@@ -207,10 +215,12 @@ AlceAbstractWidget >> selectEntity: anEntity [
 ]
 
 { #category : #accessing }
-AlceAbstractWidget >> selection: aSelection [ 
-	selection := aSelection selectedItem.
+AlceAbstractWidget >> selection: aSelection [
 
-	self propagate. 
+	(aSelection respondsTo: #selectedItem)
+		ifTrue: [ selection := aSelection selectedItem ]
+		ifFalse: [ selection := aSelection ].
+	self propagate
 ]
 
 { #category : #testing }

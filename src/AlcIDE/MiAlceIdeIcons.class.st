@@ -21,6 +21,34 @@ MiAlceIdeIcons class >> angularIconContents [
 	^ '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'
 ]
 
+{ #category : #'accessing - icons' }
+MiAlceIdeIcons class >> enumIcon [
+	"Private - Generated method"
+	^ self icons
+		at: #enumIcon
+		ifAbsentPut: [ Form fromBinaryStream: self enumIconContents base64Decoded asByteArray readStream ]
+]
+
+{ #category : #'private - contents' }
+MiAlceIdeIcons class >> enumIconContents [
+	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\icons\enum.png"
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAA5UExURUdwTPPz8/T09PT09PPz8/T09PX19fLy8vLy8vPz88Z3Guvr68+PQ9WfX9msdtSdW+rXwfPz89KYVCdb5ooAAAAKdFJOUwDHw/9Y1zTjt0QcyeknAAAAS0lEQVQY053M2xKAIAhFUYsMxVv5/x8r4ohNj67HMxuM2XY7YKfXwWViyeoAFBjBqp/aE/jUrxaz5jXiGES/w+v/TxyFtBbernpLA7QaAzDDsr0TAAAAAElFTkSuQmCC'
+]
+
+{ #category : #'accessing - icons' }
+MiAlceIdeIcons class >> fieldIcon [
+	"Private - Generated method"
+	^ self icons
+		at: #fieldIcon
+		ifAbsentPut: [ Form fromBinaryStream: self fieldIconContents base64Decoded asByteArray readStream ]
+]
+
+{ #category : #'private - contents' }
+MiAlceIdeIcons class >> fieldIconContents [
+	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\icons\field.png"
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAD5UExURUdwTPLy8vLy8vX19fLy8vT09PT09PLy8vf39/T09PLy8ujs7/////X19enp6fPz8/T09PLy8vT09Ozv8PT09P////T09PT09Orv8dzj6vLy8vT09PX19QFQnvT09Ovr6wlWoVWJvDh2sqC81k6Dt7vO4DNysNXf6YWpzSdqq+Hn7XigyBhgprfL35i20xJcpC5vr8LS4hxiqD55s3CbxT14swxYojp2shZfpc7b5wtXoTp3sj95shZfpixtrRRdpSlrrCFmqR5jp3mgxilqq9Xd5KnA1rTH2W+Ywj55tF2Ov5q20crV4OTn6Tx3sZe00H2kyiBlqRNbpNes7rsAAAAddFJOUwDLPIdU12DnIKe39wSDDEC/FHT32wgwGPD7eMObUW2CXwAAAI5JREFUGNNjYCAWiEmzCgkiuOIykl6eysKc/BCuqJREQJCHv5+9iSUriM8iohyo4iMv72pjYS0H5AsYmru4y8v7OtsaW8mCBOQMlMxU3LydlIxkZSECsrL6po4OdrKyCAEY0NFjRxZQ0Obm5QMKsOsqKoD4iuqcHGBX8LBwaWloqqkyMiEcysHMzs5GtC8Bx5gS9FB35WgAAAAASUVORK5CYII='
+]
+
 { #category : #'GT-InspectorExtensions' }
 MiAlceIdeIcons class >> gtInspectorIconsIn: composite [
 	<gtInspectorPresentationOrder: 0>
@@ -46,7 +74,18 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	aClass = AlcixModule ifTrue: [ ^ self iconModuleIcon ].
 	aClass = AlcixClass ifTrue: [ ^ self iconModuleIcon ].
 	aClass = AlcixLibrary ifTrue: [ ^ self iconNamed: #smallRedo ].
-	aClass = AlcixAlias ifTrue: [  ^ 'A=>B' asMorph asForm . ].
+	aClass = AlcixAlias ifTrue: [ ^ 'A=>B' asMorph asForm ].
+	aClass = AlcixUserType ifTrue: [ ^ self structIcon ].
+	aClass = AlcixEnum ifTrue: [ ^ self enumIcon ].
+	aClass = AlcixEnumValue ifTrue: [ ^ self fieldIcon ].
+	aClass = AlcixAttribute ifTrue: [ ^ self fieldIcon ].
+	aClass = AlcixSubProcedure ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixFunction ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixLocalVariable ifTrue: [ 
+		^ self iconNamed: #glamorousDown ].
+	aClass = AlcixParameter ifTrue: [ ^ self iconNamed: #glamorousRight ].
+	aClass = AlcixGlobalVariable ifTrue: [ 
+		^ self iconNamed: #glamorousUp ].
 	^ self iconTableIcon
 ]
 
@@ -54,8 +93,9 @@ MiAlceIdeIcons class >> iconFor: anElement [
 MiAlceIdeIcons class >> iconForEntryName: anEntryName [
 
 	| aClass |
-	aClass := AlcixEntity allSubclasses detect: [ :a | 
-		          a entryName = anEntryName ] ifNone: [self haltOnce] . 
+	aClass := AlcixEntity allSubclasses
+		          detect: [ :a | a entryName = anEntryName ]
+		          ifNone: [ self haltOnce ].
 	aClass = AlcixForm ifTrue: [ ^ self iconFormIcon ].
 	aClass = AlcixTable ifTrue: [ ^ self iconTableIcon ].
 	aClass = AlcixReport ifTrue: [ ^ self iconReportIcon ].
@@ -65,6 +105,17 @@ MiAlceIdeIcons class >> iconForEntryName: anEntryName [
 	aClass = AlcixClass ifTrue: [ ^ self iconModuleIcon ].
 	aClass = AlcixLibrary ifTrue: [ ^ self iconNamed: #smallRedo ].
 	aClass = AlcixAlias ifTrue: [ ^ 'A=>B' asMorph asForm ].
+	aClass = AlcixUserType ifTrue: [ ^ self structIcon ].
+	aClass = AlcixEnum ifTrue: [ ^ self enumIcon ].
+	aClass = AlcixEnumValue ifTrue: [ ^ self fieldIcon ].
+	aClass = AlcixAttribute ifTrue: [ ^ self fieldIcon ].
+	aClass = AlcixSubProcedure ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixFunction ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixLocalVariable ifTrue: [ 
+		^ self iconNamed: #glamorousDown ].
+	aClass = AlcixParameter ifTrue: [ ^ self iconNamed: #glamorousRight ].
+	aClass = AlcixGlobalVariable ifTrue: [ 
+		^ self iconNamed: #glamorousUp ].
 	^ self iconTableIcon
 ]
 
@@ -172,6 +223,20 @@ MiAlceIdeIcons class >> indexIconContents [
 ]
 
 { #category : #'accessing - icons' }
+MiAlceIdeIcons class >> methodIcon [
+	"Private - Generated method"
+	^ self icons
+		at: #methodIcon
+		ifAbsentPut: [ Form fromBinaryStream: self methodIconContents base64Decoded asByteArray readStream ]
+]
+
+{ #category : #'private - contents' }
+MiAlceIdeIcons class >> methodIconContents [
+	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\icons\method.png"
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAADJUExURUdwTPT09PPz8/////Ly8vT09PT09PDw8PT09PT09PPz8/Ly8vHx8fLy8vLy8vHx8fT09PLy8vLy8u/v7/T09Onm7PT09PT09OTf6PT09PX19fLy8vT09GQtjPT09Gk0kIhfpn9ToJt4tGYwjtnO4M6/2I1lquDY5pZysNbL3qOEuuTh55d0sejm6dHG2aOGuZVxr6iLvd3W4uTe6N/Y5IhgpdnR39PJ2288lN7V5NPI2pNvrsq71J17tdTJ3OLe5ZJsrYlhp9vT4BnYw8QAAAAddFJOUwDXWARo26skML/HPEzn+zjDz4sQ7/inu/tIn/cYxVdwqAAAAH5JREFUGNNjYMAO+AUEJZG47GLGSg6W4hxQrrCQqKG8rKyyrYSUDFhAxMRCFgzk7aTBAnLmZgYgvqOVkxxEQNbUSE9B0cbeWhYmICuro62rD6QQAlCAQ4BPSx7CVVaCCLCzqWuA+GoqnDCncXNpKiiqMvIgOZ6JlZeFmYE4AACTThAwQDLhVwAAAABJRU5ErkJggg=='
+]
+
+{ #category : #'accessing - icons' }
 MiAlceIdeIcons class >> packageIcon [
 	"Private - Generated method"
 	^ self icons
@@ -206,6 +271,20 @@ MiAlceIdeIcons class >> serviceIconContents [
 ]
 
 { #category : #'accessing - icons' }
+MiAlceIdeIcons class >> structIcon [
+	"Private - Generated method"
+	^ self icons
+		at: #structIcon
+		ifAbsentPut: [ Form fromBinaryStream: self structIconContents base64Decoded asByteArray readStream ]
+]
+
+{ #category : #'private - contents' }
+MiAlceIdeIcons class >> structIconContents [
+	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\icons\struct.png"
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURUdwTAFQnvT09MB2StoAAAABdFJOUwBA5thmAAAAKElEQVQI12NggAOuVasWMHCGpiYgEVyrlgJZUQgCpCQyNAGJAGuDAwCeghDhDaQ+8gAAAABJRU5ErkJggg=='
+]
+
+{ #category : #'accessing - icons' }
 MiAlceIdeIcons class >> typescriptIcon [
 	"Private - Generated method"
 	^ self icons
@@ -217,4 +296,18 @@ MiAlceIdeIcons class >> typescriptIcon [
 MiAlceIdeIcons class >> typescriptIconContents [
 	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\Access\typescript.png"
 	^ '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'
+]
+
+{ #category : #'accessing - icons' }
+MiAlceIdeIcons class >> untypedfieldIcon [
+	"Private - Generated method"
+	^ self icons
+		at: #untypedfieldIcon
+		ifAbsentPut: [ Form fromBinaryStream: self untypedfieldIconContents base64Decoded asByteArray readStream ]
+]
+
+{ #category : #'private - contents' }
+MiAlceIdeIcons class >> untypedfieldIconContents [
+	"Private - Method generated with the content of the file File @ D:\Users\Santiago.BRAGAGNOLO\Desktop\icons\untypedfield.png"
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAC0UExURUdwTPT09PPr3PLy8vLy8vLy8vHx8fT09PPz8/Ly8vT09PLy8vT09PT09PPz8/T09PT09PT09DExMf+qAE9PT1tbW8/Pz29vb/6tC1ZWVmtra/23KsjIyFRUVLGxsba2tvrJZ/bnyv6xF/y+QfXs2evr6/20IvvGXN7e3v6uD9+XCHJXIvzCTUQ8LO7q4vzBSVVGKXR0dDc0L66urrF8Ev21JvvIYNLS0p5xF1hIKOzo4NiTCciCswgAAAARdFJOUwCr+3zPUDgwr/dgy/PDQNujcMg3YAAAAKNJREFUGNNNz1cSwjAMBFAngRRSwFZ6I5Xee7n/vVA8DrB/+yTPWIRgNJ1SXSN9sPpB4PfEa5bnGRIHXts2jV1PgOfGaVcZE8CY53b1D3jc851K6g+OryJJbrKCMI26+e56eR4eVeOQ4QApWhRwAmCwsfEREjUSgPd6C0tL/HY8wzlbQWgIkObAU5sCVLnCDQjLUX+h0uzDsC4n35OJY1uGifMPenUP99GfLbcAAAAASUVORK5CYII='
 ]

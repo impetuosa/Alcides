@@ -94,7 +94,7 @@ AlceReferenceWidget >> tableNamed: aTableName [
 					                      yourself);
 			                     addColumn:
 				                     ((SpImageTableColumn evaluated: [ :each | 
-						                       MiAlceIdeIcons iconFor: each ])
+						                       self iconFor: each ])
 					                      width: 10;
 					                      sortFunction: #className ascending;
 					                      yourself);

@@ -83,7 +83,7 @@ AlceModelWidget >> initializePresenters [
 				          width: 20;
 				          yourself);
 		         addColumn: ((SpImageTableColumn evaluated: [ :each | 
-					           MiAlceIdeIcons iconFor: each ])
+					           self  iconFor: each ])
 				          width: 10;
 				          sortFunction: #className ascending;
 				          yourself);

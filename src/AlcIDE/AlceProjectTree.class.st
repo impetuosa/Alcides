@@ -1,19 +1,8 @@
 Class {
 	#name : #AlceProjectTree,
-	#superclass : #AlceAbstractWidget,
-	#instVars : [
-		'tree'
-	],
+	#superclass : #AlceTreeWidget,
 	#category : #'AlcIDE-MidasWidgets'
 }
-
-{ #category : #specs }
-AlceProjectTree class >> defaultSpec [
-
-	^ super defaultSpec
-		  add: #tree;
-		  yourself
-]
 
 { #category : #specs }
 AlceProjectTree class >> menuCommandOn: aBuilder [
@@ -55,58 +44,14 @@ AlceProjectTree >> childrenFor: anEntry [
 				(anEntry types groupedBy: [ :t | t class entryName ]) associations ]
 		ifFalse: [ 
 			(anEntry isKindOf: AlcixContainer) ifTrue: [ 
-				children addAll: anEntry types ] ].
-	(anEntry isKindOf: Association) ifTrue: [ 
-		children addAll: anEntry value ].
-	^ children
-]
-
-{ #category : #visiting }
-AlceProjectTree >> colorForTable: each [
-
-	^ (each isKindOf: Association)
-		  ifTrue: [ Color transparent ]
-		  ifFalse: [ super colorForTable: each ]
+				children addAll: (anEntry types sort: #name ascending) ] ].
+	anEntry isAssociation ifTrue: [ 
+		children addAll: (anEntry value sort: #name ascending) ].
+	^ children removeDuplicates
 ]
 
 { #category : #visiting }
 AlceProjectTree >> followAction [
 
 	tree items: toSelect references
-]
-
-{ #category : #visiting }
-AlceProjectTree >> iconFor: anEntry [
-
-	^ (anEntry isKindOf: Association)
-		  ifTrue: [ MiAlceIdeIcons iconForEntryName: anEntry key ]
-		  ifFalse: [ MiAlceIdeIcons iconFor: anEntry ]
-]
-
-{ #category : #visiting }
-AlceProjectTree >> imageRepresentationFor: each [
-
-	^ each name asStringMorph backgroundColor: (self colorForTable: each)
-]
-
-{ #category : #visiting }
-AlceProjectTree >> initializePresenters [
-
-	super initializePresenters.
-
-	tree := self newTreeTable.
-	tree
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		whenSelectionChangedDo: [ :e | self selection: e ].
-	tree
-		addColumn: (SpCompositeTableColumn new
-				 title: '';
-				 addColumn:
-					 ((SpImageTableColumn evaluated: [ :each | self iconFor: each ])
-						  width: 20;
-						  yourself);
-				 addColumn: (SpImageTableColumn evaluated: [ :each | 
-						  self imageRepresentationFor: each ]);
-				 yourself);
-		children: [ :entry | self childrenFor: entry ]
 ]
