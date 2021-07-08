@@ -40,7 +40,10 @@ AlceOutlineTree >> accept: aModel [
 { #category : #visiting }
 AlceOutlineTree >> anchorsorter [
 
-	^ [ :a :b | a anchor srcFrom threeWayCompareTo: b anchor srcFrom ]
+	^ [ :a :b | 
+	(  a anchor isNil or: [ b anchor isNil ])
+		  ifTrue: [ a threeWayCompareTo: b ]
+		  ifFalse: [ a anchor srcFrom threeWayCompareTo: b anchor srcFrom ] ]
 		  ascending
 ]
 

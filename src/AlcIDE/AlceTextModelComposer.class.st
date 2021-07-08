@@ -22,7 +22,7 @@ AlceTextModelComposer >> addAttributeTypePaint: aColor from: aFrom to: anInteger
 { #category : #adding }
 AlceTextModelComposer >> addInspectAction: anAlcixAttribute info: printString from: aFrom to: aTo [
 
-	
+	aFrom > aTo ifTrue: [ ^ self ].
 	aFrom > text size ifTrue: [ ^ self ].
 
 	text
@@ -136,7 +136,7 @@ AlceTextModelComposer >> visitAccessWrite: anAlcixAccessWrite [
 			          text at: i ]).
 	gap := chain indexOf: $=.
 	chain := '=' split: chain.
-
+	chain size = 2 ifFalse: [ ^ self ].
 
 	self
 		addInspectAction: anAlcixAccessWrite leftElement

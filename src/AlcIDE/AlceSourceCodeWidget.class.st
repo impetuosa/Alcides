@@ -49,23 +49,28 @@ AlceSourceCodeWidget >> accept: aModel [
 AlceSourceCodeWidget >> followAction [
 
 	(toSelect isKindOf: AlcixModule) ifTrue: [ 
-		toSelect isAstLoaded ifTrue: [ 
-			viewport text: (AlceTextComposer new
-					 compose: toSelect ast
-					 model: toSelect
-					 style: self vbaStyle
-					 browsingWith: self) ] ].
+		self visualizeSourcecode: toSelect ].
 
 	(toSelect isKindOf: AlceAnchor) ifTrue: [ 
 		toSelect containsSource ifTrue: [ 
-			viewport selectFrom: toSelect srcFrom to: toSelect srcTo ] ]
+			self selectSourceCodeInterval: toSelect ] ]
 ]
 
 { #category : #initialization }
 AlceSourceCodeWidget >> initializePresenters [
 
 	super initializePresenters.
-	viewport := self newText
+	viewport := self newNotebook .
+	
+]
+
+{ #category : #initialization }
+AlceSourceCodeWidget >> selectSourceCodeInterval: anAnchor [
+
+	viewport pages
+		detect: [ :p | p title = anAnchor elementName ]
+		ifFound: [ :p | 
+			p activePresenter selectFrom: toSelect srcFrom to: toSelect srcTo ]
 ]
 
 { #category : #initialization }
@@ -74,4 +79,35 @@ AlceSourceCodeWidget >> vbaStyle [
 	^ AlceVBAStyle new
 		  usePopularColorStrategy;
 		  yourself
+]
+
+{ #category : #initialization }
+AlceSourceCodeWidget >> visualizeSourcecode: aModule [
+
+	| text page |
+	viewport pages
+		detect: [ :p | p title = aModule name ]
+		ifFound: [ :p | 
+			viewport selectPage: p.
+			^ p ].
+	toSelect stringContent ifNil: [ ^ self ].
+	text := self newText.
+	text help: aModule container shortName , '.' , aModule name.
+	page := self newNotebookPage
+		        title: aModule name;
+		        presenterProvider: text;
+		        icon: (self iconFor: aModule);
+		        beCloseable.
+
+	viewport addPage: page.
+	viewport selectPage: page.
+
+	text text: (AlceTextComposer new
+			 compose: toSelect stringContent
+			 ast: (toSelect isAstLoaded
+					  ifTrue: [ toSelect ast ]
+					  ifFalse: [ nil ])
+			 model: toSelect
+			 style: self vbaStyle
+			 browsingWith: self)
 ]

@@ -34,10 +34,15 @@ AlceElementToString >> visitAssociation: anAssoc [
 { #category : #visiting }
 AlceElementToString >> visitAttribute: anAlcixAttribute [
 
-	^ (anAlcixAttribute typeName
-		   ifNil: [ 'Unknown' ]
-		   ifNotNil: [ :r | r adaptToAlceAnchorPathFragment ]) , ' '
-	  , anAlcixAttribute name
+	^ String streamContents: [ :str | 
+		  str
+			  nextPutAll: anAlcixAttribute name;
+			  space;
+			  nextPutAll: ':';
+			  space;
+			  nextPutAll: (anAlcixAttribute typeName
+					   ifNil: [ 'Unknown' ]
+					   ifNotNil: [ :r | r adaptToAlceAnchorPathFragment ]) ]
 ]
 
 { #category : #visiting }
@@ -80,17 +85,19 @@ AlceElementToString >> visitFunction: anAlcixFunction [
 
 	^ String streamContents: [ :str | 
 		  str
+			  nextPutAll: (self visitInvocable: anAlcixFunction);
+			  space;
+			  nextPutAll: ':';
+			  space;
 			  nextPutAll: (anAlcixFunction typeName
 					   ifNil: [ '' ]
-					   ifNotNil: [ :e | e adaptToAlceAnchorPathFragment ]);
-			  space;
-			  nextPutAll: (self visitInvocable: anAlcixFunction) ]
+					   ifNotNil: [ :e | e adaptToAlceAnchorPathFragment ]) ]
 ]
 
 { #category : #visiting }
 AlceElementToString >> visitGlobalVariable: aVar [
 
-	^ 'global ' , (self visitAttribute: aVar)
+	^(self visitAttribute: aVar), '(global)'
 ]
 
 { #category : #visiting }
@@ -114,7 +121,7 @@ AlceElementToString >> visitLibrary: anAlcixLibrary [
 { #category : #visiting }
 AlceElementToString >> visitLocalVariable: aVar [
 
-	^ 'local ' , (self visitAttribute: aVar)
+	^  (self visitAttribute: aVar), '(local)'
 ]
 
 { #category : #visiting }

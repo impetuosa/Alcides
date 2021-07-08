@@ -214,7 +214,6 @@ AlceTextAstComposer >> visitForEach: aForEach [
 
 { #category : #visiting }
 AlceTextAstComposer >> visitForNext: aForNext [
-
 	self addAttributeKeyword: aForNext fORToken.
 	self addAttributeKeyword: aForNext toToken.
 	self addAttributeNext: aForNext nextToken.
@@ -224,7 +223,12 @@ AlceTextAstComposer >> visitForNext: aForNext [
 
 { #category : #visiting }
 AlceTextAstComposer >> visitForStepNext: aForStepNext [
-self halt.
+
+	self addAttributeKeyword: aForStepNext fORToken.
+	self addAttributeKeyword: aForStepNext toToken.
+	self addAttributeNext: aForStepNext nextToken.
+	self addAttributeKeyword: aForStepNext stepToken .
+	self addAttributeOperator: aForStepNext equalToken .
 	
 	^ self visitProgram: aForStepNext
 ]
