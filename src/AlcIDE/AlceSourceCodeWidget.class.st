@@ -42,22 +42,23 @@ AlceSourceCodeWidget class >> title [
 { #category : #visiting }
 AlceSourceCodeWidget >> accept: aModel [
 
-	^ (aModel isKindOf: AlcixModule) or: (aModel isKindOf: AlceAnchor)
+	^ (aModel isKindOf: AlcixModule) or: [ aModel isKindOf: AlceAnchor ]
 ]
 
 { #category : #initialization }
 AlceSourceCodeWidget >> followAction [
 
 	(toSelect isKindOf: AlcixModule) ifTrue: [ 
-		viewport text: (AlceTextComposer new
-				 compose: toSelect ast
-				 model: toSelect
-				 style: self vbaStyle
-				 browsingWith: self) ].
+		toSelect isAstLoaded ifTrue: [ 
+			viewport text: (AlceTextComposer new
+					 compose: toSelect ast
+					 model: toSelect
+					 style: self vbaStyle
+					 browsingWith: self) ] ].
 
 	(toSelect isKindOf: AlceAnchor) ifTrue: [ 
 		toSelect containsSource ifTrue: [ 
-			viewport editor selectFrom: toSelect srcFrom to: toSelect srcTo ] ]
+			viewport selectFrom: toSelect srcFrom to: toSelect srcTo ] ]
 ]
 
 { #category : #initialization }

@@ -4,12 +4,6 @@ Class {
 	#category : #'AlcIDE-Text '
 }
 
-{ #category : #visiting }
-AlceElementToString >> AlcixEnumValueValue: anEnumValue [
-
-	^ anEnumValue name , '=' , anEnumValue value asString
-]
-
 { #category : #'instance creation' }
 AlceElementToString >> toString: anEntity [
 [
@@ -68,6 +62,11 @@ AlceElementToString >> visitEnum: anEnum [
 AlceElementToString >> visitEnumValue: anEnumValue [
 
 	^ anEnumValue name , '=' , anEnumValue Value asString
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitEvent: anEvent [ 
+	 ^ self visitInvocable: anEvent 
 ]
 
 { #category : #visiting }
@@ -145,4 +144,9 @@ AlceElementToString >> visitReport: anAlcixClass [
 AlceElementToString >> visitSubProcedure: anAlcixSubProcedure [
 
 	^ self visitInvocable: anAlcixSubProcedure
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitUserType: anAlcixUserType [ 
+	 ^ anAlcixUserType name 
 ]

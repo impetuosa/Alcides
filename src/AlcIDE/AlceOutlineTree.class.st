@@ -38,25 +38,31 @@ AlceOutlineTree >> accept: aModel [
 ]
 
 { #category : #visiting }
+AlceOutlineTree >> anchorsorter [
+
+	^ [ :a :b | a anchor srcFrom threeWayCompareTo: b anchor srcFrom ]
+		  ascending
+]
+
+{ #category : #visiting }
 AlceOutlineTree >> childrenFor: anEntry [
 
 	| children |
 	children := OrderedCollection new.
 	(anEntry isKindOf: AlcixModule) ifTrue: [ 
-		children addAll: (anEntry globalVariables sort: #name ascending).
-		children addAll: (anEntry members sort: #name ascending).
-		children addAll: (anEntry invocables sort: #name ascending) ].
+		children addAll: anEntry globalVariables.
+		children addAll: anEntry members.
+		children addAll: anEntry invocables ].
 	(anEntry isKindOf: AlcixEnum) ifTrue: [ 
 		children addAll: anEntry enumValues ].
 
 	(anEntry isKindOf: AlcixInvocable) ifTrue: [ 
-		children addAll: (anEntry parameters sort: #name ascending).
+		children addAll: anEntry parameters.
 		children addAll:
-			((anEntry localVariables reject: [ :v | v name = anEntry selector ]) 
-				 sort: #name ascending) ].
+			(anEntry localVariables reject: [ :v | v name = anEntry selector ]) ].
 
 
-	^ children removeDuplicates
+	^ children removeDuplicates sort: self anchorsorter
 ]
 
 { #category : #visiting }

@@ -24,21 +24,25 @@ MiColouringCommand class >> forSpecContext: anObject [
 
 { #category : #testing }
 MiColouringCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseObject
+
+	^ self context miSelectedItem isMooseObject or: [ 
+		  self context miSelectedItem isCollection and: [ 
+			  self context miSelectedItem allSatisfy: #isMooseObject ] ]
 ]
 
 { #category : #executing }
 MiColouringCommand >> execute [
 
-	| selectedItem  |
-	selectedItem := [ self context miSelectedItem ]
-		                on: MiNoSelectedElementToPropagateException
-		                do: [ :exception | 
-			                exception signal.
-			                ^ self ].
+	| selectedItems |
+	selectedItems := [ self context miSelectedItem asCollection ]
+		                 on: MiNoSelectedElementToPropagateException
+		                 do: [ :exception | 
+			                 exception signal.
+			                 ^ self ].
 
 	SpColorPicker new
-		selectedColor: selectedItem color;
-		whenColorAccepted: [ :color | selectedItem color: color ];
+		selectedColor: selectedItems first color;
+		whenColorAccepted: [ :color | 
+			selectedItems do: [ :s | s color: color ] ];
 		openWithSpec
 ]

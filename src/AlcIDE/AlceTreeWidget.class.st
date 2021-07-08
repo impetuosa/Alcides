@@ -50,9 +50,11 @@ AlceTreeWidget >> initializePresenters [
 	super initializePresenters.
 
 	tree := self newTreeTable.
+	tree beMultipleSelection.
 	tree
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		whenSelectionChangedDo: [ :e | self selection: e ].
+		whenSelectionChangedDo: [ :e | 
+			self selection: e ].
 	tree
 		addColumn: (SpCompositeTableColumn new
 				 title: '';
@@ -64,4 +66,12 @@ AlceTreeWidget >> initializePresenters [
 						  self imageRepresentationFor: each ]);
 				 yourself);
 		children: [ :entry | self childrenFor: entry ]
+]
+
+{ #category : #visiting }
+AlceTreeWidget >> selection: aSelection [
+
+	(aSelection selectedItem respondsTo: #anchor) ifTrue: [ 
+		super selection: aSelection selectedItem anchor ].
+	super selection: aSelection
 ]

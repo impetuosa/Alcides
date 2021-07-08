@@ -81,6 +81,9 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	aClass = AlcixAttribute ifTrue: [ ^ self fieldIcon ].
 	aClass = AlcixSubProcedure ifTrue: [ ^ self methodIcon ].
 	aClass = AlcixFunction ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixAttributeAccessor ifTrue: [ ^ self methodIcon ].
+	aClass = AlcixEvent ifTrue: [ ^ self iconNamed: #announcement ].
+
 	aClass = AlcixLocalVariable ifTrue: [ 
 		^ self iconNamed: #glamorousDown ].
 	aClass = AlcixParameter ifTrue: [ ^ self iconNamed: #glamorousRight ].

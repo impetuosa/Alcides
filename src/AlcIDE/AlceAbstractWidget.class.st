@@ -217,9 +217,15 @@ AlceAbstractWidget >> selectEntity: anEntity [
 { #category : #accessing }
 AlceAbstractWidget >> selection: aSelection [
 
-	(aSelection respondsTo: #selectedItem)
-		ifTrue: [ selection := aSelection selectedItem ]
+	| items |
+	(aSelection respondsTo: #selectedItems)
+		ifTrue: [ 
+			items := aSelection selectedItems.
+			selection := items size = 1
+				             ifTrue: [ items first ]
+				             ifFalse: [ items ] ]
 		ifFalse: [ selection := aSelection ].
+
 	self propagate
 ]
 

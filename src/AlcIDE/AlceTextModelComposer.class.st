@@ -172,6 +172,11 @@ AlceTextModelComposer >> visitAttribute: anAlcixAttribute [
 ]
 
 { #category : #visiting }
+AlceTextModelComposer >> visitAttributeAccessor: anAlcixAttributeAccessor [ 
+ 	 self visitFunction: anAlcixAttributeAccessor 
+]
+
+{ #category : #visiting }
 AlceTextModelComposer >> visitClass: anAlcixClass [ 
 	self visitModule: anAlcixClass.
 ]
@@ -185,6 +190,12 @@ AlceTextModelComposer >> visitCollection: aCollection [
 { #category : #visiting }
 AlceTextModelComposer >> visitEnum: anAlcixEnum [ 
 		
+]
+
+{ #category : #visiting }
+AlceTextModelComposer >> visitEvent: anAlcixEvent [
+
+	^ self visitSubProcedure: anAlcixEvent
 ]
 
 { #category : #visiting }

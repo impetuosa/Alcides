@@ -53,5 +53,5 @@ AlceProjectTree >> childrenFor: anEntry [
 { #category : #visiting }
 AlceProjectTree >> followAction [
 
-	tree items: toSelect references
+	tree items:( toSelect references sort: (#className ascending, #name ascending) )
 ]

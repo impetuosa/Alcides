@@ -57,16 +57,11 @@ SpColorPicker >> initializePresenters [
 		      action: [ self acceptColor ].
 
 
-
-
-
 	setNil := self newButton
-		           label:'Nil';
-		           action: [ self setNilColor ].
-		
-	setNil:= self instantiate: SpDragMe.
-	setNil passenger: self.
-	setNil label:'dragme'. 
+		          label: 'Nil';
+		          action: [ self setNilColor ].
+
+
 	cancel := self newButton
 		          icon: (self iconNamed: #smallCancel);
 		          action: [ self cancelColor ].
