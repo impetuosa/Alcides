@@ -5,8 +5,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-AlceElementToString >> toString: anEntity [
-[
+AlceElementToString >> toString: anEntity [ 
+[ 
 	^ anEntity accept: self
 	] on: Error do:[ self haltOnce  ]
 ]
@@ -72,6 +72,11 @@ AlceElementToString >> visitEnumValue: anEnumValue [
 { #category : #visiting }
 AlceElementToString >> visitEvent: anEvent [ 
 	 ^ self visitInvocable: anEvent 
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitExternalFunction: anAlcixExternalFunction [ 
+	^( self visitFunction:  anAlcixExternalFunction ), ' (External) '
 ]
 
 { #category : #visiting }
@@ -145,6 +150,12 @@ AlceElementToString >> visitPrimitiveType: aType [
 AlceElementToString >> visitReport: anAlcixClass [
 
 	^ self visitModule: anAlcixClass
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitStructure: anAlcixStructure [
+
+	^ self visitUserType: anAlcixStructure
 ]
 
 { #category : #visiting }

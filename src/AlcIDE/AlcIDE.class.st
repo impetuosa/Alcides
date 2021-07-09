@@ -150,10 +150,13 @@ AlcIDE >> newContainer [
 { #category : #'instance creation' }
 AlcIDE >> propagate: aWidget [
 
+	| newSelection |
 	miSelectedItem := aWidget miSelectedItem.
-	miSelectedItem ifNil: [ ^ self ].
+	newSelection := miSelectedItem.
+	newSelection ifNil: [ ^ self ].
 	(self allPresentersBut: aWidget) do: [ :w | 
-		w selectEntity: miSelectedItem ].
+		w selectEntity: newSelection.
+		miSelectedItem := newSelection ].
 
 	self propagate.
 	miSelectedItem := nil

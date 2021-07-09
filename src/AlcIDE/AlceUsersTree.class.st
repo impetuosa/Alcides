@@ -88,8 +88,10 @@ AlceUsersTree >> iconFor: anEntry [
 { #category : #initialization }
 AlceUsersTree >> selection: aSelection [
 
-	(aSelection selectedItem isNotNil and: [ 
-		 (aSelection selectedItem isKindOf: Association) not ]) ifTrue: [ 
-		super selection: aSelection selectedItem userType ].
+	| item |
+	item := self getSelectedItem: aSelection.
+
+	(item isNotNil and: [ (item isKindOf: Association) not ]) ifTrue: [ 
+		super selection: item ].
 	super selection: aSelection
 ]

@@ -39,7 +39,6 @@ AlceTreeWidget >> iconFor: anEntry [
 
 { #category : #visiting }
 AlceTreeWidget >> imageRepresentationFor: each [
-
 	^ (AlceElementToString new toString: each) asStringMorph 
 		  backgroundColor: (self colorForTable: each)
 ]
@@ -71,7 +70,9 @@ AlceTreeWidget >> initializePresenters [
 { #category : #visiting }
 AlceTreeWidget >> selection: aSelection [
 
-	(aSelection selectedItem respondsTo: #anchor) ifTrue: [ 
-		super selection: aSelection selectedItem anchor ].
+	| item |
+	item := self getSelectedItem: aSelection.
+
+	(item respondsTo: #anchor) ifTrue: [ super selection: item anchor ].
 	super selection: aSelection
 ]

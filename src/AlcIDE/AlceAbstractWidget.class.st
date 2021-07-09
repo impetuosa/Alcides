@@ -13,24 +13,19 @@ Class {
 }
 
 { #category : #commands }
+AlceAbstractWidget class >> adapterName [
+
+	 self error: 'should not be called '
+]
+
+{ #category : #commands }
 AlceAbstractWidget class >> alceBrowsers [
 
 	^ 'Alce browsers'
 ]
 
 { #category : #commands }
-AlceAbstractWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-
-
-	rootCommandGroup register:
-		(MiAlceInspectCommand forSpecContext: presenterInstance).
-
-	rootCommandGroup register:
-		(MiColouringCommand forSpecContext: presenterInstance)
-]
-
-{ #category : #commands }
-AlceAbstractWidget class >> defaultSpec [
+AlceAbstractWidget class >> basicDefaultSpec [
 
 	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newLeftToRight
@@ -40,6 +35,25 @@ AlceAbstractWidget class >> defaultSpec [
 				   yourself)
 		  height: self toolbarHeight;
 		  yourself
+]
+
+{ #category : #commands }
+AlceAbstractWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+
+	rootCommandGroup register:
+		(MiAlceInspectCommand forSpecContext: presenterInstance).
+
+	rootCommandGroup register:
+		(MiColouringCommand forSpecContext: presenterInstance).
+
+	rootCommandGroup register:
+		(MiLinkCommand forSpecContext: presenterInstance)
+]
+
+{ #category : #commands }
+AlceAbstractWidget class >> defaultSpec [
+
+	^ self basicDefaultSpec
 ]
 
 { #category : #commands }
@@ -144,6 +158,19 @@ AlceAbstractWidget >> freezeAction [
 	^ self
 ]
 
+{ #category : #accessing }
+AlceAbstractWidget >> getSelectedItem: aSelection [
+
+	| items |
+	(aSelection respondsTo: #selectedItems)
+		ifTrue: [ 
+			items := aSelection selectedItems.
+			^ items size = 1
+				  ifTrue: [ items first ]
+				  ifFalse: [ items ] ]
+		ifFalse: [ ^ aSelection ]
+]
+
 { #category : #opening }
 AlceAbstractWidget >> hasBeenReinstalled [
 	self dragTilte.
@@ -217,15 +244,7 @@ AlceAbstractWidget >> selectEntity: anEntity [
 { #category : #accessing }
 AlceAbstractWidget >> selection: aSelection [
 
-	| items |
-	(aSelection respondsTo: #selectedItems)
-		ifTrue: [ 
-			items := aSelection selectedItems.
-			selection := items size = 1
-				             ifTrue: [ items first ]
-				             ifFalse: [ items ] ]
-		ifFalse: [ selection := aSelection ].
-
+	selection := self getSelectedItem: aSelection.
 	self propagate
 ]
 
