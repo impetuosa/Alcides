@@ -16,6 +16,12 @@ AlceRoassalWidget class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #specs }
+AlceRoassalWidget class >> isAbstract [
+
+	^ self = AlceRoassalWidget
+]
+
 { #category : #initialization }
 AlceRoassalWidget >> element [
 

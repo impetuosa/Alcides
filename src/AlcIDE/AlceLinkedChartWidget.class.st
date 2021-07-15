@@ -38,11 +38,15 @@ AlceLinkedChartWidget >> accept: anEntity [
 AlceLinkedChartWidget >> calculateObjectsFor: element [
 
 	| baseline group |
+	
+	
+	
 	buffer at: element ifPresent: [ :v | ^ v ].
 	"groupedBy: [ 
 			   :e | self colorFor: e ]) values"
 
 	group := Dictionary new.
+	group inspect. 
 	group at: Color red put: OrderedCollection new.
 	group at: Color green put: OrderedCollection new.
 

@@ -15,6 +15,12 @@ AlceTreeWidget class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #specs }
+AlceTreeWidget class >> isAbstract [
+
+	^ self = AlceTreeWidget
+]
+
 { #category : #initialization }
 AlceTreeWidget >> childrenFor: anEntry [
 

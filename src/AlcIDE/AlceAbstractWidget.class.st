@@ -63,6 +63,12 @@ AlceAbstractWidget class >> helpMessage [
 ]
 
 { #category : #commands }
+AlceAbstractWidget class >> isAbstract [
+
+	^ self = AlceAbstractWidget
+]
+
+{ #category : #commands }
 AlceAbstractWidget class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -74,7 +80,8 @@ AlceAbstractWidget class >> menuCommandOn: aBuilder [
 		label: 'Open all browsers';
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
-		action: [ self allSubclassesDo: #runMe ]
+		action: [ 
+			self allSubclasses select: [ :a | a isAbstract not ] thenDo: #runMe ]
 ]
 
 { #category : #commands }
@@ -236,6 +243,7 @@ AlceAbstractWidget >> propagate [
 { #category : #accessing }
 AlceAbstractWidget >> selectEntity: anEntity [
 
+	anEntity ifNil: [ ^ self ].
 	(self accept: anEntity) ifFalse: [ ^ self ].
 	toSelect := anEntity.
 	AbstractBrowserMode actionFor: self

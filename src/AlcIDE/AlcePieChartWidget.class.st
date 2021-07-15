@@ -20,6 +20,12 @@ AlcePieChartWidget class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #'world menu' }
+AlcePieChartWidget class >> isAbstract [
+
+	^ self = AlcePieChartWidget
+]
+
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> calculateObjectsFor: element [
 
@@ -63,13 +69,13 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart |
 	chart := RSPie new.
+
 	chart container: aCanvas.
 	chart sliceShape
 		innerRadius: 70;
 		externalRadius: 150;
 		segmentSpacing: 0.1.
 	chart sliceColor: [ :a | a model key ].
-
 	chart
 		objects: (self calculateObjectsFor: element);
 		slice: [ :s | s value size ];

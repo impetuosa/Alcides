@@ -66,5 +66,6 @@ AlceColorChartWidget >> referenceMaximumFor: element [
 { #category : #'as yet unclassified' }
 AlceColorChartWidget >> scaleForSelectedElement: objects [
 
-	^ (objects flatCollect: [ :o | o value collect: #weight ]) sum
+	^ ((objects flatCollect: [ :o | o value collect: #weight ]) ifEmpty: [ 
+		   { 0 } ]) sum
 ]

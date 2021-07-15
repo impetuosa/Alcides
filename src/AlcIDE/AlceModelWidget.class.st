@@ -100,6 +100,7 @@ AlceModelWidget >> initializePresenters [
 AlceModelWidget >> updateProperties [
 
 	self miSelectedItem ifNil: [ ^ self ].
+	(self miSelectedItem respondsTo: #types) ifFalse: [ ^ self ].
 	properties items: { 
 			(#Kind -> self miSelectedItem class entryName).
 			(#Path -> self miSelectedItem path).

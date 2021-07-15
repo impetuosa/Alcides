@@ -217,6 +217,6 @@ AlceTypeWidget >> selectParameters [
 { #category : #visiting }
 AlceTypeWidget >> selectParameters: item [ 
 	
-	selection ifNotNil: [ 
+	item ifNotNil: [ 
 		parametersTable items: item parameters asOrderedCollection ]
 ]
