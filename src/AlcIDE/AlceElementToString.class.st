@@ -5,10 +5,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-AlceElementToString >> toString: anEntity [ 
-[ 
-	^ anEntity accept: self
-	] on: Error do:[ self haltOnce  ]
+AlceElementToString >> toString: anEntity [
+
+	[ ^ anEntity accept: self ]
+		on: Error
+		do: [ :e | self halt ]
 ]
 
 { #category : #visiting }
@@ -40,9 +41,9 @@ AlceElementToString >> visitAttribute: anAlcixAttribute [
 			  space;
 			  nextPutAll: ':';
 			  space;
-			  nextPutAll: (anAlcixAttribute typeName
-					   ifNil: [ 'Unknown' ]
-					   ifNotNil: [ :r | r adaptToAlceAnchorPathFragment ]) ]
+			  nextPutAll: anAlcixAttribute type name
+		  "  ifNil: [ 'Unknown' ]
+					   ifNotNil: [ :r | r adaptToAlceAnchorPathFragment ]) " ]
 ]
 
 { #category : #visiting }
@@ -66,7 +67,7 @@ AlceElementToString >> visitEnum: anEnum [
 { #category : #visiting }
 AlceElementToString >> visitEnumValue: anEnumValue [
 
-	^ anEnumValue name , '=' , anEnumValue Value asString
+	^ anEnumValue name , '=' , anEnumValue value asString
 ]
 
 { #category : #visiting }
@@ -77,6 +78,12 @@ AlceElementToString >> visitEvent: anEvent [
 { #category : #visiting }
 AlceElementToString >> visitExternalFunction: anAlcixExternalFunction [ 
 	^( self visitFunction:  anAlcixExternalFunction ), ' (External) '
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitExternalSubProcedure: anAlcixExternalSubProcedure [
+
+	^ (self visitSubProcedure: anAlcixExternalSubProcedure) , ' (External) '
 ]
 
 { #category : #visiting }
@@ -94,9 +101,7 @@ AlceElementToString >> visitFunction: anAlcixFunction [
 			  space;
 			  nextPutAll: ':';
 			  space;
-			  nextPutAll: (anAlcixFunction typeName
-					   ifNil: [ '' ]
-					   ifNotNil: [ :e | e adaptToAlceAnchorPathFragment ]) ]
+			  nextPutAll: (anAlcixFunction type name) ]
 ]
 
 { #category : #visiting }

@@ -42,19 +42,19 @@ AlceUsersTree >> childrenFor: anEntry [
 	| children temp |
 	children := OrderedCollection new.
 	(anEntry isKindOf: AlcixInvocable) ifTrue: [ 
-		temp := ((anEntry incomingInvocations collect: [ :e | e sender ]) 
+		temp := ((anEntry incomingAccesses collect: [ :e | e sender ]) 
 			         sort: [ :e | e selector ] ascending) groupedBy: [ :i | 
 			        i userType ].
 		temp ifNotEmpty: [ children add: #Invocations -> temp ].
 		^ children ].
 
 	(anEntry isKindOf: AlcixAccessible) ifTrue: [ 
-		temp := (anEntry readingAccesses collect: [ :r | r invocable ]) 
+		temp := (anEntry incomingAccesses collect: [ :r | r invocable ]) 
 			        sort: #selector ascending.
 		temp ifNotEmpty: [ children add: #Read -> temp ].
-		temp := (anEntry writingAccesses collect: [ :r | r invocable ]) 
+		"temp := (anEntry assignments collect: [ :r | r invocable ]) 
 			        sort: #selector ascending.
-		temp ifNotEmpty: [ children add: #Write -> temp ] ].
+		temp ifNotEmpty: [ children add: #Write -> temp ] "].
 
 	anEntry isAssociation ifTrue: [ 
 		anEntry value isDictionary

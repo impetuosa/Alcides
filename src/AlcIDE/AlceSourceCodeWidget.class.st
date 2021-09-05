@@ -42,7 +42,7 @@ AlceSourceCodeWidget class >> title [
 { #category : #visiting }
 AlceSourceCodeWidget >> accept: aModel [
 
-	^ (aModel isKindOf: AlcixModule) or: [ aModel isKindOf: AlceAnchor ]
+	^ (aModel isKindOf: AlcixModule) or: [ aModel isKindOf: JinAnchor ]
 ]
 
 { #category : #initialization }
@@ -51,7 +51,7 @@ AlceSourceCodeWidget >> followAction [
 	(toSelect isKindOf: AlcixModule) ifTrue: [ 
 		self visualizeSourcecode: toSelect ].
 
-	(toSelect isKindOf: AlceAnchor) ifTrue: [ 
+	(toSelect isKindOf: JinAnchor) ifTrue: [ 
 		toSelect containsSource ifTrue: [ 
 			self selectSourceCodeInterval: toSelect ] ]
 ]
@@ -92,7 +92,7 @@ AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 			^ p ].
 	toSelect stringContent ifNil: [ ^ self ].
 	text := self newText.
-	text help: aModule container shortName , '.' , aModule name.
+	text help: aModule container name , '.' , aModule name.
 	page := self newNotebookPage
 		        title: aModule name;
 		        presenterProvider: text;

@@ -71,7 +71,11 @@ AlcIDE class >> open [
 { #category : #specs }
 AlcIDE class >> runMe [
 	<script>
-	^ self runMeFollowing: self currentApplication defaultBus
+	self open 
+]
+
+{ #category : #specs }
+AlcIDE class >> runMeFollowing: aBus [
 ]
 
 { #category : #specs }

@@ -90,10 +90,7 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 	self
 		addAttributeTypePaint:
 			((anAlcixAccessRead perform: aSideSelector asSymbol)
-				 ifNotNil: [ :n | 
-					 (n isKindOf: AlcixMethodInvocation)
-						 ifTrue: [ self colorFor: n receiver ]
-						 ifFalse: [ self colorFor: n userType ] ]
+				 ifNotNil: [ :n | self colorFor: n first ]
 				 ifNil: [ self colorFor: anAlcixAccessRead ])
 		from: from
 		to: leftTo.
@@ -101,14 +98,14 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 	self
 		addAttributeTypePaint:
 			((anAlcixAccessRead perform: aSideSelector asSymbol)
-				 ifNotNil: [ :n | self colorFor: n ]
+				 ifNotNil: [ :n | self colorFor: n first  ]
 				 ifNil: [ self colorFor: anAlcixAccessRead ])
 		from: rightFrom
 		to: to
 ]
 
 { #category : #visiting }
-AlceTextModelComposer >> visitAccessRead: anAlcixAccessRead [
+AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 
 	| gap |
 	anAlcixAccessRead anchor ifNil: [ ^ self ].
@@ -118,17 +115,16 @@ AlceTextModelComposer >> visitAccessRead: anAlcixAccessRead [
 		       lastIndexOf: $..
 
 	self
-		addInspectAction: anAlcixAccessRead rightElement
+		addInspectAction: anAlcixAccessRead candidate
 		info: ''
 		from: anAlcixAccessRead anchor srcFrom
 		to: anAlcixAccessRead anchor srcTo.
 
-	self splitting: #rightElement colors: anAlcixAccessRead gap: gap
+	self splitting: #candidates colors: anAlcixAccessRead gap: gap
 ]
 
 { #category : #visiting }
-AlceTextModelComposer >> visitAccessWrite: anAlcixAccessWrite [
-
+AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [ 
 	| gap chain |
 	anAlcixAccessWrite anchor containsSource ifFalse: [ ^ self ].
 	chain := '' join: ((anAlcixAccessWrite anchor srcFrom to:
@@ -139,26 +135,26 @@ AlceTextModelComposer >> visitAccessWrite: anAlcixAccessWrite [
 	chain size = 2 ifFalse: [ ^ self ].
 
 	self
-		addInspectAction: anAlcixAccessWrite leftElement
+		addInspectAction: anAlcixAccessWrite writeElement 
 		info: ''
 		from: anAlcixAccessWrite anchor srcFrom
 		to: anAlcixAccessWrite anchor srcFrom + gap.
 
 	self
-		addInspectAction: anAlcixAccessWrite rightElement
+		addInspectAction: anAlcixAccessWrite readElements 
 		info: ''
 		from: anAlcixAccessWrite anchor srcFrom + gap + 1
 		to: anAlcixAccessWrite anchor srcTo.
 
 
 	self
-		splitting: #leftElement
+		splitting: #writeElementCandidates
 		colors: anAlcixAccessWrite
 		gap: (chain first lastIndexOf: $.)
 		from: anAlcixAccessWrite anchor srcFrom
 		to: anAlcixAccessWrite anchor srcFrom + gap.
 	self
-		splitting: #rightElement
+		splitting: #readElementsCandidates
 		colors: anAlcixAccessWrite
 		gap: (chain second lastIndexOf: $.)
 		from: anAlcixAccessWrite anchor srcFrom + gap + 1
@@ -278,12 +274,10 @@ AlceTextModelComposer >> visitReport: anAlcixReport [
 { #category : #visiting }
 AlceTextModelComposer >> visitSubProcedure: anAlcixSubProcedure [
 
-
 	self visitCollection: anAlcixSubProcedure parameters.
 	self visitCollection: anAlcixSubProcedure localVariables.
-	self visitCollection: anAlcixSubProcedure accesses.
-	self visitCollection: anAlcixSubProcedure outgoingInvocations.
-
+	self visitCollection: anAlcixSubProcedure outgoingAccesses.
+"	self visitCollection: anAlcixSubProcedure assignments"
 ]
 
 { #category : #visiting }

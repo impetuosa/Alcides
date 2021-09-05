@@ -107,7 +107,7 @@ AlceTypeWidget >> newInvocablesTable [
 					   (each isKindOf: AlcixFunction)
 						   ifFalse: [ 'void' ]
 						   ifTrue: [ 
-							   each typeName
+							   each type name
 								   ifNil: [ 'Unknown' ]
 								   ifNotNil: [ :ref | ref adaptToAlceAnchorPathFragment ] ] ];
 				   sortFunction: #printString ascending;

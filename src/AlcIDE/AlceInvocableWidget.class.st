@@ -159,7 +159,7 @@ AlceInvocableWidget >> newReadingsTable [
 		  addColumn: ((SpImageTableColumn new
 				    title: 'Resolved';
 				    evaluated: [ :each | 
-					    each rightElement
+					    each candidate
 						    ifNil: [ self iconNamed: #smallQuestion ]
 						    ifNotNil: [ self iconNamed: #glamorousAccept ] ])
 				   width: 10;
@@ -167,15 +167,15 @@ AlceInvocableWidget >> newReadingsTable [
 		  addColumn: (SpStringTableColumn new
 				   title: 'Reading entity';
 				   evaluated: [ :each | 
-					   each rightElementName
+					   each candidate name
 						   ifNil: [ 'Un analyzed expression' ]
 						   ifNotNil: [ 
-							   each rightElementName adaptToAlceAnchorPathFragment ] ];
+							   each candidate name adaptToAlceAnchorPathFragment ] ];
 				   sortFunction: [ :each | 
-					   each rightElementName
+					   each candidate name
 						   ifNil: [ 'Un analyzed expression' ]
 						   ifNotNil: [ 
-							   each rightElementName adaptToAlceAnchorPathFragment ] ]
+							   each candidate name adaptToAlceAnchorPathFragment ] ]
 						   ascending;
 				   beExpandable;
 				   yourself);
@@ -233,7 +233,7 @@ AlceInvocableWidget >> newWritingsTable [
 		  addColumn: ((SpImageTableColumn new
 				    title: 'Resolved(R)';
 				    evaluated: [ :each | 
-					    each rightElement
+					    each candidate
 						    ifNil: [ self iconNamed: #smallQuestion ]
 						    ifNotNil: [ self iconNamed: #glamorousAccept ] ])
 				   width: 10;
@@ -241,15 +241,15 @@ AlceInvocableWidget >> newWritingsTable [
 		  addColumn: (SpStringTableColumn new
 				   title: 'Reading entity';
 				   evaluated: [ :each | 
-					   each rightElementName
+					   each candidate name
 						   ifNil: [ 'Un analyzed expression' ]
 						   ifNotNil: [ 
-							   each rightElementName adaptToAlceAnchorPathFragment ] ];
+							   each candidate name adaptToAlceAnchorPathFragment ] ];
 				   sortFunction: [ :each | 
-					   each rightElementName
+					   each candidate name
 						   ifNil: [ 'Un analyzed expression' ]
 						   ifNotNil: [ 
-							   each rightElementName adaptToAlceAnchorPathFragment ] ]
+							   each candidate name adaptToAlceAnchorPathFragment ] ]
 						   ascending;
 				   beExpandable;
 				   yourself);
