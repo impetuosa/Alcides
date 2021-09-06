@@ -6,10 +6,15 @@ Class {
 
 { #category : #'instance creation' }
 AlceElementToString >> toString: anEntity [
- 
+  
 	[ ^ anEntity accept: self ]
 		on: Error 
 		do: [ :e | self haltOnce ]
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitAccess: anAlcixAccess [ 
+	 ^ anAlcixAccess candidate name 
 ]
 
 { #category : #visiting }
@@ -23,6 +28,20 @@ AlceElementToString >> visitAlias: anAlcixClass [
 
 	^ anAlcixClass name , ' -> '
 	  , anAlcixClass type name adaptToAlceAnchorPathFragment
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitArgument: anAlcixArgument [ 
+	^ anAlcixArgument value 
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitAssignment: anAlcixAssignment [
+
+	^ (String space join:
+		   (anAlcixAssignment writeElement collect: [ :a | a accept: self ]))
+	  , '=' , (String space join:
+		   (anAlcixAssignment readElements collect: [ :a | a accept: self ]))
 ]
 
 { #category : #visiting }
@@ -137,9 +156,20 @@ AlceElementToString >> visitInvocable: anAlcixFunction [
 ]
 
 { #category : #visiting }
+AlceElementToString >> visitInvocation: anAlcixInvocation [
+
+	^ anAlcixInvocation name
+]
+
+{ #category : #visiting }
 AlceElementToString >> visitLibrary: anAlcixLibrary [
 
 	^ anAlcixLibrary name
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitLiteral: anAlcixLiteral [ 
+	 ^ anAlcixLiteral value asString 
 ]
 
 { #category : #visiting }
@@ -178,6 +208,13 @@ AlceElementToString >> visitReport: anAlcixClass [
 ]
 
 { #category : #visiting }
+AlceElementToString >> visitReturn: anAlcixReturn [
+
+	^ 'set to return ' , (String space join:
+		   (anAlcixReturn outgoingAccesses collect: [ :a | a accept: self ]))
+]
+
+{ #category : #visiting }
 AlceElementToString >> visitStructure: anAlcixStructure [
 
 	^ self visitUserType: anAlcixStructure
@@ -200,6 +237,11 @@ AlceElementToString >> visitTableField: anAlcixTableField [
 
 	^ anAlcixTableField name, String tab, String tab, anAlcixTableField type name , '('
 	  , anAlcixTableField size asString , ') ' 
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitUnknownElement: anAlcixUnknownElement [ 
+	 ^ #Unknown 
 ]
 
 { #category : #visiting }

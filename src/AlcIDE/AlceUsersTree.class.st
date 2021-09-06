@@ -30,7 +30,6 @@ AlceUsersTree class >> title [
 
 { #category : #initialization }
 AlceUsersTree >> accept: aModel [
-
 	^ { 
 		  AlcixInvocable.
 		  AlcixAccessible } anySatisfy: [ :c | aModel isKindOf: c ]
@@ -42,19 +41,18 @@ AlceUsersTree >> childrenFor: anEntry [
 	| children temp |
 	children := OrderedCollection new.
 	(anEntry isKindOf: AlcixInvocable) ifTrue: [ 
-		temp := ((anEntry incomingAccesses collect: [ :e | e sender ]) 
-			         sort: [ :e | e selector ] ascending) groupedBy: [ :i | 
+		temp := ((anEntry incomingAccesses collect: [ :e | e withAccesses  ]) 
+			         sort: [ :e | e name ] ascending) groupedBy: [ :i | 
 			        i userType ].
 		temp ifNotEmpty: [ children add: #Invocations -> temp ].
 		^ children ].
 
 	(anEntry isKindOf: AlcixAccessible) ifTrue: [ 
-		temp := (anEntry incomingAccesses collect: [ :r | r invocable ]) 
-			        sort: #selector ascending.
-		temp ifNotEmpty: [ children add: #Read -> temp ].
+		temp := anEntry incomingAccesses collect: [ :r | r withAccesses ].
+		temp ifNotEmpty: [ children add: #Read -> temp ]
 		"temp := (anEntry assignments collect: [ :r | r invocable ]) 
 			        sort: #selector ascending.
-		temp ifNotEmpty: [ children add: #Write -> temp ] "].
+		temp ifNotEmpty: [ children add: #Write -> temp ] " ].
 
 	anEntry isAssociation ifTrue: [ 
 		anEntry value isDictionary

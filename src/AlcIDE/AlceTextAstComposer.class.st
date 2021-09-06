@@ -12,6 +12,7 @@ AlceTextAstComposer >> compose: anAst model: aModel style: aStyle into: aText br
 	ast := anAst.
 	text := aText. 
 	style := aStyle.
+
 	ast acceptVisitor: self.
 
 	^ text

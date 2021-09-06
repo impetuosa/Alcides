@@ -70,6 +70,7 @@ AlceSourceCodeWidget >> selectSourceCodeInterval: anAnchor [
 	viewport pages
 		detect: [ :p | p title = anAnchor elementName ]
 		ifFound: [ :p | 
+			viewport selectPage: p.
 			p activePresenter selectFrom: toSelect srcFrom to: toSelect srcTo ]
 ]
 

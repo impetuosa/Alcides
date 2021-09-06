@@ -53,7 +53,7 @@ AlceOutlineTree >> childrenFor: anEntry [
 	| children |
 	children := OrderedCollection new.
 	(anEntry isKindOf: AlcixModule) ifTrue: [ 
-		children addAll: anEntry constants. 
+		children addAll: anEntry constants.
 		children addAll: anEntry globalVariables.
 		children addAll: anEntry members.
 		children addAll: anEntry invocables ].
@@ -63,7 +63,13 @@ AlceOutlineTree >> childrenFor: anEntry [
 	(anEntry isKindOf: AlcixInvocable) ifTrue: [ 
 		children addAll: anEntry parameters.
 		children addAll:
-			(anEntry localVariables reject: [ :v | v name = anEntry selector ]) ].
+			(anEntry localVariables reject: [ :v | v name = anEntry selector ]).
+
+		children addAll: anEntry outgoingAccesses.
+		children addAll: anEntry assignments.
+		children addAll: anEntry returns.
+		
+		 ].
 
 
 	^ children removeDuplicates sort: self anchorsorter
