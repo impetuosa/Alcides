@@ -53,6 +53,7 @@ AlceOutlineTree >> childrenFor: anEntry [
 	| children |
 	children := OrderedCollection new.
 	(anEntry isKindOf: AlcixModule) ifTrue: [ 
+		children addAll: anEntry constants. 
 		children addAll: anEntry globalVariables.
 		children addAll: anEntry members.
 		children addAll: anEntry invocables ].

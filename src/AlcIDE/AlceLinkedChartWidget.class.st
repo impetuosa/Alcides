@@ -37,35 +37,26 @@ AlceLinkedChartWidget >> accept: anEntity [
 { #category : #'as yet unclassified' }
 AlceLinkedChartWidget >> calculateObjectsFor: element [
 
-	| baseline group |
-	
-	
-	
+	| group |
 	buffer at: element ifPresent: [ :v | ^ v ].
 	"groupedBy: [ 
 			   :e | self colorFor: e ]) values"
 
 	group := Dictionary new.
-	group inspect. 
+	group inspect.
 	group at: Color red put: OrderedCollection new.
 	group at: Color green put: OrderedCollection new.
 
-	(element allWithType: AlcixAccessRead) do: [ :e | 
-		(e rightElement
-			 ifNil: [ group at: Color red ]
-			 ifNotNil: [ group at: Color green ]) add: e ].
-	(element allWithType: AlcixAccessWrite) do: [ :e | 
-		(e leftElement
-			 ifNil: [ group at: Color red ]
-			 ifNotNil: [ group at: Color green ]) add: e ].
-	(element allWithSubTypesOf: AlcixInvocation) do: [ :e | 
-		(e candidate
-			 ifNil: [ group at: Color red ]
-			 ifNotNil: [ group at: Color green ]) add: e ].
+
+	(element allWithType: AlcixAccess) do: [ :e | 
+		((e candidates anySatisfy: [ :c | c isUnknown ])
+			 ifTrue: [ group at: Color red ]
+			 ifFalse: [ group at: Color green ]) add: e ].
+
 	(element allUsing: AlcixTTyped) do: [ :e | 
-		(e type
-			 ifNil: [ group at: Color red ]
-			 ifNotNil: [ group at: Color green ]) add: e ].
+		(e type isUnknown
+			 ifTrue: [ group at: Color red ]
+			 ifFalse: [ group at: Color green ]) add: e ].
 
 	buffer at: element put: group associations.
 	^ group associations

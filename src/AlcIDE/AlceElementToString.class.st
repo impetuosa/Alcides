@@ -6,10 +6,10 @@ Class {
 
 { #category : #'instance creation' }
 AlceElementToString >> toString: anEntity [
-
+ 
 	[ ^ anEntity accept: self ]
-		on: Error
-		do: [ :e | self halt ]
+		on: Error 
+		do: [ :e | self haltOnce ]
 ]
 
 { #category : #visiting }
@@ -22,7 +22,7 @@ AlceElementToString >> visitAccessModule: anAlcixAccessModule [
 AlceElementToString >> visitAlias: anAlcixClass [
 
 	^ anAlcixClass name , ' -> '
-	  , anAlcixClass typeName adaptToAlceAnchorPathFragment
+	  , anAlcixClass type name adaptToAlceAnchorPathFragment
 ]
 
 { #category : #visiting }
@@ -41,9 +41,7 @@ AlceElementToString >> visitAttribute: anAlcixAttribute [
 			  space;
 			  nextPutAll: ':';
 			  space;
-			  nextPutAll: anAlcixAttribute type name
-		  "  ifNil: [ 'Unknown' ]
-					   ifNotNil: [ :r | r adaptToAlceAnchorPathFragment ]) " ]
+			  nextPutAll: anAlcixAttribute type name ]
 ]
 
 { #category : #visiting }
@@ -56,6 +54,22 @@ AlceElementToString >> visitAttributeAccessor: anAlcixAttributeAccessor [
 AlceElementToString >> visitClass: anAlcixClass [
 
 	^ self visitModule: anAlcixClass
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitConstant: anAlcixConstant [
+
+	^ String streamContents: [ :str | 
+		  str
+			  nextPutAll: anAlcixConstant name;
+			  space;
+			  nextPutAll: ':';
+			  space;
+			  nextPutAll: anAlcixConstant type name;
+			  space;
+			  nextPutAll: '=';
+			  space;
+			  nextPutAll: anAlcixConstant value asString ]
 ]
 
 { #category : #visiting }
@@ -152,6 +166,12 @@ AlceElementToString >> visitPrimitiveType: aType [
 ]
 
 { #category : #visiting }
+AlceElementToString >> visitQuery: anAlcixQuery [
+
+	^ self visitTable: anAlcixQuery
+]
+
+{ #category : #visiting }
 AlceElementToString >> visitReport: anAlcixClass [
 
 	^ self visitModule: anAlcixClass
@@ -167,6 +187,19 @@ AlceElementToString >> visitStructure: anAlcixStructure [
 AlceElementToString >> visitSubProcedure: anAlcixSubProcedure [
 
 	^ self visitInvocable: anAlcixSubProcedure
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitTable: anAlcixTable [
+
+	^ anAlcixTable name , '(' , anAlcixTable members asOrderedCollection removeDuplicates size asString , ')'
+]
+
+{ #category : #visiting }
+AlceElementToString >> visitTableField: anAlcixTableField [
+
+	^ anAlcixTableField name, String tab, String tab, anAlcixTableField type name , '('
+	  , anAlcixTableField size asString , ') ' 
 ]
 
 { #category : #visiting }

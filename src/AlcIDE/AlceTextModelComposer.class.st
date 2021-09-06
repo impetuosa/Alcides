@@ -195,6 +195,12 @@ AlceTextModelComposer >> visitEvent: anAlcixEvent [
 ]
 
 { #category : #visiting }
+AlceTextModelComposer >> visitExternalFunction: anAlcixExternalFunction [
+
+	self visitFunction: anAlcixExternalFunction
+]
+
+{ #category : #visiting }
 AlceTextModelComposer >> visitForm: anAlcixForm [
 
 	self visitClass: anAlcixForm

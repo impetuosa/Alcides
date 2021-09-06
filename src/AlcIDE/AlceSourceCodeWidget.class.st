@@ -85,6 +85,7 @@ AlceSourceCodeWidget >> vbaStyle [
 AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 
 	| text page |
+	(aModule isKindOf: AlcixDataSource ) ifTrue:[ ^ self ] .
 	viewport pages
 		detect: [ :p | p title = aModule name ]
 		ifFound: [ :p | 

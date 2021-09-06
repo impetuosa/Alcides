@@ -79,6 +79,7 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	aClass = AlcixEnum ifTrue: [ ^ self enumIcon ].
 	aClass = AlcixEnumValue ifTrue: [ ^ self fieldIcon ].
 	aClass = AlcixAttribute ifTrue: [ ^ self fieldIcon ].
+	aClass = AlcixConstant ifTrue: [ ^ self fieldIcon ].
 	aClass = AlcixSubProcedure ifTrue: [ ^ self methodIcon ].
 	aClass = AlcixFunction ifTrue: [ ^ self methodIcon ].
 	aClass = AlcixAttributeAccessor ifTrue: [ ^ self methodIcon ].
