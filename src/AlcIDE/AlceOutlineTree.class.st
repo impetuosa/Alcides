@@ -13,7 +13,7 @@ AlceOutlineTree class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self runMe ] 
 ]
 
 { #category : #specs }

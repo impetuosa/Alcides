@@ -35,7 +35,7 @@ AlceTypeWidget class >> menuCommandOn: aBuilder [
 	<miBrowsers>
 	(aBuilder item: #alceTypeBrowser)
 		parent: self alceBrowsers; 
-		label: (self title);
+		label: (self title); 
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);
 		action: [ self runMe ]

@@ -10,7 +10,7 @@ AlceLinkedChartWidget class >> menuCommandOn: aBuilder [
 	<miBrowsers>
 	(aBuilder item: #alcLinkChartBrowser)
 		parent: self alceBrowsers;
-		label: (self title);
+		label: (self title); 
 		icon: (self iconNamed: #mooseTree); 
 		help: (self helpMessage);
 		action: [ self runMe ]

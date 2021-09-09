@@ -28,7 +28,7 @@ AlceReferenceWidget class >> menuCommandOn: aBuilder [
 	(aBuilder item: #alceReferenceBrowser)
 		parent: self alceBrowsers;
 		label: (self title);
-		icon: (self iconNamed: #mooseTree);
+		icon: (self iconNamed: #mooseTree); 
 		help: (self helpMessage);
 		action: [ self runMe ]
 ]

@@ -52,13 +52,18 @@ AlcIDE class >> defaultSpec [
 
 { #category : #specs }
 AlcIDE class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
+	(aBuilder item: self alceBrowsers )
+		parent: #Moose;
+		label: self alceBrowsers.
+		
 	(aBuilder item: #alceIdeBrowser)
 		parent: self alceBrowsers;
-		label: (self title);
-		icon: (self iconNamed: #mooseTree); 
-		help: (self helpMessage);
+		label: self title;
+		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

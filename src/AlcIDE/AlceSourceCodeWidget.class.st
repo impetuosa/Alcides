@@ -26,7 +26,7 @@ AlceSourceCodeWidget class >> menuCommandOn: aBuilder [
 	
 	<miBrowsers>
 	(aBuilder item: #alceSourceBrowser)
-		parent: self alceBrowsers;
+		parent: self alceBrowsers; 
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);

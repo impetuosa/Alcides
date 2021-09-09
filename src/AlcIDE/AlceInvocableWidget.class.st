@@ -36,7 +36,7 @@ AlceInvocableWidget class >> defaultSpec [
 
 { #category : #specs }
 AlceInvocableWidget class >> menuCommandOn: aBuilder [
-	<worldMenu>
+	<worldMenu> 
 	<miBrowsers>
 	(aBuilder item: #alceInvocableBrowser) 
 		parent: self alceBrowsers;

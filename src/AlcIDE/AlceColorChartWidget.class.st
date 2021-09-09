@@ -12,8 +12,8 @@ AlceColorChartWidget class >> menuCommandOn: aBuilder [
 		parent: self alceBrowsers;
 		label: (self title);
 		icon: (self iconNamed: #mooseTree); 
-		help: (self helpMessage);
-		action: [ self runMe ]
+		help: (self helpMessage); 
+		action: [ self runMe ] 
 ]
 
 { #category : #specs }
