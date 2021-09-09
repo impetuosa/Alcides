@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #specs }
+AlceReferenceWidget class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #specs }
 AlceReferenceWidget class >> defaultSpec [
 	^ super defaultSpec
 		add: #viewport;

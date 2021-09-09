@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #specs }
+AlceTreeWidget class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #specs }
 AlceTreeWidget class >> defaultSpec [
 
 	^ super defaultSpec

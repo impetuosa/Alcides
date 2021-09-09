@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : #specs }
+AlceTypeWidget class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #specs }
 AlceTypeWidget class >> defaultSpec [
 
 	^ super defaultSpec

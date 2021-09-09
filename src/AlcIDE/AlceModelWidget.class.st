@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #specs }
+AlceModelWidget class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #specs }
 AlceModelWidget class >> defaultSpec [
 
 	^ super defaultSpec add: (SpBoxLayout newHorizontal

@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #'world menu' }
+AlcePieChartWidget class >> alceBrowsers [
+
+	^ 'Alce browsers'
+]
+
+{ #category : #'world menu' }
 AlcePieChartWidget class >> defaultSpec [
 
 	^ self basicDefaultSpec
