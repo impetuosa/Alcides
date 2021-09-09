@@ -86,12 +86,6 @@ AlceBrowser >> followAction [
 	^ widget followAction
 ]
 
-{ #category : #testing }
-AlceBrowser >> hasLeft: anAlceSourceCodeWidget [
-
-	widget = anAlceSourceCodeWidget ifTrue: [ self close ]
-]
-
 { #category : #initialization }
 AlceBrowser >> initializePresenters [
 
@@ -122,6 +116,12 @@ AlceBrowser >> instantiateWidget: aWidget [
 AlceBrowser >> miSelectedItem [
 
 	^ widget miSelectedItem
+]
+
+{ #category : #testing }
+AlceBrowser >> noteThatWidgetHasBeenClosed: anAlceSourceCodeWidget [
+
+	widget = anAlceSourceCodeWidget ifTrue: [ self close ]
 ]
 
 { #category : #initialization }

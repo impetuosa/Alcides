@@ -1,6 +1,6 @@
 Class {
 	#name : #AlceReferenceWidget,
-	#superclass : #AlceAbstractWidget,
+	#superclass : #MiDraggableAbstractWidget,
 	#instVars : [
 		'viewport',
 		'tables'

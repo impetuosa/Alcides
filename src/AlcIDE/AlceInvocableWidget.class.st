@@ -1,6 +1,6 @@
 Class {
 	#name : #AlceInvocableWidget,
-	#superclass : #AlceAbstractWidget,
+	#superclass : #MiDraggableAbstractWidget,
 	#instVars : [
 		'readings',
 		'writings',

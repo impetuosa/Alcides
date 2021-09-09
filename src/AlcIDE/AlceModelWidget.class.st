@@ -1,6 +1,6 @@
 Class {
 	#name : #AlceModelWidget,
-	#superclass : #AlceAbstractWidget,
+	#superclass : #MiDraggableAbstractWidget,
 	#instVars : [
 		'table',
 		'properties'

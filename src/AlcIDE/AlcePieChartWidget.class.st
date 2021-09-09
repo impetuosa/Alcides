@@ -1,6 +1,6 @@
 Class {
 	#name : #AlcePieChartWidget,
-	#superclass : #AlceRoassalWidget,
+	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'reference',
 		'colorSelector',

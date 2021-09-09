@@ -1,6 +1,6 @@
 Class {
 	#name : #AlceTypeWidget,
-	#superclass : #AlceAbstractWidget,
+	#superclass : #MiDraggableAbstractWidget,
 	#instVars : [
 		'typesTable',
 		'membersTable',

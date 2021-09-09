@@ -129,7 +129,7 @@ AlcIDE >> installTransfer: aTransfer into: destination [
 	(destination install: aTransfer passenger)
 		dragTilte;
 		browser: self;
-		whenClose: [ :a | destination hasLeft: a ].
+		whenClose: [ :a | destination noteThatWidgetHasBeenClosed:  a ].
 	aTransfer passenger hasBeenReinstalled
 ]
 
@@ -142,7 +142,7 @@ AlcIDE >> miSelectedItem [
 { #category : #'instance creation' }
 AlcIDE >> newContainer [
 
-	^ ((self instantiate: SpDropIn)
+	^ ((self instantiate: SpDropInContainer)
 		   borderWidth: 2;
 		   dropEnabled: true;
 		   wantsDrop: [ :transfer :destination | 
@@ -170,13 +170,6 @@ AlcIDE >> propagate: aWidget [
 AlcIDE >> selectEntity: anEntity [
 
 	self allPresenters do: [ :p | p selectEntity: anEntity ]
-]
-
-{ #category : #'instance creation' }
-AlcIDE >> shouldAcceptTransfer: aTransfer [
-
-	(aTransfer isKindOf: SpTransferMorph) ifFalse: [ ^ false ].
-	^ aTransfer passenger canBeAdaptedToAlcIDE
 ]
 
 { #category : #'instance creation' }
