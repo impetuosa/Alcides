@@ -9,12 +9,6 @@ Class {
 }
 
 { #category : #specs }
-AlceModelWidget class >> alceBrowsers [
-
-	^ 'Alce browsers'
-]
-
-{ #category : #specs }
 AlceModelWidget class >> defaultSpec [
 
 	^ super defaultSpec add: (SpBoxLayout newHorizontal
@@ -28,7 +22,7 @@ AlceModelWidget class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #alceModelBrowser)
-		parent: self alceBrowsers;
+		parent:  AlcIDE alceBrowsers;
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);

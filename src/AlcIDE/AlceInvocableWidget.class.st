@@ -15,12 +15,6 @@ Class {
 }
 
 { #category : #specs }
-AlceInvocableWidget class >> alceBrowsers [
-
-	^ 'Alce browsers'
-]
-
-{ #category : #specs }
 AlceInvocableWidget class >> defaultSpec [
 
 	^ super defaultSpec
@@ -39,7 +33,7 @@ AlceInvocableWidget class >> menuCommandOn: aBuilder [
 	<worldMenu> 
 	<miBrowsers>
 	(aBuilder item: #alceInvocableBrowser) 
-		parent: self alceBrowsers;
+		parent: AlcIDE alceBrowsers;
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);

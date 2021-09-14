@@ -9,12 +9,6 @@ Class {
 }
 
 { #category : #specs }
-AlceReferenceWidget class >> alceBrowsers [
-
-	^ 'Alce browsers'
-]
-
-{ #category : #specs }
 AlceReferenceWidget class >> defaultSpec [
 	^ super defaultSpec
 		add: #viewport;
@@ -26,7 +20,7 @@ AlceReferenceWidget class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #alceReferenceBrowser)
-		parent: self alceBrowsers;
+		parent:  AlcIDE alceBrowsers;
 		label: (self title);
 		icon: (self iconNamed: #mooseTree); 
 		help: (self helpMessage);

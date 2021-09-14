@@ -6,14 +6,15 @@ Class {
 
 { #category : #'world menu' }
 AlceColorChartWidget class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #alcTagChartBrowser)
-		parent: self alceBrowsers;
-		label: (self title);
-		icon: (self iconNamed: #mooseTree); 
-		help: (self helpMessage); 
-		action: [ self runMe ] 
+		parent: AlcIDE alceBrowsers;
+		label: self title;
+		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
+		action: [ self runMe ]
 ]
 
 { #category : #specs }
