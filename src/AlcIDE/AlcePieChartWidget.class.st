@@ -39,18 +39,6 @@ AlcePieChartWidget >> calculateObjectsFor: element [
 ]
 
 { #category : #'as yet unclassified' }
-AlcePieChartWidget >> colorFor: e [
-
-	^ colorSelector colorFor: e
-]
-
-{ #category : #'as yet unclassified' }
-AlcePieChartWidget >> colorsFor: e [
-
-	^ colorSelector colorsFor: e
-]
-
-{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> followAction [ 
 	 super followAction. 
 	reference script: [ : canvas | self loadReference: canvas withElement: toSelect ]
@@ -60,7 +48,6 @@ AlcePieChartWidget >> followAction [
 AlcePieChartWidget >> initialize [
 
 	super initialize.
-	colorSelector := AlceColoringPopularComposingColor new.
 	buffer := Dictionary new
 ]
 

@@ -42,7 +42,7 @@ AlceVBAStyle >> color: aColor [
 { #category : #'as yet unclassified' }
 AlceVBAStyle >> colorFor: anEntity [
 
-	^ anEntity color
+	^ coloringStrategy colorFor: anEntity
 ]
 
 { #category : #'as yet unclassified' }
