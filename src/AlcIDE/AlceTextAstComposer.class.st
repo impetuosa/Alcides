@@ -104,8 +104,8 @@ AlceTextAstComposer >> visitDimVariable: aDimVariable [
 
 { #category : #visiting }
 AlceTextAstComposer >> visitDoEvents: aDoEvents [
-self halt.
-	
+
+	self addAttributeKeyword: aDoEvents doEventsToken.
 	^ self visitProgram: aDoEvents
 ]
 
@@ -191,8 +191,9 @@ AlceTextAstComposer >> visitExternalFunction: anExternalFunction [
 { #category : #visiting }
 AlceTextAstComposer >> visitExternalSub: anExternalSub [
 
-self halt.
-	
+	self addAttributeKeyword: anExternalSub libToken.
+	self addAttributeVisibility: anExternalSub visibility.
+	self addAttributeKeyword: anExternalSub aliasToken.
 	^ self visitProgram: anExternalSub
 ]
 
@@ -451,8 +452,9 @@ self halt.
 
 { #category : #visiting }
 AlceTextAstComposer >> visitRaiseError: aRaiseError [
-self halt.
-	
+
+	self addAttributeKeyword: aRaiseError eRRORToken.
+
 	^ self visitProgram: aRaiseError
 ]
 

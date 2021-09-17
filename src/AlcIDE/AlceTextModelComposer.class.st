@@ -55,16 +55,19 @@ AlceTextModelComposer >> compose: aVBModuleNode model: anAlcixClass style: anAlc
 ]
 
 { #category : #'as yet unclassified' }
-AlceTextModelComposer >> paintWithType: anAlcixAttribute [
+AlceTextModelComposer >> paintWithType: anAlcixAttributeOrCollection [
 
-	(anAlcixAttribute anchor isNotNil and: [ 
-		 anAlcixAttribute anchor containsSource ]) ifFalse: [ ^ self ].
-	self
-		addAttributeTypePaint: ( self colorFor: anAlcixAttribute)
-		from: anAlcixAttribute anchor srcFrom
-		to: anAlcixAttribute anchor srcTo.
-
-	
+	| thingie |
+	thingie := anAlcixAttributeOrCollection isCollection
+		           ifTrue: [ anAlcixAttributeOrCollection ]
+		           ifFalse: [ { anAlcixAttributeOrCollection } ].
+	thingie do: [ :anAlcixAttribute | 
+		(anAlcixAttribute anchor isNotNil and: [ 
+			 anAlcixAttribute anchor containsSource ]) ifFalse: [ ^ self ].
+		self
+			addAttributeTypePaint: (self colorFor: anAlcixAttribute)
+			from: anAlcixAttribute anchor srcFrom
+			to: anAlcixAttribute anchor srcTo ]
 ]
 
 { #category : #visiting }
@@ -83,7 +86,9 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 
 	| leftTo rightFrom |
 	(anAlcixAccessRead perform: aSideSelector asSymbol) ifNil: [ ^ self ].
-	gap = 0 ifTrue: [ ^ self paintWithType: anAlcixAccessRead ].
+	gap = 0 ifTrue: [ 
+		^ self paintWithType:
+			  (anAlcixAccessRead perform: aSideSelector asSymbol) ].
 	leftTo := from + gap - 1.
 	rightFrom := leftTo + 1.
 
@@ -98,7 +103,7 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 	self
 		addAttributeTypePaint:
 			((anAlcixAccessRead perform: aSideSelector asSymbol)
-				 ifNotNil: [ :n | self colorFor: n first  ]
+				 ifNotNil: [ :n | self colorFor: n first ]
 				 ifNil: [ self colorFor: anAlcixAccessRead ])
 		from: rightFrom
 		to: to
@@ -126,6 +131,10 @@ AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 { #category : #visiting }
 AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [ 
 	| gap chain |
+	
+	
+	
+
 	anAlcixAccessWrite anchor containsSource ifFalse: [ ^ self ].
 	chain := '' join: ((anAlcixAccessWrite anchor srcFrom to:
 		           anAlcixAccessWrite anchor srcTo) collect: [ :i | 
@@ -201,6 +210,12 @@ AlceTextModelComposer >> visitExternalFunction: anAlcixExternalFunction [
 ]
 
 { #category : #visiting }
+AlceTextModelComposer >> visitExternalSubProcedure: anAlcixExternalSubProcedure [
+
+	^ self visitSubProcedure: anAlcixExternalSubProcedure
+]
+
+{ #category : #visiting }
 AlceTextModelComposer >> visitForm: anAlcixForm [
 
 	self visitClass: anAlcixForm
@@ -210,10 +225,12 @@ AlceTextModelComposer >> visitForm: anAlcixForm [
 AlceTextModelComposer >> visitFunction: anAlcixFunction [
 
 	self visitSubProcedure: anAlcixFunction.
+
 	anAlcixFunction type ifNotNil: [ 
 		(anAlcixFunction typeAnchor isNotNil and: [ 
 			 anAlcixFunction typeAnchor containsSource ]) ifFalse: [ ^ self ].
 
+		self halt.
 
 		self
 			addInspectAction: anAlcixFunction type
@@ -283,7 +300,7 @@ AlceTextModelComposer >> visitSubProcedure: anAlcixSubProcedure [
 	self visitCollection: anAlcixSubProcedure parameters.
 	self visitCollection: anAlcixSubProcedure localVariables.
 	self visitCollection: anAlcixSubProcedure outgoingAccesses.
-"	self visitCollection: anAlcixSubProcedure assignments"
+	self visitCollection: anAlcixSubProcedure assignments
 ]
 
 { #category : #visiting }

@@ -10,6 +10,19 @@ Class {
 }
 
 { #category : #'world menu' }
+AlcePieChartWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+
+	rootCommandGroup register:
+		(MiPropagateCommand forSpecContext: presenterInstance).
+	rootCommandGroup register:
+		(MiSystemInspectCommand forSpecContext: presenterInstance).
+
+	MiTagEntity
+		buildCommandsGroupWith: presenterInstance
+		forRoot: rootCommandGroup
+]
+
+{ #category : #'world menu' }
 AlcePieChartWidget class >> defaultSpec [
 
 	^ self basicDefaultSpec
@@ -76,7 +89,6 @@ AlcePieChartWidget >> loadReference: canvas withElement: element [
 	| generator result ticks scale bscale canvasRect box objects |
 	
 	objects := self calculateObjectsFor: element. 
-	objects inspect. 
 	generator := RSLabelGenerator new.
 	generator setLooseFlag: true.
 	result := generator searchMin: 0 max: (self referenceMaximumFor: element ) desired: 5.
@@ -119,7 +131,7 @@ AlcePieChartWidget >> referenceMaximumFor: element [
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> refresh [
 
-	buffer removeKey: toSelect.
+	buffer removeKey: toSelect ifAbsent: [] .
 	super refresh
 ]
 

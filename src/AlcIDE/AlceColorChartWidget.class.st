@@ -1,8 +1,23 @@
 Class {
 	#name : #AlceColorChartWidget,
 	#superclass : #AlcePieChartWidget,
+	#instVars : [
+		'strategies'
+	],
 	#category : #'AlcIDE-MidasWidgets'
 }
+
+{ #category : #specs }
+AlceColorChartWidget class >> defaultSpec [
+
+	^ self basicDefaultSpec
+		  add: #strategies height: 50;
+		  add: (SpBoxLayout newLeftToRight
+				   add: #reference withConstraints: [ :c | c width: 150 ];
+				   add: #viewport);
+		  add: #refresh height: self toolbarHeight;
+		  yourself
+]
 
 { #category : #'world menu' }
 AlceColorChartWidget class >> menuCommandOn: aBuilder [
@@ -40,22 +55,25 @@ AlceColorChartWidget >> accept: anEntity [
 AlceColorChartWidget >> calculateObjectsFor: element [
 
 	| baseline group |
-	buffer at: element ifPresent: [ :v | ^ v ].
-	"groupedBy: [ 
-			   :e | self colorFor: e ]) values"
-	(element isKindOf: AlcixModel) ifTrue: [ 
-		baseline := element select: [ :e | e isKindOf: AlcixModule ] ].
+	baseline := self colorsFor: element.
 
-	(element isKindOf: AlcixContainer) ifTrue: [ baseline := { element } ].
-	(element isKindOf: AlcixReference) ifTrue: [ 
-		baseline := element types ].
-	group := Dictionary new.
-	baseline do: [ :e | 
-		(self colorsFor: e) do: [ :c | 
-			(group at: c ifAbsentPut: [ OrderedCollection new ]) add: e ] ].
-	baseline size = 1 ifFalse: [ 
-		buffer at: element put: group associations ].
-	^ group associations
+
+	^ baseline groupedBy: #yourself
+]
+
+{ #category : #'as yet unclassified' }
+AlceColorChartWidget >> colorsFor: anAlcixClass [
+
+	^ strategies colorsFor: anAlcixClass
+]
+
+{ #category : #'as yet unclassified' }
+AlceColorChartWidget >> initializePresenters [
+
+	super initializePresenters.
+	strategies := self instantiate: AlceColorStrategySelectorWidget.
+	strategies strategies: AlceColoringStrategy allSubclasses.
+	strategies whenSelectionChangedDo: [ self refresh ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -67,6 +85,5 @@ AlceColorChartWidget >> referenceMaximumFor: element [
 { #category : #'as yet unclassified' }
 AlceColorChartWidget >> scaleForSelectedElement: objects [
 
-	^ ((objects flatCollect: [ :o | o value collect: #weight ]) ifEmpty: [ 
-		   { 0 } ]) sum
+	^ ((objects collect: [ :o | o value size ]) ifEmpty: [ { 0 } ]) sum
 ]

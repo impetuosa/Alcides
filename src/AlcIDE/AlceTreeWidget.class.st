@@ -1,6 +1,6 @@
 Class {
 	#name : #AlceTreeWidget,
-	#superclass : #MiDraggableAbstractWidget,
+	#superclass : #AlceDraggableWidget,
 	#instVars : [
 		'tree'
 	],

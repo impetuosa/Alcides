@@ -1,8 +1,9 @@
 Class {
 	#name : #AlceSourceCodeWidget,
-	#superclass : #MiDraggableAbstractWidget,
+	#superclass : #AlceDraggableWidget,
 	#instVars : [
-		'viewport'
+		'viewport',
+		'pagesObjectsMap'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -60,8 +61,27 @@ AlceSourceCodeWidget >> followAction [
 AlceSourceCodeWidget >> initializePresenters [
 
 	super initializePresenters.
-	viewport := self newNotebook .
-	
+	pagesObjectsMap := Dictionary new.
+	viewport := self newNotebook.
+	viewport whenPageRemovedDo: [ :p | 
+		pagesObjectsMap removeKey: p ifAbsent: [  ] ].
+	viewport whenPagesChangedDo: [ :p | 
+		pagesObjectsMap at: p ifPresent: [ :m | self selectEntity: m ] ]
+]
+
+{ #category : #initialization }
+AlceSourceCodeWidget >> newNotebookPageFor: aModule [
+
+	| p |
+	p := self newNotebookPage.
+	pagesObjectsMap at: p put: aModule.
+	^ p
+]
+
+{ #category : #initialization }
+AlceSourceCodeWidget >> selectEntity: anEntitiy [
+
+	super selectEntity: anEntitiy
 ]
 
 { #category : #initialization }
@@ -86,7 +106,7 @@ AlceSourceCodeWidget >> vbaStyle [
 AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 
 	| text page |
-	(aModule isKindOf: AlcixDataSource ) ifTrue:[ ^ self ] .
+	(aModule isKindOf: AlcixDataSource) ifTrue: [ ^ self ].
 	viewport pages
 		detect: [ :p | p title = aModule name ]
 		ifFound: [ :p | 
@@ -95,11 +115,12 @@ AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 	toSelect stringContent ifNil: [ ^ self ].
 	text := self newText.
 	text help: aModule container name , '.' , aModule name.
-	page := self newNotebookPage
+	page := (self newNotebookPageFor: aModule)
 		        title: aModule name;
 		        presenterProvider: text;
 		        icon: (self iconFor: aModule);
 		        beCloseable.
+
 
 	viewport addPage: page.
 	viewport selectPage: page.

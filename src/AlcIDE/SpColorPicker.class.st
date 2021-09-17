@@ -37,7 +37,7 @@ SpColorPicker >> acceptColor [
 
 	whenColorAccepted ifNotNil: [ 
 		whenColorAccepted value: colorList selectedItem color ].
-	window close
+	window ifNotNil: [ window close  ]
 ]
 
 { #category : #actions }
