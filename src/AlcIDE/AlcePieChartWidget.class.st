@@ -77,7 +77,7 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 		segmentSpacing: 0.1.
 	chart sliceColor: [ :a | a model key ].
 	chart
-		objects: (self calculateObjectsFor: element);
+		objects: (self calculateObjectsFor: element) associations;
 		slice: [ :s | s value size ];
 		build.
 	^ chart
