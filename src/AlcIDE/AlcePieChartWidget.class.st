@@ -68,6 +68,7 @@ AlcePieChartWidget >> initializePresenters [
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart |
+	element ifNil: [ ^ self ].
 	chart := RSPie new.
 
 	chart container: aCanvas.
@@ -84,43 +85,57 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 ]
 
 { #category : #'as yet unclassified' }
-AlcePieChartWidget >> loadReference: canvas withElement: element [ 
+AlcePieChartWidget >> loadReference: canvas withElement: element [
 
 	| generator result ticks scale bscale canvasRect box objects |
-	
-	objects := self calculateObjectsFor: element. 
+	element ifNil: [ ^ self ].
+	objects := self calculateObjectsFor: element.
 	generator := RSLabelGenerator new.
 	generator setLooseFlag: true.
-	result := generator searchMin: 0 max: (self referenceMaximumFor: element ) desired: 5.
+	result := generator
+		          searchMin: 0
+		          max: (self referenceMaximumFor: element)
+		          desired: 5.
 	ticks := result min to: result max by: result step.
 	canvasRect := Rectangle
-		floatCenter: 0@0
-		extent: canvas extent * 0.9.
+		              floatCenter: 0 @ 0
+		              extent: canvas extent * 0.9.
 	scale := NSScale linear
-		domain: {result min. result max};
-		range: {canvasRect bottom. canvasRect top }.
+		         domain: { 
+				         result min.
+				         result max };
+		         range: { 
+				         canvasRect bottom.
+				         canvasRect top }.
 	bscale := NSScale linear
-		domain: { 0. element mooseModel size  };
-		range: { 0. canvasRect height }.
-	
+		          domain: { 
+				          0.
+				          element mooseModel size };
+		          range: { 
+				          0.
+				          canvasRect height }.
+
 	box := RSBox new
-		color: Color lightGray;
-		extent: 20@ (bscale scale: (self scaleForSelectedElement: objects ) );
-		yourself.
-	box position: -10 @ ((scale scale: 0) - (box height /2 )).
+		       color: Color lightGray;
+		       extent:
+			       20 @ (bscale scale: (self scaleForSelectedElement: objects));
+		       yourself.
+	box position: -10 @ ((scale scale: 0) - (box height / 2)).
 	canvas add: box.
-	canvas addAll: (ticks collect:[:t | 
-		RSLabel new
-			position: 20@ (scale scale: t);
-			text: (t >= 1000
-				ifTrue: [ ((t / 1000) printShowingDecimalPlaces: 1) ,'K' ]
-				ifFalse: [ t asInteger asString ]);
-			yourself ]).
-	
+	canvas addAll: (ticks collect: [ :t | 
+			 RSLabel new
+				 position: 20 @ (scale scale: t);
+				 text: (t >= 1000
+						  ifTrue: [ (t / 1000 printShowingDecimalPlaces: 1) , 'K' ]
+						  ifFalse: [ t asInteger asString ]);
+				 yourself ]).
+
 	canvas add: (RSPolyline new
-		controlPoints: (ticks collect: [:p | -10 @ (scale scale: p)]);
-		marker: (RSBox new extent: 10@2; color: Color black);
-		yourself)
+			 controlPoints: (ticks collect: [ :p | -10 @ (scale scale: p) ]);
+			 marker: (RSBox new
+					  extent: 10 @ 2;
+					  color: Color black);
+			 yourself)
 ]
 
 { #category : #'as yet unclassified' }
@@ -132,6 +147,7 @@ AlcePieChartWidget >> referenceMaximumFor: element [
 AlcePieChartWidget >> refresh [
 
 	buffer removeKey: toSelect ifAbsent: [] .
+
 	super refresh
 ]
 

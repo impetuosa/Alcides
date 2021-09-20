@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'strategies',
 		'instances',
-		'creatingInstancesWith'
+		'creatingInstancesWith',
+		'selectingCategory'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -19,7 +20,6 @@ AlceColorStrategySelectorWidget class >> defaultSpec [
 
 { #category : #initialization }
 AlceColorStrategySelectorWidget >> colorsFor: anEntity [
-
 	^ self selectedItem
 		  ifNil: [ { Color transparent } ]
 		  ifNotNil: [ :item | item colorsFor: anEntity ]
@@ -28,7 +28,9 @@ AlceColorStrategySelectorWidget >> colorsFor: anEntity [
 { #category : #initialization }
 AlceColorStrategySelectorWidget >> createNewInstanceFor: anItem [
 
-	^ creatingInstancesWith value: anItem
+	^ (creatingInstancesWith value: anItem)
+		  selectingCategory: selectingCategory;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -59,6 +61,14 @@ AlceColorStrategySelectorWidget >> itemsAreStrategyClasses [
 ]
 
 { #category : #initialization }
+AlceColorStrategySelectorWidget >> reset [
+
+	instances valuesDo: [ :v | 
+		v reset.
+		v selectingCategory: selectingCategory ]
+]
+
+{ #category : #initialization }
 AlceColorStrategySelectorWidget >> selectedItem [
 
 	^ strategies selectedItem ifNil: [ nil ] ifNotNil: [ 
@@ -66,6 +76,12 @@ AlceColorStrategySelectorWidget >> selectedItem [
 			  at: strategies selectedItem
 			  ifAbsentPut: [ 
 			  self createNewInstanceFor: strategies selectedItem ] ]
+]
+
+{ #category : #'as yet unclassified' }
+AlceColorStrategySelectorWidget >> selectingCategory: aFamixTagCategory [
+
+	selectingCategory := aFamixTagCategory.
 ]
 
 { #category : #initialization }
