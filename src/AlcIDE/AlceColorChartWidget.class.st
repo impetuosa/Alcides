@@ -53,11 +53,13 @@ AlceColorChartWidget class >> title [
 AlceColorChartWidget >> accept: anEntity [
 
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 
-		categories items: anEntity allTagCategories.
-		mooseModel := anEntity.
+		self mooseModel: anEntity.
 		^ false ].
 
-	^ anEntity isMooseObject
+	(anEntity isKindOf: AlcixEntity) ifTrue: [ 
+		mooseModel ifNil: [ self mooseModel: anEntity mooseModel ].
+		^ true ].
+	^ false
 ]
 
 { #category : #'as yet unclassified' }
@@ -105,12 +107,21 @@ AlceColorChartWidget >> initializePresenters [
 	strategies := self instantiate: AlceColorStrategySelectorWidget.
 	strategies strategies: AlceColoringStrategy allSubclasses.
 	strategies whenSelectionChangedDo: [ self refresh ].
-	strategies creatingInstancesWith: [ :a | self coloringStrategyFor: a ].
 	categories := self newDropList.
 	categories
 		whenSelectionChangedDo: [ 
 			strategies selectingCategory: categories selectedItem ];
 		display: [ :a | a name ]
+]
+
+{ #category : #visiting }
+AlceColorChartWidget >> mooseModel: aModel [
+
+	mooseModel := aModel.
+	categories items: aModel allTagCategories.
+	aModel ifNil: [ strategies itemsAreStrategyClasses ] ifNotNil: [ 
+		strategies creatingInstancesWith: [ :a | 
+			self coloringStrategyFor: a ] ]
 ]
 
 { #category : #'as yet unclassified' }
