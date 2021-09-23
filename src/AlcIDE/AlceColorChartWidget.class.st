@@ -69,8 +69,7 @@ AlceColorChartWidget >> calculateObjectsFor: element [
 	element ifNil: [ ^ {  } ].
 	baseline := self colorsFor: element.
 
-
-	^ baseline groupedBy: #yourself
+	^ baseline groupedBy: #tag
 ]
 
 { #category : #'as yet unclassified' }

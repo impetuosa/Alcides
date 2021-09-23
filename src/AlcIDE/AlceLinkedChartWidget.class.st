@@ -1,6 +1,9 @@
 Class {
 	#name : #AlceLinkedChartWidget,
 	#superclass : #AlcePieChartWidget,
+	#instVars : [
+		'buffer'
+	],
 	#category : #'AlcIDE-MidasWidgets'
 }
 
@@ -39,6 +42,7 @@ AlceLinkedChartWidget >> accept: anEntity [
 AlceLinkedChartWidget >> calculateObjectsFor: element [
 
 	| group |
+	
 	buffer at: element ifPresent: [ :v | ^ v ].
 	"groupedBy: [ 
 			   :e | self colorFor: e ]) values"
@@ -64,10 +68,25 @@ AlceLinkedChartWidget >> calculateObjectsFor: element [
 ]
 
 { #category : #'as yet unclassified' }
+AlceLinkedChartWidget >> initialize [
+
+	buffer := Dictionary new.
+	super initialize
+]
+
+{ #category : #'as yet unclassified' }
 AlceLinkedChartWidget >> referenceMaximumFor: element [
 
 	^ ((self calculateObjectsFor: element)  collect: [ :c | c value size ])
 		  sum
+]
+
+{ #category : #'as yet unclassified' }
+AlceLinkedChartWidget >> refresh [
+
+	buffer removeKey: toSelect ifAbsent: [] .
+
+	super refresh
 ]
 
 { #category : #'as yet unclassified' }

@@ -219,7 +219,7 @@ AlceVBAStyle >> type [
 { #category : #'as yet unclassified' }
 AlceVBAStyle >> usePopularColorStrategy [
 
-	coloringStrategy := AlceSimpleColorPropagation new
+	coloringStrategy := AlceNullColorPropagation new
 ]
 
 { #category : #'as yet unclassified' }

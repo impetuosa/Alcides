@@ -3,8 +3,7 @@ Class {
 	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'reference',
-		'colorSelector',
-		'buffer'
+		'colorSelector'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -52,13 +51,6 @@ AlcePieChartWidget >> followAction [
 ]
 
 { #category : #'as yet unclassified' }
-AlcePieChartWidget >> initialize [
-
-	super initialize.
-	buffer := Dictionary new
-]
-
-{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> initializePresenters [ 
 	 super initializePresenters. 
 	reference := self instantiate: SpRoassalPresenter .
@@ -67,7 +59,7 @@ AlcePieChartWidget >> initializePresenters [
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
-	| chart |
+	| chart pieTitle |
 	element ifNil: [ ^ self ].
 	chart := RSPie new.
 
@@ -76,11 +68,33 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 		innerRadius: 70;
 		externalRadius: 150;
 		segmentSpacing: 0.1.
-	chart sliceColor: [ :a | a model key ].
+	chart sliceColor: [ :a | a model key color ].
+
+
 	chart
 		objects: (self calculateObjectsFor: element) associations;
 		slice: [ :s | s value size ];
 		build.
+
+
+	pieTitle := RSPieTitleInteraction new.
+	pieTitle labelShape
+		fontSize: 10;
+		color: Color black.
+	pieTitle labelText: 'Usage # ' , chart totalSum asString.
+	chart build.
+
+	chart shapes @ (RSPopup text: [ :obj | 
+		 obj key name , ' ('
+		 , ((obj value size * 100 / chart totalSum) asFloat 
+				  printShowingDecimalPlaces: 2) asString , '%)' ]).
+
+
+
+
+
+	chart canvas @ pieTitle.
+
 	^ chart
 ]
 
@@ -141,14 +155,6 @@ AlcePieChartWidget >> loadReference: canvas withElement: element [
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> referenceMaximumFor: element [ 
 	 self subclassResponsibility 
-]
-
-{ #category : #'as yet unclassified' }
-AlcePieChartWidget >> refresh [
-
-	buffer removeKey: toSelect ifAbsent: [] .
-
-	super refresh
 ]
 
 { #category : #'as yet unclassified' }

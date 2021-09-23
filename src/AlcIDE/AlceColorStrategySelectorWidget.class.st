@@ -20,8 +20,9 @@ AlceColorStrategySelectorWidget class >> defaultSpec [
 
 { #category : #initialization }
 AlceColorStrategySelectorWidget >> colorsFor: anEntity [
+
 	^ self selectedItem
-		  ifNil: [ { Color transparent } ]
+		  ifNil: [ {  } ]
 		  ifNotNil: [ :item | item colorsFor: anEntity ]
 ]
 
@@ -64,7 +65,7 @@ AlceColorStrategySelectorWidget >> itemsAreStrategyClasses [
 AlceColorStrategySelectorWidget >> reset [
 
 	instances valuesDo: [ :v | 
-		v reset.
+		v reset. 
 		v selectingCategory: selectingCategory ]
 ]
 
