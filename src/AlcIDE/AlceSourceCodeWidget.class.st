@@ -79,12 +79,6 @@ AlceSourceCodeWidget >> newNotebookPageFor: aModule [
 ]
 
 { #category : #initialization }
-AlceSourceCodeWidget >> selectEntity: anEntitiy [
-
-	super selectEntity: anEntitiy
-]
-
-{ #category : #initialization }
 AlceSourceCodeWidget >> selectSourceCodeInterval: anAnchor [
 
 	viewport pages

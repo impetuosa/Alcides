@@ -16,3 +16,11 @@ AlceDraggableWidget class >> buildCommandsGroupWith: presenterInstance forRoot: 
 		buildCommandsGroupWith: presenterInstance
 		forRoot: rootCommandGroup
 ]
+
+{ #category : #defaults }
+AlceDraggableWidget >> iconFor: anEntity [
+
+	(anEntity respondsTo: #type) ifNil: [ 
+		^ MiAlceIdeIcons untypedfieldIcon ].
+	^ MiAlceIdeIcons iconFor: anEntity
+]

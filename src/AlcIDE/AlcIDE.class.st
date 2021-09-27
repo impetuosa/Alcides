@@ -147,7 +147,7 @@ AlcIDE >> miSelectedItem [
 { #category : #'instance creation' }
 AlcIDE >> newContainer [
 
-	^ ((self instantiate: SpDropInContainer)
+	^ ((self instantiate: SpSingleDropInContainer)
 		   borderWidth: 2;
 		   dropEnabled: true;
 		   wantsDrop: [ :transfer :destination | 

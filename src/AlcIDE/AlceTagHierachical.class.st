@@ -94,6 +94,23 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
 
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	relatedModules := Dictionary new.
 
 	allModels := mooseModel references flatCollect: [ :m | 
@@ -107,6 +124,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 	root := HNode new name: 'Root'.
 
 	nodes := (categories selectedItem markedTags collect: [ :t | 
+		
 		          t -> (HNode new name: t name) ]) asDictionary.
 
 	root addAll: nodes values.
