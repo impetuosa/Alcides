@@ -1,5 +1,5 @@
 Class {
-	#name : #AlceTagDistribution,
+	#name : #AlceTagHierachical,
 	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'colorSelector',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'world menu' }
-AlceTagDistribution class >> defaultSpec [
+AlceTagHierachical class >> defaultSpec [
 
 	^ self basicDefaultSpec
 		  add: (SpBoxLayout newLeftToRight
@@ -25,11 +25,11 @@ AlceTagDistribution class >> defaultSpec [
 ]
 
 { #category : #accessing }
-AlceTagDistribution class >> menuCommandOn: aBuilder [
+AlceTagHierachical class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: #alcTagDistributionBrowser)
+	(aBuilder item: #alcTagHierarchyBrowser)
 		parent: AlcIDE alceBrowsers;
 		label: self title;
 		icon: (self iconNamed: #mooseTree);
@@ -38,12 +38,12 @@ AlceTagDistribution class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #accessing }
-AlceTagDistribution class >> title [
-	^ 'Tag distribution'
+AlceTagHierachical class >> title [
+	^ 'Tag hierarchical'
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> accept: anEntity [
+AlceTagHierachical >> accept: anEntity [
 
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 
 		self mooseModel: anEntity.
@@ -55,7 +55,7 @@ AlceTagDistribution >> accept: anEntity [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> coloringStrategyFor: aClass [
+AlceTagHierachical >> coloringStrategyFor: aClass [
 
 	| inst |
 	^ mooseModel coloringStrategies
@@ -67,13 +67,13 @@ AlceTagDistribution >> coloringStrategyFor: aClass [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> colorsFor: anAlcixClass [
+AlceTagHierachical >> colorsFor: anAlcixClass [
 
 	^ strategies colorsFor: anAlcixClass
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> initializePresenters [
+AlceTagHierachical >> initializePresenters [
 
 	super initializePresenters.
 	strategies := self instantiate: AlceColorStrategySelectorWidget.
@@ -87,34 +87,55 @@ AlceTagDistribution >> initializePresenters [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> loadChart: aCanvas withElement: element [
+AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
-	| allModels |
+	| allModels root nodes relatedModules |
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
+
+	relatedModules := Dictionary new.
+
 	allModels := mooseModel references flatCollect: [ :m | 
-		             ((self colorsFor: m) collect: #tag) asSet
-			             asOrderedCollection collect: [ :t | t -> m ] ].
+		             (self colorsFor: m) asSet asOrderedCollection collect: [ 
+			             :t | t -> m ] ].
+
+	allModels do: [ :m | 
+		(relatedModules at: m value ifAbsentPut: [ OrderedCollection new ]) 
+			add: (HNode new name: (self nameForEntityModule: m key entity)) ].
+
+	root := HNode new name: 'Root'.
+
+	nodes := (categories selectedItem markedTags collect: [ :t | 
+		          t -> (HNode new name: t name) ]) asDictionary.
+
+	root addAll: nodes values.
 
 
-	HDistributionMap new
-		elements: categories selectedItem markedTags;
-		childrenBlock: [ :tag | 
-			allModels select: [ :c | c key = tag ] thenCollect: #value ];
-		propertyBlock: [ :val | 
-			(allModels select: [ :m | m value = val ]) size ];
-		colorMap: RSColorPalette diverging rdgy4;
-		container: aCanvas;
-		build
+	allModels do: [ :m | 
+		| h |
+		h := HNode new.
+		h name: m value name.
+		(nodes at: m key tag) add: h.
+		h dependenciesToNodes: (relatedModules at: m value) ].
+
+	HSimpleVisualizationBuilder new
+		rootNode: root;
+		build;
+		in: [ :b | b canvas openWithTitle: 'Hierarchycal Visualizations' ]
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> mooseModel: aModel [
+AlceTagHierachical >> mooseModel: aModel [
 
 	mooseModel := aModel.
 	categories items: aModel allTagCategories.
 	aModel ifNil: [ strategies itemsAreStrategyClasses ] ifNotNil: [ 
 		strategies creatingInstancesWith: [ :a | 
 			self coloringStrategyFor: a ] ]
+]
+
+{ #category : #visiting }
+AlceTagHierachical >> nameForEntityModule: anEntity [ 
+	^ anEntity parentalModule 
 ]
