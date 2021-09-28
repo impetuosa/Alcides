@@ -94,12 +94,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
 
-
-	"	h dependenciesToNodes: (relatedModules at: m value)  "
-
-	"root addAll: nodes values. "
-
-
+	self initCanvas: aCanvas.
 
 	root := HNode new name: 'Root'.
 	createdNodes := Dictionary new.
@@ -124,43 +119,47 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 				                      color: assoc key color.
 			           root add: tagNode.
 			           tagNode ].
-		modelNode := createdNodes
-			             at: assoc value
-			             ifAbsentPut: [ modelNode := HNode new name: assoc value name. tagNode add: modelNode . tagNode  ].
-		].
+		modelNode := createdNodes at: assoc value ifAbsentPut: [ 
+			             modelNode := HNode new name: assoc value name.
+			             tagNode add: modelNode.
+			             modelNode addAll:
+				             (self nodesPerKind: assoc value into: createdNodes).
+			             modelNode ] ].
 	" Clustering the untagged modules  "
 	element references do: [ :r | 
 		createdNodes at: r ifAbsentPut: [ 
 			| modelNode |
-			modelNode := createdNodes
-				             at: r
-				             ifAbsentPut: [ HNode new name: r name ].
+			modelNode := createdNodes at: r ifAbsent: [ 
+				             modelNode := HNode new name: r name.
+				             createdNodes at: r put: modelNode.
+				             modelNode addAll:
+					             (self nodesPerKind: r into: createdNodes).
+				             modelNode ].
+
 			businessNode add: modelNode.
-			businessNode
-	 ] ].
+			modelNode ] ].
 	businessNode children ifNotEmpty: [ root add: businessNode ].
 
 	dependencies := Dictionary new.
 
-	element references do: [ :ref | 
-		((self colorsFor: ref)" reject: [ :tagAssoc | 
-			 ref allTags includes: tagAssoc tag ]") do: [ :tagAssoc | 
-			(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
-				add: (createdNodes at: tagAssoc entity) ] ].
-
+	createdNodes keys
+		select: [ :a | a isKindOf: AlcixEntity ]
+		thenDo: [ :ref | 
+			(self colorsFor: ref)
+				reject: [ :tagAssoc | ref allTags includes: tagAssoc tag ]
+				thenDo: [ :tagAssoc | 
+					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
+						add: (createdNodes at: tagAssoc entity) ] "do:  :tagAssoc | " ].
 
 
 	dependencies associations do: [ :assoc | 
 		assoc key dependenciesToNodes: assoc value asOrderedCollection ].
-	root open
 
 
-
-	"
 	HSimpleVisualizationBuilder new
 		rootNode: root;
-		build;
-		in: [ :b | b canvas openWithTitle: 'Hierarchycal Visualizations' ]"
+		container: aCanvas;
+		build
 ]
 
 { #category : #visiting }
@@ -177,4 +176,20 @@ AlceTagHierachical >> mooseModel: aModel [
 AlceTagHierachical >> nameForEntityModule: anEntity [
 
 	^ anEntity parentalModule name
+]
+
+{ #category : #visiting }
+AlceTagHierachical >> nodesPerKind: aReference into: createdNodes [
+
+	| toAdd entries |
+	toAdd := OrderedCollection new.
+
+	entries := aReference types reject:  [  : t|  t isKindOf: AlcixDataSource ].
+	(entries groupedBy: #class) associations do: [ :as | 
+		| group |
+		group := HNode new name: as key name.
+		toAdd add: group.
+		group addAll: (as value collect: [ :t | 
+				 createdNodes at: t ifAbsentPut: [ HNode new name: t name ] ]) ].
+	^ toAdd
 ]

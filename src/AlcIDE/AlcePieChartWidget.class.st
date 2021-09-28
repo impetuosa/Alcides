@@ -60,6 +60,8 @@ AlcePieChartWidget >> initializePresenters [
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart pieTitle |
+
+	
 	element ifNil: [ ^ self ].
 	chart := RSPie new.
 

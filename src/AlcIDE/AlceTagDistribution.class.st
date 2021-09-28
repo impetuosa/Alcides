@@ -93,6 +93,7 @@ AlceTagDistribution >> loadChart: aCanvas withElement: element [
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
+	self initCanvas: aCanvas.
 	allModels := mooseModel references flatCollect: [ :m | 
 		             ((self colorsFor: m) collect: #tag) asSet
 			             asOrderedCollection collect: [ :t | t -> m ] ].
