@@ -89,58 +89,78 @@ AlceTagHierachical >> initializePresenters [
 { #category : #visiting }
 AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
-	| allModels root nodes relatedModules |
+	| root tagToEntities createdNodes dependencies businessNode |
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
 
 
-	
+	"	h dependenciesToNodes: (relatedModules at: m value)  "
+
+	"root addAll: nodes values. "
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	relatedModules := Dictionary new.
-
-	allModels := mooseModel references flatCollect: [ :m | 
-		             (self colorsFor: m) asSet asOrderedCollection collect: [ 
-			             :t | t -> m ] ].
-
-	allModels do: [ :m | 
-		(relatedModules at: m value ifAbsentPut: [ OrderedCollection new ]) 
-			add: (HNode new name: (self nameForEntityModule: m key entity)) ].
 
 	root := HNode new name: 'Root'.
+	createdNodes := Dictionary new.
 
-	nodes := (categories selectedItem markedTags collect: [ :t | 
-		
-		          t -> (HNode new name: t name) ]) asDictionary.
-
-	root addAll: nodes values.
+	businessNode := createdNodes at: #default put: (HNode new
+			                 name: 'Business';
+			                 color: Color gray).
 
 
-	allModels do: [ :m | 
-		| h |
-		h := HNode new.
-		h name: m value name.
-		(nodes at: m key tag) add: h.
-		h dependenciesToNodes: (relatedModules at: m value) ].
+	tagToEntities := categories selectedItem markedTags flatCollect: [ 
+		                 :tag | 
+		                 tag taggedEntities
+			                 select: [ :e | e isKindOf: AlcixReference ]
+			                 thenCollect: [ :e | tag -> e ] ].
 
+	" Initial clustering. Creating nodes per tag to contain nodes per model "
+	tagToEntities do: [ :assoc | 
+		| tagNode modelNode |
+		tagNode := createdNodes at: assoc key ifAbsentPut: [ 
+			           tagNode := HNode new
+				                      name: assoc key name;
+				                      color: assoc key color.
+			           root add: tagNode.
+			           tagNode ].
+		modelNode := createdNodes
+			             at: assoc value
+			             ifAbsentPut: [ modelNode := HNode new name: assoc value name. tagNode add: modelNode . tagNode  ].
+		].
+	" Clustering the untagged modules  "
+	element references do: [ :r | 
+		createdNodes at: r ifAbsentPut: [ 
+			| modelNode |
+			modelNode := createdNodes
+				             at: r
+				             ifAbsentPut: [ HNode new name: r name ].
+			businessNode add: modelNode.
+			businessNode
+	 ] ].
+	businessNode children ifNotEmpty: [ root add: businessNode ].
+
+	dependencies := Dictionary new.
+
+	element references do: [ :ref | 
+		((self colorsFor: ref)" reject: [ :tagAssoc | 
+			 ref allTags includes: tagAssoc tag ]") do: [ :tagAssoc | 
+			(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
+				add: (createdNodes at: tagAssoc entity) ] ].
+
+
+
+	dependencies associations do: [ :assoc | 
+		assoc key dependenciesToNodes: assoc value asOrderedCollection ].
+	root open
+
+
+
+	"
 	HSimpleVisualizationBuilder new
 		rootNode: root;
 		build;
-		in: [ :b | b canvas openWithTitle: 'Hierarchycal Visualizations' ]
+		in: [ :b | b canvas openWithTitle: 'Hierarchycal Visualizations' ]"
 ]
 
 { #category : #visiting }
@@ -154,6 +174,7 @@ AlceTagHierachical >> mooseModel: aModel [
 ]
 
 { #category : #visiting }
-AlceTagHierachical >> nameForEntityModule: anEntity [ 
-	^ anEntity parentalModule 
+AlceTagHierachical >> nameForEntityModule: anEntity [
+
+	^ anEntity parentalModule name
 ]
