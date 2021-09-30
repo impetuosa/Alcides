@@ -89,14 +89,17 @@ AlceTagHierachical >> initializePresenters [
 { #category : #visiting }
 AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
-	| root tagToEntities createdNodes dependencies businessNode |
+	| root tagToEntities createdNodes dependencies businessNode builder |
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].
 
 	self initCanvas: aCanvas.
 
-	root := HNode new name: 'Root'.
+	root := HNode new
+		        name: 'Root';
+		        rawModel: element;
+		        yourself.
 	createdNodes := Dictionary new.
 
 	businessNode := createdNodes at: #default put: (HNode new
@@ -116,11 +119,16 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 		tagNode := createdNodes at: assoc key ifAbsentPut: [ 
 			           tagNode := HNode new
 				                      name: assoc key name;
-				                      color: assoc key color.
+				                      color: assoc key color;
+				                      rawModel: assoc key;
+				                      yourself.
 			           root add: tagNode.
 			           tagNode ].
 		modelNode := createdNodes at: assoc value ifAbsentPut: [ 
-			             modelNode := HNode new name: assoc value name.
+			             modelNode := HNode new
+				                          name: assoc value name;
+				                          rawModel: assoc value;
+				                          yourself.
 			             tagNode add: modelNode.
 			             modelNode addAll:
 				             (self nodesPerKind: assoc value into: createdNodes).
@@ -130,7 +138,10 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 		createdNodes at: r ifAbsentPut: [ 
 			| modelNode |
 			modelNode := createdNodes at: r ifAbsent: [ 
-				             modelNode := HNode new name: r name.
+				             modelNode := HNode new
+					                          name: r name;
+					                          rawModel: r;
+					                          yourself.
 				             createdNodes at: r put: modelNode.
 				             modelNode addAll:
 					             (self nodesPerKind: r into: createdNodes).
@@ -146,20 +157,34 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 		select: [ :a | a isKindOf: AlcixEntity ]
 		thenDo: [ :ref | 
 			(self colorsFor: ref)
-				reject: [ :tagAssoc | ref allTags includes: tagAssoc tag ]
-				thenDo: [ :tagAssoc | 
+				reject: [ :tagAssoc | 
+					(ref isKindOf: AlcixUserType) and: [ 
+						ref container isNotNil and: [ 
+							ref container allTags includes: tagAssoc tag ] ] ]
+				thenDo: [ :tagAssoc | "do:  :tagAssoc | "
 					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
-						add: (createdNodes at: tagAssoc entity) ] "do:  :tagAssoc | " ].
+						add: (createdNodes at: tagAssoc entity) ] ].
 
-
+self halt .
 	dependencies associations do: [ :assoc | 
 		assoc key dependenciesToNodes: assoc value asOrderedCollection ].
 
 
-	HSimpleVisualizationBuilder new
-		rootNode: root;
-		container: aCanvas;
-		build
+	builder := HSimpleVisualizationBuilder new
+		           rootNode: root;
+		           container: aCanvas.
+	builder lineBuilder width: 2.
+
+	builder build.
+	root collapseChildren.
+	root children do: [ :child | 
+		child collapseChildren.
+		child position: nil.
+		child children do: [ :ch2 | 
+			ch2 collapseChildren.
+			ch2 position: nil ] ].
+	builder layoutOn: builder container nodes parent: root.
+	builder container signalUpdate
 ]
 
 { #category : #visiting }
@@ -184,12 +209,20 @@ AlceTagHierachical >> nodesPerKind: aReference into: createdNodes [
 	| toAdd entries |
 	toAdd := OrderedCollection new.
 
-	entries := aReference types reject:  [  : t|  t isKindOf: AlcixDataSource ].
+	entries := aReference types reject: [ :t | 
+		           t isKindOf: AlcixDataSource ].
 	(entries groupedBy: #class) associations do: [ :as | 
 		| group |
-		group := HNode new name: as key name.
+		group := HNode new
+			         name: as key name;
+			         rawModel: as value;
+			         yourself.
 		toAdd add: group.
 		group addAll: (as value collect: [ :t | 
-				 createdNodes at: t ifAbsentPut: [ HNode new name: t name ] ]) ].
+				 createdNodes at: t ifAbsentPut: [ 
+					 HNode new
+						 name: t name;
+						 rawModel: t;
+						 yourself ] ]) ].
 	^ toAdd
 ]
