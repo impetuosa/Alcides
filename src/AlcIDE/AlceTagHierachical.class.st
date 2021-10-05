@@ -165,7 +165,6 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
 						add: (createdNodes at: tagAssoc entity) ] ].
 
-self halt .
 	dependencies associations do: [ :assoc | 
 		assoc key dependenciesToNodes: assoc value asOrderedCollection ].
 
