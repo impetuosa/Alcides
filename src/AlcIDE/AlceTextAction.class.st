@@ -43,6 +43,5 @@ AlceTextAction >> info: aString [
 
 { #category : #testing }
 AlceTextAction >> mayActOnEvent: anEvent [
-
-	^ anEvent redButtonPressed and: [ anEvent controlKeyPressed ]
+	^ anEvent redButtonPressed" and: [ anEvent controlKeyPressed ]"
 ]

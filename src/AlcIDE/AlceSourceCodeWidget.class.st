@@ -43,7 +43,10 @@ AlceSourceCodeWidget class >> title [
 { #category : #visiting }
 AlceSourceCodeWidget >> accept: aModel [
 
-	^ (aModel isKindOf: AlcixModule) or: [ aModel isKindOf: JinAnchor ]
+	(aModel isKindOf: JinAnchor) ifTrue: [ ^ true ].
+
+	^ (aModel isKindOf: AlcixModule) and: [ 
+		  (aModel container isKindOf: AlcixLibrary) not ]
 ]
 
 { #category : #initialization }

@@ -10,6 +10,7 @@ Class {
 { #category : #adding }
 AlceTextModelComposer >> addAttributeTypePaint: aColor from: aFrom to: anInteger [
 
+	anInteger < aFrom ifTrue: [ ^ self ].
 	aFrom > text size ifTrue: [ ^ self ].
 
 
@@ -33,6 +34,10 @@ AlceTextModelComposer >> addInspectAction: anAlcixAttribute info: printString fr
 		to: (aTo min: text size).
 	text
 		addAttribute: (TextColor color: Color black)
+		from: aFrom
+		to: (aTo min: text size).
+	text
+		addAttribute: TextEmphasis underlined
 		from: aFrom
 		to: (aTo min: text size)
 ]
@@ -123,7 +128,7 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 				 ifNotNil: [ :n | self colorFor: n first ]
 				 ifNil: [ self colorFor: anAlcixAccessRead ])
 		from: rightFrom
-		to: to
+		to: to - 1
 ]
 
 { #category : #visiting }
@@ -154,6 +159,7 @@ AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [
 	chain := '' join: ((anAlcixAccessWrite anchor srcFrom to:
 		           anAlcixAccessWrite anchor srcTo) collect: [ :i | 
 			          text at: i ]).
+
 	gap := chain indexOf: $=.
 	chain := '=' split: chain.
 	chain size = 2 ifFalse: [ ^ self ].
@@ -252,9 +258,11 @@ AlceTextModelComposer >> visitFunction: anAlcixFunction [
 	self visitSubProcedure: anAlcixFunction.
 
 	fn := ast elements detect: [ :f | 
-		      ((f isKindOf: VBFunctionDefinitionNode) or: [ 
-			       f isKindOf: VBModulePropertyGetNode ]) and: [ 
-			      f selector token value = anAlcixFunction selector ] ].
+		      ({ 
+			       VBFunctionDefinitionNode.
+			       VBModulePropertyGetNode.
+			       VBExternalFunctionNode } anySatisfy: [ :c | f isKindOf: c ]) 
+			      and: [ f selector token value = anAlcixFunction selector ] ].
 
 	anAlcixFunction type ifNil: [ ^ self ].
 	fn type ifNil: [ ^ self ].
