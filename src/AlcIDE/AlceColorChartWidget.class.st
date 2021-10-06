@@ -75,13 +75,7 @@ AlceColorChartWidget >> calculateObjectsFor: element [
 { #category : #'as yet unclassified' }
 AlceColorChartWidget >> coloringStrategyFor: aClass [
 
-	| inst |
-	^ mooseModel coloringStrategies
-		  detect: [ :a | a class = aClass ]
-		  ifNone: [ 
-			  inst := aClass new.
-			  mooseModel installColoringStrategy: inst.
-			  inst ]
+	^ mooseModel coloringStrategyFor: aClass
 ]
 
 { #category : #'as yet unclassified' }

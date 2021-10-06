@@ -97,9 +97,17 @@ AlceSourceCodeWidget >> vbaStyle [
 ]
 
 { #category : #initialization }
+AlceSourceCodeWidget >> vbaStyleWith: aColoringStrategy [
+
+	^ AlceVBAStyle new
+		  useColorStrategy: aColoringStrategy;
+		  yourself
+]
+
+{ #category : #initialization }
 AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 
-	| text page |
+	| text page coloringStrategy |
 	(aModule isKindOf: AlcixDataSource) ifTrue: [ ^ self ].
 	viewport pages
 		detect: [ :p | p title = aModule name ]
@@ -118,13 +126,14 @@ AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 
 	viewport addPage: page.
 	viewport selectPage: page.
-
+	coloringStrategy := (aModule mooseModel coloringStrategyFor:
+		                     AlceHorizontalColorPropagation) mostPopular.
 	text text: (AlceTextComposer new
 			 compose: toSelect stringContent
 			 ast: (toSelect isAstLoaded
 					  ifTrue: [ toSelect ast ]
 					  ifFalse: [ nil ])
 			 model: toSelect
-			 style: self vbaStyle
+			 style: (self vbaStyleWith: coloringStrategy)
 			 browsingWith: self)
 ]

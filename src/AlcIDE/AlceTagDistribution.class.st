@@ -57,13 +57,7 @@ AlceTagDistribution >> accept: anEntity [
 { #category : #visiting }
 AlceTagDistribution >> coloringStrategyFor: aClass [
 
-	| inst |
-	^ mooseModel coloringStrategies
-		  detect: [ :a | a class = aClass ]
-		  ifNone: [ 
-			  inst := aClass new.
-			  mooseModel installColoringStrategy: inst.
-			  inst ]
+	^ mooseModel coloringStrategyFor: aClass
 ]
 
 { #category : #visiting }
