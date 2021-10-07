@@ -259,7 +259,7 @@ AlceTextComposer >> compose: aString ast: anAst model: aModel style: aStyle brow
 
 	anAst ifNil: [ ^ Text fromString: aString ].
 	text := Text fromString: aString.
-
+	
 	AlceTextModelComposer new
 		compose: anAst
 		model: aModel
@@ -273,8 +273,6 @@ AlceTextComposer >> compose: aString ast: anAst model: aModel style: aStyle brow
 		style: aStyle
 		into: text
 		browsingWith: aBrowsingObject.
-
-
 
 	^ text
 ]

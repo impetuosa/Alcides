@@ -45,6 +45,7 @@ AlceTagHierachical class >> title [
 { #category : #visiting }
 AlceTagHierachical >> accept: anEntity [
 
+	(self hasWindow not or: [ self root isOpen not ]) ifTrue: [ ^ false ].
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 
 		self mooseModel: anEntity.
 		^ true ].
@@ -57,13 +58,7 @@ AlceTagHierachical >> accept: anEntity [
 { #category : #visiting }
 AlceTagHierachical >> coloringStrategyFor: aClass [
 
-	| inst |
-	^ mooseModel coloringStrategies
-		  detect: [ :a | a class = aClass ]
-		  ifNone: [ 
-			  inst := aClass new.
-			  mooseModel installColoringStrategy: inst.
-			  inst ]
+	^ mooseModel coloringStrategyFor: aClass
 ]
 
 { #category : #visiting }
@@ -165,7 +160,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
 						add: (createdNodes at: tagAssoc entity) ] ].
 
-self halt .
+
 	dependencies associations do: [ :assoc | 
 		assoc key dependenciesToNodes: assoc value asOrderedCollection ].
 

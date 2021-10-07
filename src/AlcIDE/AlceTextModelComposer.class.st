@@ -10,6 +10,7 @@ Class {
 { #category : #adding }
 AlceTextModelComposer >> addAttributeTypePaint: aColor from: aFrom to: anInteger [
 
+	anInteger < aFrom ifTrue: [ ^ self ].
 	aFrom > text size ifTrue: [ ^ self ].
 
 
@@ -33,6 +34,10 @@ AlceTextModelComposer >> addInspectAction: anAlcixAttribute info: printString fr
 		to: (aTo min: text size).
 	text
 		addAttribute: (TextColor color: Color black)
+		from: aFrom
+		to: (aTo min: text size).
+	text
+		addAttribute: TextEmphasis underlined
 		from: aFrom
 		to: (aTo min: text size)
 ]
@@ -70,6 +75,20 @@ AlceTextModelComposer >> paintWithType: anAlcixAttributeOrCollection [
 			to: anAlcixAttribute anchor srcTo ]
 ]
 
+{ #category : #'as yet unclassified' }
+AlceTextModelComposer >> paintWithType: anAlcixAttributeOrCollection from: from to: to [
+
+	| thingie |
+	thingie := anAlcixAttributeOrCollection isCollection
+		           ifTrue: [ anAlcixAttributeOrCollection ]
+		           ifFalse: [ { anAlcixAttributeOrCollection } ].
+	thingie do: [ :anAlcixAttribute | 
+		self
+			addAttributeTypePaint: (self colorFor: anAlcixAttribute)
+			from: from
+			to: to ]
+]
+
 { #category : #visiting }
 AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap: gap [
 
@@ -87,8 +106,11 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 	| leftTo rightFrom |
 	(anAlcixAccessRead perform: aSideSelector asSymbol) ifNil: [ ^ self ].
 	gap = 0 ifTrue: [ 
-		^ self paintWithType:
-			  (anAlcixAccessRead perform: aSideSelector asSymbol) ].
+		^ self
+			  paintWithType:
+			  (anAlcixAccessRead perform: aSideSelector asSymbol)
+			  from: from
+			  to: to ].
 	leftTo := from + gap - 1.
 	rightFrom := leftTo + 1.
 
@@ -106,13 +128,14 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 				 ifNotNil: [ :n | self colorFor: n first ]
 				 ifNil: [ self colorFor: anAlcixAccessRead ])
 		from: rightFrom
-		to: to
+		to: to - 1
 ]
 
 { #category : #visiting }
 AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 
 	| gap |
+
 	anAlcixAccessRead anchor ifNil: [ ^ self ].
 	anAlcixAccessRead anchor containsSource ifFalse: [ ^ self ].
 	gap := ((anAlcixAccessRead anchor srcFrom to:
@@ -129,28 +152,26 @@ AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 ]
 
 { #category : #visiting }
-AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [ 
-	| gap chain |
-	
-	
-	
+AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [
 
+	| gap chain |
 	anAlcixAccessWrite anchor containsSource ifFalse: [ ^ self ].
 	chain := '' join: ((anAlcixAccessWrite anchor srcFrom to:
 		           anAlcixAccessWrite anchor srcTo) collect: [ :i | 
 			          text at: i ]).
+
 	gap := chain indexOf: $=.
 	chain := '=' split: chain.
 	chain size = 2 ifFalse: [ ^ self ].
 
 	self
-		addInspectAction: anAlcixAccessWrite writeElement 
+		addInspectAction: anAlcixAccessWrite writeElement
 		info: ''
 		from: anAlcixAccessWrite anchor srcFrom
 		to: anAlcixAccessWrite anchor srcFrom + gap.
 
 	self
-		addInspectAction: anAlcixAccessWrite readElements 
+		addInspectAction: anAlcixAccessWrite readElements
 		info: ''
 		from: anAlcixAccessWrite anchor srcFrom + gap + 1
 		to: anAlcixAccessWrite anchor srcTo.
@@ -162,12 +183,16 @@ AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [
 		gap: (chain first lastIndexOf: $.)
 		from: anAlcixAccessWrite anchor srcFrom
 		to: anAlcixAccessWrite anchor srcFrom + gap.
+
 	self
 		splitting: #readElementsCandidates
 		colors: anAlcixAccessWrite
 		gap: (chain second lastIndexOf: $.)
 		from: anAlcixAccessWrite anchor srcFrom + gap + 1
-		to: anAlcixAccessWrite anchor srcTo
+		to: anAlcixAccessWrite anchor srcTo.
+
+	anAlcixAccessWrite writeElement do: [ :e | e accept: self ].
+	anAlcixAccessWrite readElements do: [ :e | e accept: self ]
 ]
 
 { #category : #visiting }
@@ -190,6 +215,11 @@ AlceTextModelComposer >> visitClass: anAlcixClass [
 AlceTextModelComposer >> visitCollection: aCollection [
 
 	aCollection do: [ :a | a accept: self ]
+]
+
+{ #category : #visiting }
+AlceTextModelComposer >> visitConstant: anAlcixConstant [ 
+	
 ]
 
 { #category : #visiting }
@@ -224,30 +254,39 @@ AlceTextModelComposer >> visitForm: anAlcixForm [
 { #category : #visiting }
 AlceTextModelComposer >> visitFunction: anAlcixFunction [
 
+	| typeAnchorFrom typeAnchorTo fn |
 	self visitSubProcedure: anAlcixFunction.
 
-	anAlcixFunction type ifNotNil: [ 
-		(anAlcixFunction typeAnchor isNotNil and: [ 
-			 anAlcixFunction typeAnchor containsSource ]) ifFalse: [ ^ self ].
+	fn := ast elements detect: [ :f | 
+		      ({ 
+			       VBFunctionDefinitionNode.
+			       VBModulePropertyGetNode.
+			       VBExternalFunctionNode } anySatisfy: [ :c | f isKindOf: c ]) 
+			      and: [ f selector token value = anAlcixFunction selector ] ].
 
-		self halt.
+	anAlcixFunction type ifNil: [ ^ self ].
+	fn type ifNil: [ ^ self ].
 
-		self
-			addInspectAction: anAlcixFunction type
-			info: anAlcixFunction type printString
-			from: anAlcixFunction typeAnchor srcFrom
-			to: anAlcixFunction typeAnchor srcTo.
-		self
-			addAttributeTypePaint: (self colorFor: anAlcixFunction type)
-			from: anAlcixFunction typeAnchor srcFrom
-			to: anAlcixFunction typeAnchor srcTo ]
+	typeAnchorFrom := fn type type startPosition.
+	typeAnchorTo := fn type type stopPosition.
+
+
+	self
+		addInspectAction: anAlcixFunction type
+		info: anAlcixFunction type printString
+		from: typeAnchorFrom
+		to: typeAnchorTo.
+	self
+		addAttributeTypePaint: (self colorFor: anAlcixFunction type)
+		from: typeAnchorFrom
+		to: typeAnchorTo
 ]
 
 { #category : #visiting }
 AlceTextModelComposer >> visitInvocation: anAlcixInvocation [
 
 	anAlcixInvocation anchor ifNil: [ ^ self ].
-
+	
 	self
 		addInspectAction: anAlcixInvocation candidate
 		info: anAlcixInvocation printString
@@ -299,6 +338,7 @@ AlceTextModelComposer >> visitSubProcedure: anAlcixSubProcedure [
 
 	self visitCollection: anAlcixSubProcedure parameters.
 	self visitCollection: anAlcixSubProcedure localVariables.
+	self visitCollection: anAlcixSubProcedure constants.
 	self visitCollection: anAlcixSubProcedure outgoingAccesses.
 	self visitCollection: anAlcixSubProcedure assignments
 ]
