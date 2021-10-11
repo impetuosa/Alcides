@@ -135,7 +135,6 @@ AlceTextModelComposer >> splitting: aSideSelector colors: anAlcixAccessRead gap:
 AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 
 	| gap |
-
 	anAlcixAccessRead anchor ifNil: [ ^ self ].
 	anAlcixAccessRead anchor containsSource ifFalse: [ ^ self ].
 	gap := ((anAlcixAccessRead anchor srcFrom to:
@@ -148,13 +147,21 @@ AlceTextModelComposer >> visitAccess: anAlcixAccessRead [
 		from: anAlcixAccessRead anchor srcFrom
 		to: anAlcixAccessRead anchor srcTo.
 
-	self splitting: #candidates colors: anAlcixAccessRead gap: gap
+	self splitting: #candidates colors: anAlcixAccessRead gap: gap.
+	self visitCollection: anAlcixAccessRead arguments
+]
+
+{ #category : #visiting }
+AlceTextModelComposer >> visitArgument: anAlcixArgument [
+
+	self visitCollection: anAlcixArgument outgoingAccesses
 ]
 
 { #category : #visiting }
 AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [
 
 	| gap chain |
+	anAlcixAccessWrite anchor ifNil: [ ^ self ].
 	anAlcixAccessWrite anchor containsSource ifFalse: [ ^ self ].
 	chain := '' join: ((anAlcixAccessWrite anchor srcFrom to:
 		           anAlcixAccessWrite anchor srcTo) collect: [ :i | 
@@ -197,8 +204,7 @@ AlceTextModelComposer >> visitAssignment: anAlcixAccessWrite [
 
 { #category : #visiting }
 AlceTextModelComposer >> visitAttribute: anAlcixAttribute [
-	self paintWithType: anAlcixAttribute.
-	
+	self visitTyped: anAlcixAttribute
 ]
 
 { #category : #visiting }
@@ -218,8 +224,9 @@ AlceTextModelComposer >> visitCollection: aCollection [
 ]
 
 { #category : #visiting }
-AlceTextModelComposer >> visitConstant: anAlcixConstant [ 
-	
+AlceTextModelComposer >> visitConstant: anAlcixConstant [
+
+	self visitTyped: anAlcixConstant
 ]
 
 { #category : #visiting }
@@ -286,7 +293,7 @@ AlceTextModelComposer >> visitFunction: anAlcixFunction [
 AlceTextModelComposer >> visitInvocation: anAlcixInvocation [
 
 	anAlcixInvocation anchor ifNil: [ ^ self ].
-	
+
 	self
 		addInspectAction: anAlcixInvocation candidate
 		info: anAlcixInvocation printString
@@ -298,13 +305,15 @@ AlceTextModelComposer >> visitInvocation: anAlcixInvocation [
 		addAttributeTypePaint: (self colorFor: anAlcixInvocation)
 		from: anAlcixInvocation anchor srcFrom
 		to: anAlcixInvocation anchor srcFrom
-			+ anAlcixInvocation selector adaptToAlceAnchorPathFragment size
+			+ anAlcixInvocation selector adaptToAlceAnchorPathFragment size.
+
+	self visitCollection: anAlcixInvocation arguments
 ]
 
 { #category : #visiting }
 AlceTextModelComposer >> visitLocalVariable: anAlcixLocalVariable [
 
-	self paintWithType: anAlcixLocalVariable
+	self visitTyped: anAlcixLocalVariable
 ]
 
 { #category : #visiting }
@@ -324,7 +333,13 @@ AlceTextModelComposer >> visitModule: anAlcixClass [
 { #category : #visiting }
 AlceTextModelComposer >> visitParameter: anAlcixParameter [
 
-	self paintWithType: anAlcixParameter
+	self visitTyped: anAlcixParameter
+]
+
+{ #category : #visiting }
+AlceTextModelComposer >> visitRaiseEvent: anEvent [
+
+	self visitInvocation: anEvent
 ]
 
 { #category : #visiting }
@@ -341,6 +356,29 @@ AlceTextModelComposer >> visitSubProcedure: anAlcixSubProcedure [
 	self visitCollection: anAlcixSubProcedure constants.
 	self visitCollection: anAlcixSubProcedure outgoingAccesses.
 	self visitCollection: anAlcixSubProcedure assignments
+]
+
+{ #category : #visiting }
+AlceTextModelComposer >> visitTyped: anAlcixParameter [
+
+	| chain offset |
+	anAlcixParameter type isUnknownOrUndefined ifTrue: [ ^ self ].
+
+	self paintWithType: anAlcixParameter.
+
+
+	anAlcixParameter anchor containsSource ifFalse: [ ^ self ].
+	chain := ('' join:
+		          ((anAlcixParameter anchor srcFrom to:
+		            anAlcixParameter anchor srcTo) collect: [ :i | 
+			           text at: i ])) asLowercase.
+
+	offset := (chain indexOfSubCollection: ' as ') + 3.
+	self
+		addInspectAction: anAlcixParameter type
+		info: ''
+		from: anAlcixParameter anchor srcFrom + offset
+		to: anAlcixParameter anchor srcTo
 ]
 
 { #category : #visiting }

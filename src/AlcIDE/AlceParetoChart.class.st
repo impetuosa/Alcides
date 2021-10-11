@@ -32,6 +32,24 @@ AlceParetoChart >> followAction [
 ]
 
 { #category : #initialization }
+AlceParetoChart >> initCanvas: canvas [
+
+	canvas @ (RSCanvasController new
+		 noLegend;
+		 in: [ :i | 
+			 canvas newAnimation
+				 duration: 500 milliSeconds;
+				 onStepDo: [ canvas signalUpdate ];
+				 when: RSAnimationEndEvent
+				 do: [ i configuration noZoomToFitOnExtendChanged ].
+			 i configuration
+				 maxScale: 3;
+				 minScale: 0.1
+			 "useBasicZoom;" ];
+		 yourself)
+]
+
+{ #category : #initialization }
 AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 
 	| all values accumulated hundred accumulatedPct c |

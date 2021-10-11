@@ -68,6 +68,24 @@ AlceTagHierachical >> colorsFor: anAlcixClass [
 ]
 
 { #category : #visiting }
+AlceTagHierachical >> initCanvas: canvas [
+
+	canvas @ (RSCanvasController new
+		 noLegend;
+		 in: [ :i | 
+			 canvas newAnimation
+				 duration: 500 milliSeconds;
+				 onStepDo: [ canvas signalUpdate ];
+				 when: RSAnimationEndEvent
+				 do: [ i configuration noZoomToFitOnExtendChanged ].
+			 i configuration
+				 maxScale: 3;
+				 minScale: 0.1
+			 "useBasicZoom;" ];
+		 yourself)
+]
+
+{ #category : #visiting }
 AlceTagHierachical >> initializePresenters [
 
 	super initializePresenters.
@@ -204,8 +222,7 @@ AlceTagHierachical >> nodesPerKind: aReference into: createdNodes [
 	| toAdd entries |
 	toAdd := OrderedCollection new.
 
-	entries := aReference types reject: [ :t | 
-		           t isKindOf: AlcixDataSource ].
+	entries := aReference types.
 	(entries groupedBy: #class) associations do: [ :as | 
 		| group |
 		group := HNode new

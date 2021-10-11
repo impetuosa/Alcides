@@ -51,6 +51,24 @@ AlcePieChartWidget >> followAction [
 ]
 
 { #category : #'as yet unclassified' }
+AlcePieChartWidget >> initCanvas: canvas [
+
+	canvas @ (RSCanvasController new
+		 noLegend;
+		 in: [ :i | 
+			 canvas newAnimation
+				 duration: 500 milliSeconds;
+				 onStepDo: [ canvas signalUpdate ];
+				 when: RSAnimationEndEvent
+				 do: [ i configuration noZoomToFitOnExtendChanged ].
+			 i configuration
+				 maxScale: 3;
+				 minScale: 0.1
+			 "useBasicZoom;" ];
+		 yourself)
+]
+
+{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> initializePresenters [ 
 	 super initializePresenters. 
 	reference := self instantiate: SpRoassalPresenter .

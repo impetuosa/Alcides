@@ -51,6 +51,12 @@ AlceSourceCodePropagator >> visitAttribute: anAlcixAttribute [
 ]
 
 { #category : #visiting }
+AlceSourceCodePropagator >> visitAttributeAccessor: anAlcixAttributeAccessor [
+
+	self visitFunction: anAlcixAttributeAccessor
+]
+
+{ #category : #visiting }
 AlceSourceCodePropagator >> visitClass: anAlcixClass [
 
 	self visitType: anAlcixClass
@@ -85,6 +91,12 @@ AlceSourceCodePropagator >> visitEnumValue: anAlcixEnumValue [
 AlceSourceCodePropagator >> visitExternalFunction: anAlcixExternalFunction [
 
 	self visitFunction: anAlcixExternalFunction
+]
+
+{ #category : #visiting }
+AlceSourceCodePropagator >> visitForm: anAlcixForm [
+
+	self visitClass: anAlcixForm
 ]
 
 { #category : #visiting }
