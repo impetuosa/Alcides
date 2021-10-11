@@ -113,6 +113,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 		        name: 'Root';
 		        rawModel: element;
 		        yourself.
+
 	createdNodes := Dictionary new.
 
 	businessNode := createdNodes at: #default put: (HNode new
@@ -162,6 +163,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
 			businessNode add: modelNode.
 			modelNode ] ].
+
 	businessNode children ifNotEmpty: [ root add: businessNode ].
 
 	dependencies := Dictionary new.
@@ -174,9 +176,9 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 					(ref isKindOf: AlcixUserType) and: [ 
 						ref container isNotNil and: [ 
 							ref container allTags includes: tagAssoc tag ] ] ]
-				thenDo: [ :tagAssoc | "do:  :tagAssoc | "
+				thenDo: [ :tagAssoc | 
 					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
-						add: (createdNodes at: tagAssoc entity) ] ].
+						add: (createdNodes at: tagAssoc penultimateDueTo) ] ].
 
 
 	dependencies associations do: [ :assoc | 
