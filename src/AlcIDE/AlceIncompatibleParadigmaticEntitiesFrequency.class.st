@@ -38,5 +38,5 @@ AlceIncompatibleParadigmaticEntitiesFrequency >> associationCounts [
 { #category : #initialization }
 AlceIncompatibleParadigmaticEntitiesFrequency >> chartTitle [
 
-	^ 'Incompatible Paradigmatic Entities Frequency'
+	^ 'Paradigmatic Complexity'
 ]

@@ -69,7 +69,8 @@ AlceColorChartWidget >> calculateObjectsFor: element [
 	element ifNil: [ ^ {  } ].
 	baseline := self colorsFor: element.
 
-	^ baseline groupedBy: #tag
+	^ ((baseline groupedBy: #tag) associations collect: [ :assoc | 
+		   assoc key -> assoc value size ]) asDictionary
 ]
 
 { #category : #'as yet unclassified' }
@@ -133,5 +134,5 @@ AlceColorChartWidget >> refresh [
 { #category : #'as yet unclassified' }
 AlceColorChartWidget >> scaleForSelectedElement: objects [
 
-	^ ((objects collect: [ :o | o value size ]) ifEmpty: [ { 0 } ]) sum
+	^ ((objects collect: [ :o | o value ]) ifEmpty: [ { 0 } ]) sum
 ]

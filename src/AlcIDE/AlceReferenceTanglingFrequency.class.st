@@ -31,8 +31,7 @@ AlceReferenceTanglingFrequency class >> title [
 
 { #category : #initialization }
 AlceReferenceTanglingFrequency >> associationCounts [
-
-	^ metrics referencesTangling
+	^ metrics referencesTangling 
 ]
 
 { #category : #initialization }

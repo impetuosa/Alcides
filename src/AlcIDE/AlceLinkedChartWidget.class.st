@@ -42,7 +42,6 @@ AlceLinkedChartWidget >> accept: anEntity [
 AlceLinkedChartWidget >> calculateObjectsFor: element [
 
 	| group |
-	
 	buffer at: element ifPresent: [ :v | ^ v ].
 	"groupedBy: [ 
 			   :e | self colorFor: e ]) values"
@@ -64,7 +63,8 @@ AlceLinkedChartWidget >> calculateObjectsFor: element [
 			 ifFalse: [ group at: Color green ]) add: e ].
 
 	buffer at: element put: group associations.
-	^ group associations
+	^ (group associations collect: [ :assoc | 
+		   assoc key -> assoc value size ]) asDictionary
 ]
 
 { #category : #'as yet unclassified' }
@@ -77,7 +77,7 @@ AlceLinkedChartWidget >> initialize [
 { #category : #'as yet unclassified' }
 AlceLinkedChartWidget >> referenceMaximumFor: element [
 
-	^ ((self calculateObjectsFor: element)  collect: [ :c | c value size ])
+	^ ((self calculateObjectsFor: element)  collect: [ :c | c value ])
 		  sum
 ]
 

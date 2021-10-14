@@ -178,7 +178,9 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 							ref container allTags includes: tagAssoc tag ] ] ]
 				thenDo: [ :tagAssoc | 
 					(dependencies at: (createdNodes at: ref) ifAbsentPut: [ Set new ]) 
-						add: (createdNodes at: tagAssoc penultimateDueTo) ] ].
+						add: (createdNodes
+								 at: tagAssoc penultimateDueTo
+								 ifAbsent: [ createdNodes at: tagAssoc tag ]) ] ].
 
 
 	dependencies associations do: [ :assoc | 

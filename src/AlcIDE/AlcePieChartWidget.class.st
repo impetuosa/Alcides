@@ -45,6 +45,12 @@ AlcePieChartWidget >> calculateObjectsFor: element [
 ]
 
 { #category : #'as yet unclassified' }
+AlcePieChartWidget >> coloringPieStrategy [
+
+	^ [ :a | a model key color ]
+]
+
+{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> followAction [ 
 	 super followAction. 
 	reference script: [ : canvas | self loadReference: canvas withElement: toSelect ]
@@ -78,8 +84,6 @@ AlcePieChartWidget >> initializePresenters [
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart pieTitle |
-
-	
 	element ifNil: [ ^ self ].
 	chart := RSPie new.
 
@@ -88,12 +92,12 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 		innerRadius: 70;
 		externalRadius: 150;
 		segmentSpacing: 0.1.
-	chart sliceColor: [ :a | a model key color ].
+	chart sliceColor: self coloringPieStrategy.
 
 
 	chart
 		objects: (self calculateObjectsFor: element) associations;
-		slice: [ :s | s value size ];
+		slice: [ :s | s value ];
 		build.
 
 
@@ -105,9 +109,8 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 	chart build.
 
 	chart shapes @ (RSPopup text: [ :obj | 
-		 obj key name , ' ('
-		 , ((obj value size * 100 / chart totalSum) asFloat 
-				  printShowingDecimalPlaces: 2) asString , '%)' ]).
+		 obj key name , ' (' , ((obj value * 100 / chart totalSum) asFloat 
+			  printShowingDecimalPlaces: 2) asString , '%)' ]).
 
 
 

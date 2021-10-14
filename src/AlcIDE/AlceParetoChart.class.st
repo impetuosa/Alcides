@@ -26,9 +26,12 @@ AlceParetoChart >> chartTitle [
 ]
 
 { #category : #visiting }
-AlceParetoChart >> followAction [ 
-	metrics := MTRAlceMetricsExtractor metricsFor: toSelect. 
-	super followAction 
+AlceParetoChart >> followAction [
+
+	toSelect ifNil: [ toSelect := MooseModelRoot root entities anyOne ].
+
+	metrics := MTRAlceMetricsExtractor metricsFor: toSelect.
+	super followAction
 ]
 
 { #category : #initialization }
