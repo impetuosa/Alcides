@@ -25,6 +25,11 @@ AlceLabelEntry >> initializePresenter [
 	label := self newLabel
 ]
 
+{ #category : #accessing }
+AlceLabelEntry >> label [
+	^ label label
+]
+
 { #category : #initialization }
 AlceLabelEntry >> label: aLabel [ 
 	label label: aLabel

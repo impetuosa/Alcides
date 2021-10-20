@@ -17,6 +17,13 @@ AlceParadigmaticRatioWidget class >> title [
 ]
 
 { #category : #visiting }
+AlceParadigmaticRatioWidget >> accept: anEntity [
+
+	^ (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixUserType ]
+]
+
+{ #category : #visiting }
 AlceParadigmaticRatioWidget >> calculateObjectsFor: element [
 
 	| baseline |

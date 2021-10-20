@@ -27,7 +27,8 @@ AlceAction >> initialize [
 
 { #category : #accessing }
 AlceAction >> instantiateElementWith: aSpec [
-	^ aSpec instantiate: presenter
+
+	^ aSpec instantiate: self presenter
 ]
 
 { #category : #accessing }
@@ -38,6 +39,12 @@ AlceAction >> name [
 { #category : #accessing }
 AlceAction >> name: aString [ 
 	name := aString
+]
+
+{ #category : #accessing }
+AlceAction >> presenter [
+
+	^ presenter ifNil: [ SpButtonPresenter ]
 ]
 
 { #category : #accessing }
