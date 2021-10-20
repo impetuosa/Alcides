@@ -7,6 +7,12 @@ Class {
 	#category : #'AlcIDE-MidasWidgets'
 }
 
+{ #category : #'as yet unclassified' }
+AlceParetoChart class >> runDragMe [
+
+	^ self runMe
+]
+
 { #category : #accessing }
 AlceParetoChart >> accept: anEntity [
 
@@ -56,6 +62,7 @@ AlceParetoChart >> initCanvas: canvas [
 AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 
 	| all values accumulated hundred accumulatedPct c |
+	self mustRefresh  ifFalse: [ ^ self  ].
 	self initCanvas: aCanvas.
 	all := self associationCounts sort: [ :a :b | a value > b value ].
 

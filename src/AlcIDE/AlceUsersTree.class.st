@@ -19,7 +19,7 @@ AlceUsersTree class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 AlceUsersTree class >> runMe [
 	<script>
-	super runMe
+^ super runMe
 ]
 
 { #category : #accessing }

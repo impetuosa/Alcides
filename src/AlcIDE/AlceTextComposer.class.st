@@ -260,12 +260,12 @@ AlceTextComposer >> compose: aString ast: anAst model: aModel style: aStyle brow
 	anAst ifNil: [ ^ Text fromString: aString ].
 	text := Text fromString: aString.
 	
-	"AlceTextModelComposer new
+	AlceTextModelComposer new
 		compose: anAst
 		model: aModel
 		style: aStyle
 		into: text
-		browsingWith: aBrowsingObject."
+		browsingWith: aBrowsingObject.
 
 	AlceTextAstComposer new
 		compose: anAst

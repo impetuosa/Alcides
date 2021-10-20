@@ -102,6 +102,7 @@ AlceTagDistribution >> initializePresenters [
 AlceTagDistribution >> loadChart: aCanvas withElement: element [
 
 	| allModels |
+	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].

@@ -19,7 +19,7 @@ AlceProjectTree class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceProjectTree class >> runMe [
 	<script>
-	super runMe
+^ super runMe
 ]
 
 { #category : #specs }

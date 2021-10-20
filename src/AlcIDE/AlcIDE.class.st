@@ -32,22 +32,20 @@ AlcIDE class >> currentApplication [
 { #category : #specs }
 AlcIDE class >> defaultSpec [
 
-	^ SpBoxLayout newTopToBottom
-		  add: #toolbar height: self toolbarHeight;
-		  add: (SpPanedLayout newTopToBottom
+	^ SpPanedLayout newTopToBottom
+		  add: (SpPanedLayout newLeftToRight
 				   add: (SpPanedLayout newLeftToRight
-						    add: (SpPanedLayout newLeftToRight
-								     add: #left;
-								     add: #middle);
-						    add: #right;
-						    yourself);
+						    add: #left;
+						    add: #middle);
+				   add: #right;
+				   yourself);
+		  add: (SpPanedLayout newLeftToRight
 				   add: (SpPanedLayout newLeftToRight
-						    add: (SpPanedLayout newLeftToRight
-								     add: #downLeft;
-								     add: #downMiddle);
-						    add: #downRight;
-						    yourself));
-		  add: #status height: self toolbarHeight
+						    add: #downLeft;
+						    add: #downMiddle);
+				   add: #downRight;
+				   yourself);
+		  yourself
 ]
 
 { #category : #specs }

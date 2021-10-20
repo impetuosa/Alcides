@@ -7,7 +7,7 @@ Class {
 { #category : #specs }
 AlceParadigmaticRatioWidget class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #specs }

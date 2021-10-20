@@ -20,7 +20,7 @@ AlceIncompatibleParadigmaticEntitiesFrequency class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 AlceIncompatibleParadigmaticEntitiesFrequency class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'world menu' }

@@ -17,6 +17,12 @@ AlceDraggableWidget class >> buildCommandsGroupWith: presenterInstance forRoot: 
 		forRoot: rootCommandGroup
 ]
 
+{ #category : #'as yet unclassified' }
+AlceDraggableWidget class >> runDragMe [
+
+	^ self runMe
+]
+
 { #category : #defaults }
 AlceDraggableWidget >> iconFor: anEntity [
 

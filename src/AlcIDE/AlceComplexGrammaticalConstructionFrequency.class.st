@@ -20,7 +20,7 @@ AlceComplexGrammaticalConstructionFrequency class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 AlceComplexGrammaticalConstructionFrequency class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'world menu' }
@@ -37,6 +37,7 @@ AlceComplexGrammaticalConstructionFrequency >> associationCounts [
 
 { #category : #initialization }
 AlceComplexGrammaticalConstructionFrequency >> chartTitle [
+
 	^ 'Complex Grammatical Construction Frequency'
 ]
 

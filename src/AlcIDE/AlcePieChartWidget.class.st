@@ -39,6 +39,12 @@ AlcePieChartWidget class >> isAbstract [
 ]
 
 { #category : #'as yet unclassified' }
+AlcePieChartWidget class >> runDragMe [
+
+	^ self runMe
+]
+
+{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> calculateObjectsFor: element [
 
 	self subclassResponsibility
@@ -84,7 +90,9 @@ AlcePieChartWidget >> initializePresenters [
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart pieTitle |
+	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
+	self initCanvas: aCanvas.
 	chart := RSPie new.
 
 	chart container: aCanvas.

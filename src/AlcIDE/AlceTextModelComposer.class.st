@@ -361,17 +361,23 @@ AlceTextModelComposer >> visitSubProcedure: anAlcixSubProcedure [
 { #category : #visiting }
 AlceTextModelComposer >> visitTyped: anAlcixParameter [
 
-	| chain offset |
+	| chain offset from to |
+	anAlcixParameter anchor containsSource ifFalse: [ ^ self ].
+
+	from := anAlcixParameter anchor srcFrom.
+
+	to := anAlcixParameter anchor srcTo.
+
+	from > text size ifTrue: [ ^ self ].
+	to > text size ifTrue: [ to := text size ].
 	anAlcixParameter type isUnknownOrUndefined ifTrue: [ ^ self ].
 
 	self paintWithType: anAlcixParameter.
 
 
 	anAlcixParameter anchor containsSource ifFalse: [ ^ self ].
-	chain := ('' join:
-		          ((anAlcixParameter anchor srcFrom to:
-		            anAlcixParameter anchor srcTo) collect: [ :i | 
-			           text at: i ])) asLowercase.
+	chain := ('' join: ((from to: to) collect: [ :i | text at: i ]))
+		         asLowercase.
 
 	offset := (chain indexOfSubCollection: ' as ') + 3.
 	self

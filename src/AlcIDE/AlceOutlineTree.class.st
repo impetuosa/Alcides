@@ -19,7 +19,7 @@ AlceOutlineTree class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceOutlineTree class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #specs }

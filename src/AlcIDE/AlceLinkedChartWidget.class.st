@@ -23,7 +23,7 @@ AlceLinkedChartWidget class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceLinkedChartWidget class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #accessing }

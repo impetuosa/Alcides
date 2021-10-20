@@ -7,7 +7,8 @@ Class {
 { #category : #specs }
 AlceTanglingRatioWidget class >> runMe [
 	<script>
-	super runMe
+		self error:'d onot use.'. 
+	^ super runMe
 ]
 
 { #category : #specs }

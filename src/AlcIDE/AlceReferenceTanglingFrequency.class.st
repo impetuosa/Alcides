@@ -20,7 +20,7 @@ AlceReferenceTanglingFrequency class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 AlceReferenceTanglingFrequency class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'world menu' }

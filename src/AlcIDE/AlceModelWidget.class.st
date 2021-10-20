@@ -32,7 +32,7 @@ AlceModelWidget class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceModelWidget class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #accessing }

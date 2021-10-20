@@ -103,6 +103,7 @@ AlceTagHierachical >> initializePresenters [
 AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
 	| root tagToEntities createdNodes dependencies businessNode builder |
+	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
 	categories selectedItem ifNil: [ ^ self ].

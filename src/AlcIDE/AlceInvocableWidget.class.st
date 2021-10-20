@@ -43,7 +43,7 @@ AlceInvocableWidget class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceInvocableWidget class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #specs }
@@ -63,10 +63,8 @@ AlceInvocableWidget >> followAction [
 
 	incoming items: toSelect incomingInvocations asOrderedCollection.
 	outgoing items: toSelect outgoingInvocations asOrderedCollection.
-	writings items:
-		(toSelect accesses asOrderedCollection select:[ :e | e  isWriting and: [ e isReturn not ] ]).
-	readings items:
-		(toSelect accesses asOrderedCollection reject: #isWriting)
+	writings items: toSelect assignments asOrderedCollection.
+	readings items: toSelect outgoingAccesses asOrderedCollection
 ]
 
 { #category : #visiting }
@@ -143,7 +141,6 @@ AlceInvocableWidget >> newOutgoingTable [
 AlceInvocableWidget >> newReadingsTable [
 
 	"Smalltalk ui icons"
-
 	^ self newTable
 		  contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		  whenSelectionChangedDo: [ :e | self selection: e ];
@@ -206,55 +203,44 @@ AlceInvocableWidget >> newWritingsTable [
 		  addColumn: ((SpImageTableColumn new
 				    title: 'Resolved(L)';
 				    evaluated: [ :each | 
-					    each leftElement
-						    ifNil: [ self iconNamed: #smallQuestion ]
-						    ifNotNil: [ self iconNamed: #glamorousAccept ] ])
+					    each writeElementCandidates
+						    ifEmpty: [ self iconNamed: #smallQuestion ]
+						    ifNotEmpty: [ self iconNamed: #glamorousAccept ] ])
 				   width: 10;
 				   yourself);
 		  addColumn: (SpStringTableColumn new
 				   title: 'Storing entity';
 				   evaluated: [ :each | 
-					   each leftElementName
-						   ifNil: [ 'Un analyzed expression' ]
-						   ifNotNil: [ 
-							   each leftElementName adaptToAlceAnchorPathFragment ] ];
-				   sortFunction: [ :each | 
-					   each leftElementName
-						   ifNil: [ 'Un analyzed expression' ]
-						   ifNotNil: [ 
-							   each leftElementName adaptToAlceAnchorPathFragment ] ]
+					   ';' join: (each writeElement collect: #name) ];
+				   sortFunction:
+					   [ :each | ';' join: (each writeElement collect: #name) ]
 						   ascending;
 				   beExpandable;
 				   yourself);
 		  addColumn: ((SpImageTableColumn evaluated: [ :each | 
-					    (Morph new color:  (self colorForTable: each)) asForm ])
+					    (Morph new color: (self colorForTable: each)) asForm ])
 				   width: 10;
 				   yourself);
 		  addColumn: ((SpImageTableColumn new
 				    title: 'Resolved(R)';
 				    evaluated: [ :each | 
-					    each candidate
-						    ifNil: [ self iconNamed: #smallQuestion ]
-						    ifNotNil: [ self iconNamed: #glamorousAccept ] ])
+					    each readElementsCandidates
+						    ifEmpty: [ self iconNamed: #smallQuestion ]
+						    ifNotEmpty: [ self iconNamed: #glamorousAccept ] ])
 				   width: 10;
 				   yourself);
 		  addColumn: (SpStringTableColumn new
 				   title: 'Reading entity';
 				   evaluated: [ :each | 
-					   each candidate name
-						   ifNil: [ 'Un analyzed expression' ]
-						   ifNotNil: [ 
-							   each candidate name adaptToAlceAnchorPathFragment ] ];
-				   sortFunction: [ :each | 
-					   each candidate name
-						   ifNil: [ 'Un analyzed expression' ]
-						   ifNotNil: [ 
-							   each candidate name adaptToAlceAnchorPathFragment ] ]
+					   ';' join: (each readElementsCandidates collect: #name) ];
+				   sortFunction:
+					   [ :each | 
+					   ';' join: (each readElementsCandidates collect: #name) ]
 						   ascending;
 				   beExpandable;
 				   yourself);
 		  addColumn: ((SpImageTableColumn evaluated: [ :each | 
-					    (Morph new color:  (self colorForTable: each)) asForm ])
+					    (Morph new color: (self colorForTable: each)) asForm ])
 				   width: 10;
 				   yourself);
 		  yourself

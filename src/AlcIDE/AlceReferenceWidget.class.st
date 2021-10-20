@@ -29,8 +29,9 @@ AlceReferenceWidget class >> menuCommandOn: aBuilder [
 
 { #category : #specs }
 AlceReferenceWidget class >> runMe [
+
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #accessing }
@@ -41,13 +42,14 @@ AlceReferenceWidget class >> title [
 
 { #category : #actions }
 AlceReferenceWidget >> accept: aModel [
-	tables at: aModel class entryName ifPresent: [ :t | 
-		(t items includes: aModel) ifTrue: [ 
-			viewport pages
-				detect: [ :p | p presenterProvider  = t ]
-				ifFound: [ :p | viewport selectPage: p ].
-			t selectItem: aModel ] ].
 
+	(aModel class respondsTo: #entryName) ifTrue: [ 
+		tables at: aModel class entryName ifPresent: [ :t | 
+			(t items includes: aModel) ifTrue: [ 
+				viewport pages
+					detect: [ :p | p presenterProvider = t ]
+					ifFound: [ :p | viewport selectPage: p ].
+				t selectItem: aModel ] ] ].
 	^ aModel isKindOf: AlcixReference
 ]
 

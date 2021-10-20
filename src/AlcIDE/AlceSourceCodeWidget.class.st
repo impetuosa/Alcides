@@ -31,7 +31,7 @@ AlceSourceCodeWidget class >> menuCommandOn: aBuilder [
 { #category : #specs }
 AlceSourceCodeWidget class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #specs }

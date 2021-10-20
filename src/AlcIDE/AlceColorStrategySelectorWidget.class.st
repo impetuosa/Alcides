@@ -3,9 +3,11 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'strategies',
+		'categories',
 		'instances',
 		'creatingInstancesWith',
-		'selectingCategory'
+		'selectingCategory',
+		'mooseModel'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -13,8 +15,9 @@ Class {
 { #category : #specs }
 AlceColorStrategySelectorWidget class >> defaultSpec [
 
-	^ SpBoxLayout newTopToBottom
+	^ SpBoxLayout newLeftToRight
 		  add: #strategies;
+		  add: #categories;
 		  yourself
 ]
 
@@ -45,8 +48,15 @@ AlceColorStrategySelectorWidget >> initializePresenters [
 
 	super initializePresenters.
 	strategies := self newDropList.
+
+	categories := self newDropList.
+	categories
+		whenSelectionChangedDo: [ 
+			self selectingCategory: categories selectedItem ];
+		display: [ :a | a name ].
+
 	instances := Dictionary new.
-	self itemsAreStrategyClasses. 
+	self itemsAreStrategyClasses
 ]
 
 { #category : #initialization }
@@ -59,6 +69,16 @@ AlceColorStrategySelectorWidget >> itemsAreStrategies [
 AlceColorStrategySelectorWidget >> itemsAreStrategyClasses [
 
 	self creatingInstancesWith: [ :a | a new ]
+]
+
+{ #category : #initialization }
+AlceColorStrategySelectorWidget >> mooseModel: aModel [
+
+	mooseModel := aModel.
+	categories items: aModel allTagCategories.
+	aModel ifNil: [ strategies itemsAreStrategyClasses ] ifNotNil: [ 
+		strategies creatingInstancesWith: [ :a | 
+			self coloringStrategyFor: a ] ]
 ]
 
 { #category : #initialization }
