@@ -58,7 +58,8 @@ AlcePieChartWidget >> coloringPieStrategy [
 
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> followAction [ 
-	 super followAction. 
+	super followAction. 
+	toSelect ifNil: [ toSelect := MooseModelRoot root entities anyOne ].
 	reference script: [ : canvas | self loadReference: canvas withElement: toSelect ]
 ]
 

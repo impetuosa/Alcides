@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'action'
+		'action',
+		'presenter'
 	],
 	#category : #'AlcIDE-Menu'
 }
@@ -19,6 +20,17 @@ AlceAction >> execute [
 ]
 
 { #category : #accessing }
+AlceAction >> initialize [ 
+	super initialize .
+	presenter := SpButtonPresenter.
+]
+
+{ #category : #accessing }
+AlceAction >> instantiateElementWith: aSpec [
+	^ aSpec instantiate: presenter
+]
+
+{ #category : #accessing }
 AlceAction >> name [
 	^ name
 ]
@@ -26,4 +38,9 @@ AlceAction >> name [
 { #category : #accessing }
 AlceAction >> name: aString [ 
 	name := aString
+]
+
+{ #category : #accessing }
+AlceAction >> presenter: aPresenterClass [ 
+	presenter := aPresenterClass 
 ]

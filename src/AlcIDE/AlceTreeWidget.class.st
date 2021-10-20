@@ -35,14 +35,13 @@ AlceTreeWidget >> childrenFor: anEntry [
 
 { #category : #accessing }
 AlceTreeWidget >> colorForTable: each [
-
 	^ (each isKindOf: Association)
 		  ifTrue: [ Color transparent ]
 		  ifFalse: [ 
 			  (each isKindOf: AlcixEntity)
 				  ifTrue: [ 
-					  (each mooseModel coloringStrategyFor:
-						   AlceHorizontalColorPropagation) verticalColor mostPopular colorFor: each ]
+					  each mooseModel selectedColoringStrategy 
+						 verticalColor mostPopular colorFor: each ]
 				  ifFalse: [ super colorForTable: each ] ]
 ]
 

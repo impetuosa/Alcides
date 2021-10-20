@@ -78,6 +78,11 @@ AlcePopOverMenuButton >> instantiatePresenterWith: haloLayout [
 ]
 
 { #category : #accessing }
+AlcePopOverMenuButton >> label: aString [ 
+	button label: aString
+]
+
+{ #category : #accessing }
 AlcePopOverMenuButton >> name: aString [ 
 	button label: aString
 ]
@@ -90,7 +95,7 @@ AlcePopOverMenuButton >> showActions [
 	haloLayout := self instantiateLayout.
 
 	actions do: [ :action | 
-		haloLayout add: (self newButton
+		haloLayout add: ((action instantiateElementWith: self)
 				 label: action name;
 				 action: [ 
 					 self dismiss.

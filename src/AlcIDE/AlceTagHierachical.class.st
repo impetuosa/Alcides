@@ -3,26 +3,10 @@ Class {
 	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'colorSelector',
-		'mooseModel',
-		'categories',
-		'strategies'
+		'mooseModel'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
-
-{ #category : #'world menu' }
-AlceTagHierachical class >> defaultSpec [
-
-	^ self basicDefaultSpec
-		  add: (SpBoxLayout newLeftToRight
-				   add: #strategies;
-				   add: #categories)
-		  height: 50;
-		  add: (SpBoxLayout newLeftToRight
-				   add: #viewport);
-		  add: #refresh height: self toolbarHeight;
-		  yourself
-]
 
 { #category : #accessing }
 AlceTagHierachical class >> menuCommandOn: aBuilder [
@@ -35,6 +19,11 @@ AlceTagHierachical class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #'as yet unclassified' }
+AlceTagHierachical class >> runDragMe [
+	self runMe
 ]
 
 { #category : #accessing }
@@ -56,15 +45,15 @@ AlceTagHierachical >> accept: anEntity [
 ]
 
 { #category : #visiting }
-AlceTagHierachical >> coloringStrategyFor: aClass [
+AlceTagHierachical >> colorsFor: anAlcixClass [
 
-	^ mooseModel coloringStrategyFor: aClass
+	^ mooseModel selectedColoringStrategy colorsFor: anAlcixClass
 ]
 
 { #category : #visiting }
-AlceTagHierachical >> colorsFor: anAlcixClass [
+AlceTagHierachical >> currentCategory [
 
-	^ strategies colorsFor: anAlcixClass
+	^ mooseModel selectedColoringStrategy selectingCategory
 ]
 
 { #category : #visiting }
@@ -86,27 +75,12 @@ AlceTagHierachical >> initCanvas: canvas [
 ]
 
 { #category : #visiting }
-AlceTagHierachical >> initializePresenters [
-
-	super initializePresenters.
-	strategies := self instantiate: AlceColorStrategySelectorWidget.
-	strategies strategies: AlceColoringStrategy allSubclasses.
-	strategies whenSelectionChangedDo: [ self refresh ].
-	categories := self newDropList.
-	categories
-		whenSelectionChangedDo: [ 
-			strategies selectingCategory: categories selectedItem ];
-		display: [ :a | a name ]
-]
-
-{ #category : #visiting }
 AlceTagHierachical >> loadChart: aCanvas withElement: element [
 
 	| root tagToEntities createdNodes dependencies businessNode builder |
 	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
-	categories selectedItem ifNil: [ ^ self ].
 
 	self initCanvas: aCanvas.
 
@@ -122,7 +96,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 			                 color: Color gray).
 
 
-	tagToEntities := categories selectedItem markedTags flatCollect: [ 
+	tagToEntities := self currentCategory markedTags flatCollect: [ 
 		                 :tag | 
 		                 tag taggedEntities
 			                 select: [ :e | e isKindOf: AlcixReference ]
@@ -209,10 +183,7 @@ AlceTagHierachical >> loadChart: aCanvas withElement: element [
 AlceTagHierachical >> mooseModel: aModel [
 
 	mooseModel := aModel.
-	categories items: aModel allTagCategories.
-	aModel ifNil: [ strategies itemsAreStrategyClasses ] ifNotNil: [ 
-		strategies creatingInstancesWith: [ :a | 
-			self coloringStrategyFor: a ] ]
+	
 ]
 
 { #category : #visiting }

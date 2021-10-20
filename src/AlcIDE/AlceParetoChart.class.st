@@ -16,7 +16,8 @@ AlceParetoChart class >> runDragMe [
 { #category : #accessing }
 AlceParetoChart >> accept: anEntity [
 
-	^ anEntity isKindOf: AlcixModel 
+	^ (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixEntity ]
 ]
 
 { #category : #initialization }
@@ -34,9 +35,16 @@ AlceParetoChart >> chartTitle [
 { #category : #visiting }
 AlceParetoChart >> followAction [
 
+	| mooseModel |
 	toSelect ifNil: [ toSelect := MooseModelRoot root entities anyOne ].
+	mooseModel := (toSelect isKindOf: AlcixModel)
+		              ifTrue: [ mooseModel := toSelect ]
+		              ifFalse: [ 
+		              mooseModel := MooseModelRoot root entities anyOne ].
 
-	metrics := MTRAlceMetricsExtractor metricsFor: toSelect.
+
+	metrics := mooseModel metrics metricsFor: toSelect.
+
 	super followAction
 ]
 
@@ -61,11 +69,11 @@ AlceParetoChart >> initCanvas: canvas [
 { #category : #initialization }
 AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 
-	| all values accumulated hundred accumulatedPct c |
-	self mustRefresh  ifFalse: [ ^ self  ].
+	| all values accumulated hundred accumulatedPct c horizontal |
+	self mustRefresh ifFalse: [ ^ self ].
 	self initCanvas: aCanvas.
 	all := self associationCounts sort: [ :a :b | a value > b value ].
-
+	all ifEmpty: [ ^ self ].
 	values := all collect: #value.
 
 	accumulated := Array new: values size.
@@ -75,23 +83,19 @@ AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 			| acc |
 			acc := (accumulated at: i) + (accumulated at: i - 1).
 			accumulated at: i put: acc ] ].
-	accumulated := accumulated collect: [: a |  a  - ( accumulated first ) ].
+	accumulated := accumulated collect: [ :a | a - accumulated first ].
 	hundred := values sum.
 	hundred := 1 max: hundred.
-	"accumulatedPct := (accumulated collect: [ :a | 
-		                   a
-		                   ->
-		                   ((a / hundred * 100 asFloat 
-			                     printShowingDecimalPlaces: 2) , #%) ])
-		                  asDictionary."
-	c := RSChart new.
 
+	c := RSChart new.
+	horizontal := RSHorizontalTick new fromNames: (all collect: #key).
+	all size > 4 ifTrue: [ horizontal useVerticalLabel ].
 	c barHeights: values.
 	c addPlot: (RSLinePlot new
 			 x: (1 to: values size) y: accumulated;
 			 color: Color red).
-	c addDecoration:
-		(RSHorizontalTick new fromNames: (all collect: #key)).
+	c addDecoration: horizontal.
+
 	c addDecoration: (RSVerticalTick new
 			 numberOfTicks: 10;
 			 asFloat).
@@ -100,6 +104,10 @@ AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 	c xlabel: self xLabel.
 	c ylabel: self yLabel.
 	c title: self chartTitle.
+	horizontal configuration numberOfTicks = 0 ifTrue: [ 
+		horizontal configuration numberOfTicks: 1 ].
+
+
 	c build
 ]
 

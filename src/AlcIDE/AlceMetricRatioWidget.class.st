@@ -10,7 +10,8 @@ Class {
 { #category : #visiting }
 AlceMetricRatioWidget >> accept: anEntity [
 
-	^ anEntity isKindOf: AlcixModel 
+	^ (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixEntity ]
 ]
 
 { #category : #visiting }
@@ -22,9 +23,16 @@ AlceMetricRatioWidget >> coloringPieStrategy [
 { #category : #visiting }
 AlceMetricRatioWidget >> followAction [
 
+	| mooseModel |
 	toSelect ifNil: [ toSelect := MooseModelRoot root entities anyOne ].
+	mooseModel := (toSelect isKindOf: AlcixModel)
+		              ifTrue: [ mooseModel := toSelect ]
+		              ifFalse: [ 
+		              mooseModel := MooseModelRoot root entities anyOne ].
 
-	metrics := MTRAlceMetricsExtractor metricsFor: toSelect.
+
+	metrics := mooseModel metrics metricsFor: toSelect.
+
 	super followAction
 ]
 

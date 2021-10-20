@@ -122,11 +122,14 @@ AlceButtonListMenu >> modelActions [
 
 	^ { 
 		  (AlceAction new
-			   name: 'Project Tree';
-			   action: [ AlceProjectTree runDragMe ]).
+			   name: 'Choose Coloring Strategy';
+			   presenter: AlceColorStrategySelectorWidget;
+			   action: [  ]).
 		  (AlceAction new
-			   name: 'Choose Model';
-			   action: [ MiModelRootBrowser open ]) }
+			   name: 'Open Model';
+			   action: [ 
+				   MiApplication current buses do: [ :b | 
+						   b refreshBrowsersWith: MooseModelRoot root entities anyOne ] ]) }
 ]
 
 { #category : #initialization }

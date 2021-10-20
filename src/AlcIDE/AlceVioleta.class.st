@@ -96,6 +96,7 @@ AlceVioleta >> addPerspective [
 	name := UIManager default
 		        request: 'Please enter a name for the perspective'
 		        initialAnswer: 'Default'.
+	name ifNil: [ ^ self ].
 	^ self addPerspectiveNamed: name
 ]
 
@@ -103,7 +104,7 @@ AlceVioleta >> addPerspective [
 AlceVioleta >> addPerspectiveNamed: name [
 
 	| label |
-	label := self newLabel.
+	label := self instantiate: AlceLabelEntry.
 	label label: name.
 	perspectivesDictionary at: label put: self newContainer.
 	perspectives addPresenter: label.
@@ -113,7 +114,8 @@ AlceVioleta >> addPerspectiveNamed: name [
 { #category : #'instance creation' }
 AlceVioleta >> allPresenters [
 
-	^ viewport installedPresenters, { projectTree  }
+	^ (perspectivesDictionary values flatCollect: #installedPresenters)
+	  , { projectTree }
 ]
 
 { #category : #'as yet unclassified' }
@@ -142,18 +144,18 @@ AlceVioleta >> initializePresenters [
 	tools := self instantiate: AlceButtonListMenu.
 
 	newPerspectiveButton := tools newPopoverButton.
-	newPerspectiveButton icon: (self iconNamed: #smallAdd).
+	newPerspectiveButton label: #Perspectives.
 	newPerspectiveButton actions: { 
 			(AlceAction new
-				 name: 'Add Perspective';
+				 name: 'Add';
 				 action: [ self addPerspective ]).
 
 			(AlceAction new
-				 name: 'Remove Perspective';
+				 name: 'Remove';
 				 action: [ self removePerspective ]).
 
 			(AlceAction new
-				 name: 'Rename Perspective';
+				 name: 'Rename';
 				 action: [ self renamePerspective ]) }.
 	projectTree := self instantiate: AlceProjectTree.
 	projectTree browser: self.

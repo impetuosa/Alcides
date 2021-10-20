@@ -3,26 +3,10 @@ Class {
 	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'colorSelector',
-		'mooseModel',
-		'categories',
-		'strategies'
+		'mooseModel'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
-
-{ #category : #'world menu' }
-AlceTagDistribution class >> defaultSpec [
-
-	^ self basicDefaultSpec
-		  add: (SpBoxLayout newLeftToRight
-				   add: #strategies;
-				   add: #categories)
-		  height: 50;
-		  add: (SpBoxLayout newLeftToRight
-				   add: #viewport);
-		  add: #refresh height: self toolbarHeight;
-		  yourself
-]
 
 { #category : #accessing }
 AlceTagDistribution class >> menuCommandOn: aBuilder [
@@ -35,6 +19,11 @@ AlceTagDistribution class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #'as yet unclassified' }
+AlceTagDistribution class >> runDragMe [
+	self runMe
 ]
 
 { #category : #accessing }
@@ -55,15 +44,15 @@ AlceTagDistribution >> accept: anEntity [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> coloringStrategyFor: aClass [
+AlceTagDistribution >> colorsFor: anAlcixClass [
 
-	^ mooseModel coloringStrategyFor: aClass
+	^ mooseModel selectedColoringStrategy colorsFor: anAlcixClass
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> colorsFor: anAlcixClass [
+AlceTagDistribution >> currentCategory [
 
-	^ strategies colorsFor: anAlcixClass
+	^ mooseModel selectedColoringStrategy selectingCategory
 ]
 
 { #category : #visiting }
@@ -85,27 +74,13 @@ AlceTagDistribution >> initCanvas: canvas [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> initializePresenters [
-
-	super initializePresenters.
-	strategies := self instantiate: AlceColorStrategySelectorWidget.
-	strategies strategies: AlceColoringStrategy allSubclasses.
-	strategies whenSelectionChangedDo: [ self refresh ].
-	categories := self newDropList.
-	categories
-		whenSelectionChangedDo: [ 
-			strategies selectingCategory: categories selectedItem ];
-		display: [ :a | a name ]
-]
-
-{ #category : #visiting }
 AlceTagDistribution >> loadChart: aCanvas withElement: element [
 
 	| allModels |
 	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
 	mooseModel ifNil: [ ^ self ].
-	categories selectedItem ifNil: [ ^ self ].
+
 	self initCanvas: aCanvas.
 	allModels := mooseModel references flatCollect: [ :m | 
 		             ((self colorsFor: m) collect: #tag) asSet
@@ -113,7 +88,7 @@ AlceTagDistribution >> loadChart: aCanvas withElement: element [
 
 
 	HDistributionMap new
-		elements: categories selectedItem markedTags;
+		elements: self currentCategory markedTags;
 		childrenBlock: [ :tag | 
 			allModels select: [ :c | c key = tag ] thenCollect: #value ];
 		propertyBlock: [ :val | 
@@ -126,9 +101,5 @@ AlceTagDistribution >> loadChart: aCanvas withElement: element [
 { #category : #visiting }
 AlceTagDistribution >> mooseModel: aModel [
 
-	mooseModel := aModel.
-	categories items: aModel allTagCategories.
-	aModel ifNil: [ strategies itemsAreStrategyClasses ] ifNotNil: [ 
-		strategies creatingInstancesWith: [ :a | 
-			self coloringStrategyFor: a ] ]
+	mooseModel := aModel
 ]
