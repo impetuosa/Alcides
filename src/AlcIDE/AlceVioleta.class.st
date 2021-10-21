@@ -16,7 +16,9 @@ Class {
 		'projectTree',
 		'newPerspectiveButton',
 		'perspectives',
-		'perspectivesDictionary'
+		'perspectivesDictionary',
+		'lastPropagatingSelection',
+		'lastPropagatingWidget'
 	],
 	#category : #'AlcIDE-MidasWidgets'
 }
@@ -114,8 +116,7 @@ AlceVioleta >> addPerspectiveNamed: name [
 { #category : #'instance creation' }
 AlceVioleta >> allPresenters [
 
-	^ (perspectivesDictionary values flatCollect: #installedPresenters)
-	  , { projectTree }
+	^ viewport installedPresenters , { projectTree }
 ]
 
 { #category : #'as yet unclassified' }
@@ -206,14 +207,18 @@ AlceVioleta >> newContainer [
 { #category : #'instance creation' }
 AlceVioleta >> propagate: aWidget [
 
-	| newSelection |
-	miSelectedItem := aWidget miSelectedItem.
-	newSelection := miSelectedItem.
-	newSelection ifNil: [ ^ self ].
-	(self allPresentersBut: aWidget) do: [ :w | 
-		w selectEntity: newSelection.
-		miSelectedItem := newSelection ].
+	| selecting |
 
+	selecting := aWidget miSelectedItem.
+	selecting ifNil: [ ^ self ].
+	(self allPresentersBut: aWidget) do: [ :w | 
+		w selectEntity: selecting.
+		miSelectedItem := selecting ].
+	miSelectedItem := selecting.
+	aWidget = projectTree ifTrue: [ 
+		lastPropagatingSelection := selecting.
+		lastPropagatingWidget := aWidget ].
+	miSelectedItem := selecting.
 	self propagate.
 	miSelectedItem := nil
 ]
@@ -238,6 +243,18 @@ AlceVioleta >> renamePerspective [
 ]
 
 { #category : #'instance creation' }
+AlceVioleta >> repropagateLast [
+
+	lastPropagatingSelection ifNil: [ ^ self ].
+	miSelectedItem := lastPropagatingSelection.
+	(self allPresentersBut: lastPropagatingWidget) do: [ :w | 
+		w selectEntity: lastPropagatingSelection.
+		miSelectedItem := lastPropagatingSelection ].
+
+	miSelectedItem := nil
+]
+
+{ #category : #'instance creation' }
 AlceVioleta >> selectEntity: anEntity [
 
 	self allPresenters do: [ :p | p selectEntity: anEntity ]
@@ -245,12 +262,12 @@ AlceVioleta >> selectEntity: anEntity [
 
 { #category : #initialization }
 AlceVioleta >> setViewportTo: aSpLabelPresenter [
-
-	viewport := perspectivesDictionary
-		            at: aSpLabelPresenter
-		            ifAbsent: [ 
-		            ^ perspectives selectItem: perspectives presenters first ].
-	self update
+	| next | 
+	next := perspectivesDictionary at: aSpLabelPresenter.
+	next = viewport ifTrue: [ ^ self  ].
+	viewport := next. 
+	self update.
+	self repropagateLast 
 ]
 
 { #category : #'instance creation' }

@@ -17,7 +17,7 @@ AlceMetricRatioWidget >> accept: anEntity [
 { #category : #visiting }
 AlceMetricRatioWidget >> coloringPieStrategy [
 
-	^ NSScale google20
+	^ NSLinearScale google20
 ]
 
 { #category : #visiting }

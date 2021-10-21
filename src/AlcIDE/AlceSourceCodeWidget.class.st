@@ -62,7 +62,6 @@ AlceSourceCodeWidget >> followAction [
 
 { #category : #initialization }
 AlceSourceCodeWidget >> initializePresenters [
-
 	super initializePresenters.
 	pagesObjectsMap := Dictionary new.
 	viewport := self newNotebook.

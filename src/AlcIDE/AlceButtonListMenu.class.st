@@ -44,7 +44,11 @@ AlceButtonListMenu >> buttonsToAddToTheMenu [
 			 name: #Hierarchical;
 			 actions: self hierarhicalActions;
 			 yourself).
-
+	col add: ((self instantiate: AlcePopOverMenuButton)
+			 icon: MooseIcons mooseBars;
+			 name: #Complexity;
+			 actions: self complexityActions;
+			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
 			 icon: MooseIcons mooseBars;
 			 name: #Source;
@@ -74,6 +78,14 @@ AlceButtonListMenu >> codeActions [
 		  (AlceAction new
 			   name: 'Source Code';
 			   action: [ AlceSourceCodeWidget runDragMe ]) }
+]
+
+{ #category : #initialization }
+AlceButtonListMenu >> complexityActions [
+
+	^ { (AlceAction new
+		   name: 'Tangling Complexity';
+		   action: [ AlceTanglingComplexityHighlight runMe ]) }
 ]
 
 { #category : #initialization }

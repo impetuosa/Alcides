@@ -34,7 +34,8 @@ AlceOutlineTree >> accept: aModel [
 	^ { 
 		  AlcixEnum.
 		  AlcixModule.
-		  AlcixDataSource } anySatisfy: [ :c | aModel isKindOf: c ]
+		  AlcixDataSource.
+		  AlcixUserType } anySatisfy: [ :c | aModel isKindOf: c ]
 ]
 
 { #category : #visiting }
@@ -42,7 +43,7 @@ AlceOutlineTree >> anchorsorter [
 
 	^ [ :a :b | 
 	(  a anchor isNil or: [ b anchor isNil ])
-		  ifTrue: [ a threeWayCompareTo: b ]
+		  ifTrue: [ a printString threeWayCompareTo: b  printString]
 		  ifFalse: [ a anchor srcFrom threeWayCompareTo: b anchor srcFrom ] ]
 		  ascending
 ]
@@ -52,11 +53,13 @@ AlceOutlineTree >> childrenFor: anEntry [
 
 	| children |
 	children := OrderedCollection new.
-	(anEntry isKindOf: AlcixModule) ifTrue: [ 
-		children addAll: anEntry constants.
-		children addAll: anEntry globalVariables.
+
+	(anEntry isKindOf: AlcixUserType) ifTrue: [ 
 		children addAll: anEntry members.
-		children addAll: anEntry invocables ].
+		(anEntry isKindOf: AlcixModule) ifTrue: [ 
+			children addAll: anEntry constants.
+			children addAll: anEntry globalVariables.
+			children addAll: anEntry invocables ] ].
 	(anEntry isKindOf: AlcixEnum) ifTrue: [ 
 		children addAll: anEntry enumValues ].
 
@@ -67,9 +70,7 @@ AlceOutlineTree >> childrenFor: anEntry [
 
 		children addAll: anEntry outgoingAccesses.
 		children addAll: anEntry assignments.
-		children addAll: anEntry returns.
-		
-		 ].
+		children addAll: anEntry returns ].
 
 
 	^ children removeDuplicates sort: self anchorsorter

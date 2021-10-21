@@ -165,3 +165,8 @@ AlceSourceCodePropagator >> visitType: anAlcixClass [
 AlceSourceCodePropagator >> visitUnknownElement: anAlcixUnknownElement [ 
 
 ]
+
+{ #category : #visiting }
+AlceSourceCodePropagator >> visitUserType: anAlcixUserType [ 
+	anAlcixUserType container accept: self 
+]
