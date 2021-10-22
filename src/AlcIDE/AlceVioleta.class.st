@@ -39,7 +39,7 @@ AlceVioleta class >> defaultSpec [
 
 	^ SpBoxLayout newLeftToRight
 		  add: (SpBoxLayout newTopToBottom
-				   add: #tools height: 425;
+				   add: #tools height: 435;
 				   add: #perspectives;
 				   yourself)
 		  width: 80;

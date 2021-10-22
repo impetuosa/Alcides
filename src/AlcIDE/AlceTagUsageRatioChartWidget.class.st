@@ -29,7 +29,7 @@ AlceTagUsageRatioChartWidget class >> runMe [
 { #category : #accessing }
 AlceTagUsageRatioChartWidget class >> title [
 
-	^ 'Alce Tag Browser'
+	^ 'Alce Tangling Ratio Browser'
 ]
 
 { #category : #visiting }

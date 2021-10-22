@@ -91,6 +91,7 @@ AlcePieChartWidget >> initializePresenters [
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
 	| chart pieTitle |
+
 	self mustRefresh  ifFalse: [ ^ self  ].
 	element ifNil: [ ^ self ].
 	self initCanvas: aCanvas.
