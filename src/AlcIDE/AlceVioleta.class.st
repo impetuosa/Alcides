@@ -39,7 +39,7 @@ AlceVioleta class >> defaultSpec [
 
 	^ SpBoxLayout newLeftToRight
 		  add: (SpBoxLayout newTopToBottom
-				   add: #tools height: 365;
+				   add: #tools height: 425;
 				   add: #perspectives;
 				   yourself)
 		  width: 80;
@@ -145,7 +145,11 @@ AlceVioleta >> initializePresenters [
 	tools := self instantiate: AlceButtonListMenu.
 
 	newPerspectiveButton := tools newPopoverButton.
-	newPerspectiveButton label: #Perspectives.
+	newPerspectiveButton
+		icon: (self iconNamed: #book);
+		help: 'Perspectives';
+		yourself.
+
 	newPerspectiveButton actions: { 
 			(AlceAction new
 				 name: 'Add';
@@ -163,10 +167,11 @@ AlceVioleta >> initializePresenters [
 	projectTree dragTilte.
 
 	perspectives := self newComponentList.
-	perspectives whenSelectionChangedDo: [ : s | self setViewportTo: s selectedItem ].
-	
-	viewport := self newLabel label: ' Select a Perspective please'. 
-	self addPerspectiveNamed: #Default. 
+	perspectives whenSelectionChangedDo: [ :s | 
+		self setViewportTo: s selectedItem ].
+
+	viewport := self newLabel label: ' Select a Perspective please'.
+	self addPerspectiveNamed: #Default
 ]
 
 { #category : #'instance creation' }

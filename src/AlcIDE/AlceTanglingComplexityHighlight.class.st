@@ -136,6 +136,11 @@ AlceTanglingComplexityHighlight >> visitAssociation: anAssociation [
 ]
 
 { #category : #visiting }
+AlceTanglingComplexityHighlight >> visitClass: anAlcixClass [ 
+	self visitModule: anAlcixClass 
+]
+
+{ #category : #visiting }
 AlceTanglingComplexityHighlight >> visitForm: anAlcixForm [
 
 	self visitModule: anAlcixForm

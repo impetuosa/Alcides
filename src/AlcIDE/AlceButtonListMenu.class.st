@@ -31,32 +31,32 @@ AlceButtonListMenu >> buttonsToAddToTheMenu [
 	col := OrderedCollection new.
 	col add: ((self instantiate: AlcePopOverMenuButton)
 			 icon: MooseIcons mooseBars;
-			 name: #Frequencies;
 			 actions: self frequenceActions;
+			 help: #'Frequency histogram charts';
 			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
-			 icon: MooseIcons mooseBars;
-			 name: #Ratios;
+			 icon: (self iconNamed: #objects);
+			 help: #'Ratio pie charts';
 			 actions: self ratiosActions;
 			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
-			 icon: MooseIcons mooseBars;
-			 name: #Hierarchical;
+			 icon: (self iconNamed: #hierarchy);
+			 help: #'Hierarchical clustering graphs';
 			 actions: self hierarhicalActions;
 			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
-			 icon: MooseIcons mooseBars;
-			 name: #Complexity;
+			 icon: (self iconNamed: #nautilus);
+			 help: #'Complexity plot';
 			 actions: self complexityActions;
 			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
-			 icon: MooseIcons mooseBars;
-			 name: #Source;
+			 icon: (self iconNamed: #classVarsPressed);
+			 help: #'Source code level tools';
 			 actions: self codeActions;
 			 yourself).
 	col add: ((self instantiate: AlcePopOverMenuButton)
-			 icon: MooseIcons mooseBars;
-			 name: #Model;
+			 icon: (self iconNamed: #smallCogInitialState);
+			 help: #Configuration;
 			 actions: self modelActions;
 			 yourself).
 	^ col reverse

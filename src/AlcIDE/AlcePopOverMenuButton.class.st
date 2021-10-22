@@ -37,6 +37,11 @@ AlcePopOverMenuButton >> dismiss [
 	popover ifNotNil: [ popover dismiss ]
 ]
 
+{ #category : #accessing }
+AlcePopOverMenuButton >> help: aString [ 
+	button help: aString
+]
+
 { #category : #initialization }
 AlcePopOverMenuButton >> icon: anIcon [
 
