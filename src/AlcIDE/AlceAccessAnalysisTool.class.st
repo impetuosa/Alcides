@@ -1,5 +1,5 @@
 Class {
-	#name : #AlceVioleta,
+	#name : #AlceAccessAnalysisTool,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
@@ -24,18 +24,18 @@ Class {
 }
 
 { #category : #specs }
-AlceVioleta class >> alceBrowsers [
+AlceAccessAnalysisTool class >> alceBrowsers [
 
 	^ 'Alce browsers'
 ]
 
 { #category : #specs }
-AlceVioleta class >> currentApplication [
+AlceAccessAnalysisTool class >> currentApplication [
 	^ MiApplication current
 ]
 
 { #category : #specs }
-AlceVioleta class >> defaultSpec [
+AlceAccessAnalysisTool class >> defaultSpec [
 
 	^ SpBoxLayout newLeftToRight
 		  add: (SpBoxLayout newTopToBottom
@@ -51,7 +51,7 @@ AlceVioleta class >> defaultSpec [
 ]
 
 { #category : #specs }
-AlceVioleta class >> menuCommandOn: aBuilder [
+AlceAccessAnalysisTool class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
@@ -68,7 +68,7 @@ AlceVioleta class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-AlceVioleta class >> open [
+AlceAccessAnalysisTool class >> open [
 
 	<script>
 	self new
@@ -77,22 +77,22 @@ AlceVioleta class >> open [
 ]
 
 { #category : #specs }
-AlceVioleta class >> runMe [
+AlceAccessAnalysisTool class >> runMe [
 
 	^ super runMe
 ]
 
 { #category : #specs }
-AlceVioleta class >> runMeFollowing: aBus [
+AlceAccessAnalysisTool class >> runMeFollowing: aBus [
 ]
 
 { #category : #specs }
-AlceVioleta class >> title [ 
-	 ^ 'Violeta IDE'
+AlceAccessAnalysisTool class >> title [ 
+	 ^ 'Alce | Access Analysis Tool'
 ]
 
 { #category : #initialization }
-AlceVioleta >> addPerspective [
+AlceAccessAnalysisTool >> addPerspective [
 
 	| name |
 	name := UIManager default
@@ -103,7 +103,7 @@ AlceVioleta >> addPerspective [
 ]
 
 { #category : #initialization }
-AlceVioleta >> addPerspectiveNamed: name [
+AlceAccessAnalysisTool >> addPerspectiveNamed: name [
 
 	| label |
 	label := self instantiate: AlceLabelEntry.
@@ -114,13 +114,13 @@ AlceVioleta >> addPerspectiveNamed: name [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> allPresenters [
+AlceAccessAnalysisTool >> allPresenters [
 
 	^ viewport installedPresenters , { projectTree }
 ]
 
 { #category : #'as yet unclassified' }
-AlceVioleta >> allPresentersBut: anAlceReferenceWidget [
+AlceAccessAnalysisTool >> allPresentersBut: anAlceReferenceWidget [
 
 	^ self allPresenters asOrderedCollection
 		  remove: anAlceReferenceWidget ifAbsent: [  ];
@@ -128,17 +128,17 @@ AlceVioleta >> allPresentersBut: anAlceReferenceWidget [
 ]
 
 { #category : #initialization }
-AlceVioleta >> application [
+AlceAccessAnalysisTool >> application [
 	 ^ application
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> followAction [
+AlceAccessAnalysisTool >> followAction [
 	self allPresenters do: [ :p | p followAction ]
 ]
 
 { #category : #initialization }
-AlceVioleta >> initializePresenters [
+AlceAccessAnalysisTool >> initializePresenters [
 
 	super initializePresenters.
 	perspectivesDictionary := Dictionary new.
@@ -175,7 +175,7 @@ AlceVioleta >> initializePresenters [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> installTransfer: aTransfer into: destination [
+AlceAccessAnalysisTool >> installTransfer: aTransfer into: destination [
 
 	(destination install: aTransfer passenger)
 		dragTilte;
@@ -185,13 +185,13 @@ AlceVioleta >> installTransfer: aTransfer into: destination [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> miSelectedItem [
+AlceAccessAnalysisTool >> miSelectedItem [
 
 	^ miSelectedItem
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> newContainer [
+AlceAccessAnalysisTool >> newContainer [
 
 	| container |
 	container := ((self instantiate: SpDropInPanedContainer)
@@ -210,7 +210,7 @@ AlceVioleta >> newContainer [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> propagate: aWidget [
+AlceAccessAnalysisTool >> propagate: aWidget [
 
 	| selecting |
 
@@ -229,7 +229,7 @@ AlceVioleta >> propagate: aWidget [
 ]
 
 { #category : #initialization }
-AlceVioleta >> removePerspective [
+AlceAccessAnalysisTool >> removePerspective [
 
 	perspectivesDictionary removeKey: perspectives selectedItem ifAbsent: [].
 	perspectives presenters:
@@ -238,7 +238,7 @@ AlceVioleta >> removePerspective [
 ]
 
 { #category : #initialization }
-AlceVioleta >> renamePerspective [
+AlceAccessAnalysisTool >> renamePerspective [
 
 	| newName |
 	newName := UIManager default
@@ -248,7 +248,7 @@ AlceVioleta >> renamePerspective [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> repropagateLast [
+AlceAccessAnalysisTool >> repropagateLast [
 
 	lastPropagatingSelection ifNil: [ ^ self ].
 	miSelectedItem := lastPropagatingSelection.
@@ -260,13 +260,13 @@ AlceVioleta >> repropagateLast [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> selectEntity: anEntity [
+AlceAccessAnalysisTool >> selectEntity: anEntity [
 
 	self allPresenters do: [ :p | p selectEntity: anEntity ]
 ]
 
 { #category : #initialization }
-AlceVioleta >> setViewportTo: aSpLabelPresenter [
+AlceAccessAnalysisTool >> setViewportTo: aSpLabelPresenter [
 	| next | 
 	next := perspectivesDictionary at: aSpLabelPresenter.
 	next = viewport ifTrue: [ ^ self  ].
@@ -276,7 +276,7 @@ AlceVioleta >> setViewportTo: aSpLabelPresenter [
 ]
 
 { #category : #'instance creation' }
-AlceVioleta >> shouldAcceptTransfer: aTransfer into: aDestination [
+AlceAccessAnalysisTool >> shouldAcceptTransfer: aTransfer into: aDestination [
 
 	(aTransfer isKindOf: SpTransferMorph) ifFalse: [ ^ false ].
 	^ aTransfer passenger canBeAdaptedToDropInto: aDestination
