@@ -54,65 +54,73 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 	padding := 1 asMargin.
 	high := RSHighlightable new.
 
-	packages := aCollection collect: [ :p | 
-		            | classes pkg |
-		            classes := p value
-			                       collect: [ :cls | 
-				                       | methods |
-				                       methods := cls invocables collect: [ :met | 
-					                                  | mtric tang  |
-					                                  mtric := mooseModel metrics 
-						                                           metricsFor: met.
+	packages := aCollection
+		            collect: [ :p | 
+			            | classes pkg |
+			            classes := p value
+				                       collect: [ :cls | 
+					                       | methods |
+					                       methods := cls invocables collect: [ :met | 
+						                                  | mtric tang |
+						                                  mtric := mooseModel metrics 
+							                                           metricsFor: met.
 
-					                                  (mtric isKindOf: MTRAstMetric)
-						                                  ifTrue: [ 
-							                                  tang := mtric
-								                                          tanglingLanguageReferencesRatios.
-							                       
-							                                  RSBox new
-								                                  extent:
-									                                  tang first ln asInteger
-									                                  @ tang second ln asInteger;
-								                                  @ popup;
-								                                  @ high;
-								                                  color:
-									                                  (Color black alpha:
-											                                   mtric astSize ln / 10);
-								                                  model: met;
-								                                  yourself ]
-						                                  ifFalse: [ 
-							                                  RSBox new
-								                                  extent: 5 @ 5;
-								                                  @ popup;
-								                                  @ high;
-								                                  color: Color red;
-								                                  model: met;
-								                                  yourself ] ].
-				                       RSGridLayout on: ( methods sort: [ : a | a extent x *  a extent  y ] descending ).
-				                       RSComposite new
-					                       model: cls;
-					                       @ popup;
-					                       draggable;
-					                       paint: Color gray;
-					                       children: methods;
-					                       padding: padding;
-					                       yourself ]
-			                       as: RSGroup.
-						RSGridLayout on: (classes sort: [ : a | a extent x *  a extent  y ] descending).
-		            pkg := RSComposite new
-			                   children: classes  ;
-			                   paint: Color blue translucent;
-			                   model: p key;
-			                   @ popup;
-			                   draggable;
-			                   yourself.
-		            
-		            pkg ]as: RSGroup.
-	RSFlowLayout  on: packages.
+						                                  (mtric isKindOf: MTRAstMetric)
+							                                  ifTrue: [ 
+								                                  tang := mtric
+									                                          tanglingLanguageReferencesRatios.
+
+								                                  RSBox new
+									                                  extent:
+										                                  tang first ln asInteger
+										                                  @ tang second ln asInteger;
+									                                  @ popup;
+									                                  @ high;
+									                                  color:
+										                                  (Color black alpha:
+												                                   mtric astSize ln / 10);
+									                                  model: met;
+									                                  yourself ]
+							                                  ifFalse: [ 
+								                                  RSBox new
+									                                  extent: 5 @ 5;
+									                                  @ popup;
+									                                  @ high;
+									                                  color: Color red;
+									                                  model: met;
+									                                  yourself ] ].
+					                       RSGridLayout on:
+						                       (methods sort:
+							                        [ :a | a extent x * a extent y ]
+								                        descending).
+					                       RSComposite new
+						                       model: cls;
+						                       @ popup;
+						                       draggable;
+						                       paint: Color gray;
+						                       children: methods;
+						                       padding: padding;
+						                       yourself ]
+				                       as: RSGroup.
+			            RSGridLayout on: (classes sort: [ :a | 
+					             (a children collect: [ :m | 
+						              m extent x * m extent y * m color alpha ]) sum ]
+						             descending).
+			            pkg := RSComposite new
+				                   children: classes;
+				                   paint: Color blue translucent;
+				                   model: p key;
+				                   @ popup;
+				                   draggable;
+				                   yourself.
+
+			            pkg ]
+		            as: RSGroup.
+	RSFlowLayout on: packages.
 
 
 
-	canvas addAll: packages.
+	canvas addAll: packages
 ]
 
 { #category : #visiting }
