@@ -28,7 +28,7 @@ AlceTagHierachical class >> runDragMe [
 
 { #category : #accessing }
 AlceTagHierachical class >> title [
-	^ 'Tag hierarchical'
+	^ 'Architectural Dependencies'
 ]
 
 { #category : #visiting }
