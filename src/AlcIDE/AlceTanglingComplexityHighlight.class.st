@@ -125,6 +125,7 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 
 { #category : #visiting }
 AlceTanglingComplexityHighlight >> visitAccessModule: anAlcixAccessModule [ 
+	mooseModel := anAlcixAccessModule mooseModel.
 	self plotFor: (anAlcixAccessModule types groupedBy: #class ) associations
 ]
 
@@ -153,7 +154,17 @@ AlceTanglingComplexityHighlight >> visitModule: anAlcixModule [
 ]
 
 { #category : #visiting }
+AlceTanglingComplexityHighlight >> visitQuery: anAlcixQuery [ 
+	self visitTable: anAlcixQuery 
+]
+
+{ #category : #visiting }
 AlceTanglingComplexityHighlight >> visitReport: anAlcixReport [
 
 	self visitModule: anAlcixReport
+]
+
+{ #category : #visiting }
+AlceTanglingComplexityHighlight >> visitTable: anAlcixTable [ 
+	self visitModule: anAlcixTable 
 ]
