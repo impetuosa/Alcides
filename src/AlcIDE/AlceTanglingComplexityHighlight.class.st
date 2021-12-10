@@ -8,6 +8,12 @@ Class {
 	#category : #'AlcIDE-MidasWidgets'
 }
 
+{ #category : #accessing }
+AlceTanglingComplexityHighlight class >> title [
+
+	^ 'Tangling Complexity Highlight'
+]
+
 { #category : #visiting }
 AlceTanglingComplexityHighlight >> accept: anObject [
 	^ (anObject isKindOf: AlcixAccessModule) or: [ 
@@ -46,6 +52,21 @@ AlceTanglingComplexityHighlight >> loadChart: aCanvas withElement: element [
 ]
 
 { #category : #'as yet unclassified' }
+AlceTanglingComplexityHighlight >> mooseModel [
+
+	^ mooseModel
+]
+
+{ #category : #'as yet unclassified' }
+AlceTanglingComplexityHighlight >> newBorder [
+
+	^ RSBorder new
+		  color: Color black;
+		  width: 1;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
 AlceTanglingComplexityHighlight >> plotFor: aCollection [
 
 	| popup label padding high packages |
@@ -53,7 +74,7 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 	label := RSLabeled new highlightable.
 	padding := 1 asMargin.
 	high := RSHighlightable new.
-
+	mooseModel ifNil: [ ^ self ].
 	packages := aCollection
 		            collect: [ :p | 
 			            | classes pkg |
@@ -62,8 +83,9 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 					                       | methods |
 					                       methods := cls invocables collect: [ :met | 
 						                                  | mtric tang |
-						                                  mtric := mooseModel metrics 
-							                                           metricsFor: met.
+						                                  mtric := self mooseModel
+							                                           metrics metricsFor:
+							                                           met.
 
 						                                  (mtric isKindOf: MTRAstMetric)
 							                                  ifTrue: [ 
@@ -78,7 +100,8 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 									                                  @ high;
 									                                  color:
 										                                  (Color black alpha:
-												                                   mtric astSize ln / 10);
+												                                   (mtric astSize ln / 10 
+													                                    max: 0.1));
 									                                  model: met;
 									                                  yourself ]
 							                                  ifFalse: [ 
@@ -97,7 +120,8 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 						                       model: cls;
 						                       @ popup;
 						                       draggable;
-						                       paint: Color gray;
+						                       paint: Color transparent;
+						                       border: self newBorder;
 						                       children: methods;
 						                       padding: padding;
 						                       yourself ]
@@ -106,11 +130,13 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 					             (a children collect: [ :m | 
 						              m extent x * m extent y * m color alpha ]) sum ]
 						             descending).
+
 			            pkg := RSComposite new
 				                   children: classes;
-				                   paint: Color blue translucent;
+				                   paint: Color transparent;
 				                   model: p key;
 				                   @ popup;
+				                   border: self newBorder;
 				                   draggable;
 				                   yourself.
 

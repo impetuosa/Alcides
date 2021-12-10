@@ -55,16 +55,17 @@ AlceAccessAnalysisTool class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: AlcIDE alceBrowsers )
-		parent: #Moose;
-		label: AlcIDE alceBrowsers.
-		
 	(aBuilder item: #alceIdeBrowser)
-		parent: AlcIDE alceBrowsers;
+		parent: self midasBrowserMenuLabel;
 		label: self title;
 		icon: (AlcIDE iconNamed: #mooseTree);
-		help: self helpMessage; 
+		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #specs }
+AlceAccessAnalysisTool class >> midasBrowserMenuLabel [
+	^ #'Specialized Browsers'
 ]
 
 { #category : #specs }
@@ -79,7 +80,7 @@ AlceAccessAnalysisTool class >> open [
 { #category : #specs }
 AlceAccessAnalysisTool class >> runMe [
 
-	^ super runMe
+	^ self open
 ]
 
 { #category : #specs }

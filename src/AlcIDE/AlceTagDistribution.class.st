@@ -28,7 +28,7 @@ AlceTagDistribution class >> runDragMe [
 
 { #category : #accessing }
 AlceTagDistribution class >> title [
-	^ 'Tag distribution'
+	^ 'Architectural Distribution'
 ]
 
 { #category : #visiting }
