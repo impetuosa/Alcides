@@ -85,6 +85,7 @@ AlcePieChartWidget >> initCanvas: canvas [
 AlcePieChartWidget >> initializePresenters [ 
 	 super initializePresenters. 
 	reference := self instantiate: SpRoassalPresenter .
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -186,8 +187,20 @@ AlcePieChartWidget >> loadReference: canvas withElement: element [
 ]
 
 { #category : #'as yet unclassified' }
+AlcePieChartWidget >> mustRefresh [
+
+	^ mustRefresh ifNil: [ false ]
+]
+
+{ #category : #'as yet unclassified' }
 AlcePieChartWidget >> referenceMaximumFor: element [ 
 	 self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+AlcePieChartWidget >> refresh [
+	mustRefresh := true. 
+	self followAction
 ]
 
 { #category : #'as yet unclassified' }

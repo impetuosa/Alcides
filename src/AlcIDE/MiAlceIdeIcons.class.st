@@ -72,13 +72,23 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	aClass = AlcixQuery ifTrue: [ ^ self iconQueryIcon ].
 	aClass = AlcixMacro ifTrue: [ ^ self iconMacroIcon ].
 	aClass = AlcixModule ifTrue: [ ^ self iconModuleIcon ].
+	
+	
 	aClass = AlcixClass ifTrue: [ ^ self iconModuleIcon ].
+	
 	aClass = AlcixLibrary ifTrue: [ ^ self iconNamed: #smallRedo ].
 	aClass = AlcixAlias ifTrue: [ ^ 'A=>B' asMorph asForm ].
 	aClass = AlcixUserType ifTrue: [ ^ self structIcon ].
 	aClass = AlcixEnum ifTrue: [ ^ self enumIcon ].
 	aClass = AlcixEnumValue ifTrue: [ ^ self fieldIcon ].
 	aClass = AlcixAttribute ifTrue: [ ^ self fieldIcon ].
+	
+	aClass = MOJavaTransientClass ifTrue: [ ^( self iconNamed: #class) asGrayScale ].
+	aClass = MOJavaClass ifTrue: [ ^ self iconNamed: #class ].
+	aClass = MOJavaPackage ifTrue: [ ^ self iconNamed: #package ].
+	aClass = FamixJavaAttribute ifTrue: [ ^ self fieldIcon ].
+	aClass = FamixJavaMethod ifTrue: [ ^ self methodIcon ].
+
 	aClass = AlcixConstant ifTrue: [ ^ self fieldIcon ].
 	aClass = AlcixSubProcedure ifTrue: [ ^ self methodIcon ].
 	aClass = AlcixFunction ifTrue: [ ^ self methodIcon ].
@@ -90,6 +100,8 @@ MiAlceIdeIcons class >> iconFor: anElement [
 	aClass = AlcixParameter ifTrue: [ ^ self iconNamed: #glamorousRight ].
 	aClass = AlcixGlobalVariable ifTrue: [ 
 		^ self iconNamed: #glamorousUp ].
+	
+	
 	^ self iconTableIcon
 ]
 

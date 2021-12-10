@@ -23,6 +23,13 @@ AlceDraggableWidget class >> runDragMe [
 	^ self runMe
 ]
 
+{ #category : #actions }
+AlceDraggableWidget >> followEntity: anAlcixModel [
+
+	toSelect := anAlcixModel.
+	self followAction
+]
+
 { #category : #defaults }
 AlceDraggableWidget >> iconFor: anEntity [
 

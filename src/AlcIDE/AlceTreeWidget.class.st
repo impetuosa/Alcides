@@ -14,6 +14,18 @@ AlceTreeWidget class >> alceBrowsers [
 ]
 
 { #category : #specs }
+AlceTreeWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+
+	super
+		buildCommandsGroupWith: presenterInstance
+		forRoot: rootCommandGroup.
+
+
+	FylgjaCommands allSubclasses do: [ :sc | 
+		rootCommandGroup register: (sc forSpecContext: presenterInstance) ]
+]
+
+{ #category : #specs }
 AlceTreeWidget class >> defaultSpec [
 
 	^ super defaultSpec
@@ -81,6 +93,11 @@ AlceTreeWidget >> initializePresenters [
 						  self imageRepresentationFor: each ]);
 				 yourself);
 		children: [ :entry | self childrenFor: entry ]
+]
+
+{ #category : #accessing }
+AlceTreeWidget >> selectedItem [
+	^ tree selectedItem 
 ]
 
 { #category : #visiting }

@@ -63,6 +63,11 @@ AlceProjectTree >> followAction [
 		ifFalse: [ self selectEntityPath: toSelect ]
 ]
 
+{ #category : #actions }
+AlceProjectTree >> freezeDuring: aFullBlockClosure [ 
+	aFullBlockClosure value
+]
+
 { #category : #visiting }
 AlceProjectTree >> selectEntityPath: anObject [ 
 	anObject accept: self 
