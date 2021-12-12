@@ -16,11 +16,19 @@ AlceTanglingComplexityHighlight class >> title [
 
 { #category : #visiting }
 AlceTanglingComplexityHighlight >> accept: anObject [
-	^ (anObject isKindOf: AlcixAccessModule) or: [ 
-		  (anObject isKindOf: AlcixModule) or: [ 
-			  (anObject isKindOf: Association) and: [ 
-				  anObject value isCollection and: [ 
-					  anObject value allSatisfy: [ :v | v isKindOf: AlcixModule ] ] ] ] ]
+
+	| ans |
+	(anObject isKindOf: AlcixAccessModule) ifTrue: [ 
+		ans := (UIManager default question:
+			        'Calculating the architectural dependencies will take some minutes (maybe up to 20''). Do you want to proceed?') 
+			       ifNil: [ false ].
+
+		^ ans ].
+
+	^ (anObject isKindOf: AlcixModule) or: [ 
+		  (anObject isKindOf: Association) and: [ 
+			  anObject value isCollection and: [ 
+				  anObject value allSatisfy: [ :v | v isKindOf: AlcixModule ] ] ] ]
 ]
 
 { #category : #visiting }
@@ -150,9 +158,11 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 ]
 
 { #category : #visiting }
-AlceTanglingComplexityHighlight >> visitAccessModule: anAlcixAccessModule [ 
+AlceTanglingComplexityHighlight >> visitAccessModule: anAlcixAccessModule [
+
 	mooseModel := anAlcixAccessModule mooseModel.
-	self plotFor: (anAlcixAccessModule types groupedBy: #class ) associations
+	self plotFor:
+		(anAlcixAccessModule types groupedBy: #class) associations
 ]
 
 { #category : #visiting }
