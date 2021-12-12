@@ -34,9 +34,15 @@ AlceTagDistribution class >> title [
 { #category : #visiting }
 AlceTagDistribution >> accept: anEntity [
 
+	| ans |
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 
 		self mooseModel: anEntity.
-		^ true ].
+
+		ans := (UIManager default question:
+			        'Calculating the tangling complexity for a full project may take some minutes. Do you want to proceed?') 
+			       ifNil: [ false ].
+
+		^ ans ].
 
 	(anEntity isKindOf: AlcixEntity) ifTrue: [ 
 		mooseModel ifNil: [ self mooseModel: anEntity mooseModel ] ].

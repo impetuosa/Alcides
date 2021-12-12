@@ -34,10 +34,17 @@ AlceTagHierachical class >> title [
 { #category : #visiting }
 AlceTagHierachical >> accept: anEntity [
 
+	| ans |
 	(self hasWindow not or: [ self root isOpen not ]) ifTrue: [ ^ false ].
+
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 
 		self mooseModel: anEntity.
-		^ true ].
+
+		ans := (UIManager default question:
+			        'Calculating the tangling complexity for a full project may take some minutes. Do you want to proceed?') 
+			       ifNil: [ false ].
+
+		^ ans ].
 
 	(anEntity isKindOf: AlcixEntity) ifTrue: [ 
 		mooseModel ifNil: [ self mooseModel: anEntity mooseModel ] ].

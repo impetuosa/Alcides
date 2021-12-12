@@ -126,7 +126,7 @@ AlceSourceCodeWidget >> visualizeSourcecode: aModule [
 		        beCloseable.
 
 
-	viewport addPage: page.
+	viewport pages:{ page.}.
 	viewport selectPage: page.
 	coloringStrategy := (aModule mooseModel coloringStrategyFor:
 		                     AlceHorizontalColorPropagation) mostPopular.
