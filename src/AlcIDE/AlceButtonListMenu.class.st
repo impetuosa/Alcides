@@ -70,12 +70,6 @@ AlceButtonListMenu >> codeActions [
 			   name: 'Outline';
 			   action: [ AlceOutlineTree runDragMe ]).
 		  (AlceAction new
-			   name: 'Usages';
-			   action: [ AlceUsersTree runDragMe ]).
-		  (AlceAction new
-			   name: 'Functions Subs & Properties inspector';
-			   action: [ AlceInvocableWidget runDragMe ]).
-		  (AlceAction new
 			   name: 'Source Code';
 			   action: [ AlceSourceCodeWidget runDragMe ]) }
 ]

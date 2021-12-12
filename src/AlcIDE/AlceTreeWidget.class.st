@@ -20,9 +20,6 @@ AlceTreeWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootC
 		buildCommandsGroupWith: presenterInstance
 		forRoot: rootCommandGroup.
 
-
-	FylgjaCommands allSubclasses do: [ :sc | 
-		rootCommandGroup register: (sc forSpecContext: presenterInstance) ]
 ]
 
 { #category : #specs }
