@@ -10,8 +10,8 @@ Class {
 { #category : #visiting }
 AlceMetricRatioWidget >> accept: anEntity [
 
-	^ (anEntity isKindOf: AlcixModel) or: [ 
-		  anEntity isKindOf: AlcixEntity ]
+	^( (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixEntity ]) and: [ (anEntity isKindOf: AlcixDataSource ) not  ]
 ]
 
 { #category : #visiting }
