@@ -91,9 +91,8 @@ AlcePieChartWidget >> initializePresenters [
 { #category : #'as yet unclassified' }
 AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 
-	| chart pieTitle |
-
-	self mustRefresh  ifFalse: [ ^ self  ].
+	| chart pieTitle pairs |
+	self mustRefresh ifFalse: [ ^ self ].
 	element ifNil: [ ^ self ].
 	self initCanvas: aCanvas.
 	chart := RSPie new.
@@ -105,9 +104,12 @@ AlcePieChartWidget >> loadChart: aCanvas withElement: element [
 		segmentSpacing: 0.1.
 	chart sliceColor: self coloringPieStrategy.
 
+	pairs := (self calculateObjectsFor: element) associations.
+
+	(pairs collect: #value) sum > 0 ifFalse: [ ^ self ].
 
 	chart
-		objects: (self calculateObjectsFor: element) associations;
+		objects: pairs;
 		slice: [ :s | s value ];
 		build.
 
