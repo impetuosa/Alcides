@@ -8,9 +8,9 @@ Class {
 BaselineOfAlcIDE >> baseline: spec [
 
 	<baseline>
-	spec
+	"spec
 		baseline: #Hooves
-		with: [ spec repository: 'github://moosetechnology/Hooves/src' ].
+		with: [ spec repository: 'github://moosetechnology/Hooves/src' ]."
 	spec
 		baseline: #Alce
 		with: [ spec repository: 'github://impetuosa/Alce/src' ].
