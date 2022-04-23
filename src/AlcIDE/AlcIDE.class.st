@@ -66,9 +66,10 @@ AlcIDE class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-AlcIDE class >> open [ 
-	<script> 
-	self new openWithSpec 
+AlcIDE class >> open [
+
+	<script>
+	self new open
 ]
 
 { #category : #specs }

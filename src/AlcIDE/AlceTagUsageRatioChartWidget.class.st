@@ -32,19 +32,6 @@ AlceTagUsageRatioChartWidget class >> title [
 	^ 'Alce Tangling Ratio Browser'
 ]
 
-{ #category : #visiting }
-AlceTagUsageRatioChartWidget >> accept: anEntity [
-
-	(anEntity isKindOf: AlcixModel) ifTrue: [ 
-		self mooseModel: anEntity.
-		^ false ].
-
-	(anEntity isKindOf: AlcixEntity) ifTrue: [ 
-		mooseModel ifNil: [ self mooseModel: anEntity mooseModel ].
-		^ true ].
-	^ false
-]
-
 { #category : #'as yet unclassified' }
 AlceTagUsageRatioChartWidget >> calculateObjectsFor: element [
 
@@ -54,6 +41,19 @@ AlceTagUsageRatioChartWidget >> calculateObjectsFor: element [
 
 	^ ((baseline groupedBy: #tag) associations collect: [ :assoc | 
 		   assoc key -> assoc value size ]) asDictionary
+]
+
+{ #category : #visiting }
+AlceTagUsageRatioChartWidget >> canFollowEntity: anEntity [
+
+	(anEntity isKindOf: AlcixModel) ifTrue: [ 
+		self mooseModel: anEntity.
+		^ false ].
+
+	(anEntity isKindOf: AlcixEntity) ifTrue: [ 
+		mooseModel ifNil: [ self mooseModel: anEntity mooseModel ].
+		^ true ].
+	^ false
 ]
 
 { #category : #'as yet unclassified' }

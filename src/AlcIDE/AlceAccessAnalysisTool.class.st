@@ -74,7 +74,7 @@ AlceAccessAnalysisTool class >> open [
 	<script>
 	self new
 		followBus: self currentApplication defaultBus;
-		openWithSpec
+		open
 ]
 
 { #category : #specs }
@@ -131,6 +131,11 @@ AlceAccessAnalysisTool >> allPresentersBut: anAlceReferenceWidget [
 { #category : #initialization }
 AlceAccessAnalysisTool >> application [
 	 ^ application
+]
+
+{ #category : #testing }
+AlceAccessAnalysisTool >> canFollowEntity: anUndefinedObject [ 
+	^ true
 ]
 
 { #category : #'instance creation' }

@@ -54,7 +54,7 @@ AlceTypeWidget class >> title [
 ]
 
 { #category : #visiting }
-AlceTypeWidget >> accept: aModel [
+AlceTypeWidget >> canFollowEntity: aModel [
 
 	^ { 
 		  AlcixEnum.

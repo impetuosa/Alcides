@@ -29,7 +29,7 @@ AlceUsersTree class >> title [
 ]
 
 { #category : #initialization }
-AlceUsersTree >> accept: aModel [
+AlceUsersTree >> canFollowEntity: aModel [
 	^ { 
 		  AlcixInvocable.
 		  AlcixAccessible } anySatisfy: [ :c | aModel isKindOf: c ]

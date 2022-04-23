@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-AlceVariableClusteringWidget >> accept: aModel [
+AlceVariableClusteringWidget >> canFollowEntity: aModel [
 	^( aModel isKindOf: AlcixModel ) 
 ]
 

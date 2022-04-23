@@ -41,7 +41,7 @@ AlceReferenceWidget class >> title [
 ]
 
 { #category : #actions }
-AlceReferenceWidget >> accept: aModel [
+AlceReferenceWidget >> canFollowEntity: aModel [
 
 	(aModel class respondsTo: #entryName) ifTrue: [ 
 		tables at: aModel class entryName ifPresent: [ :t | 

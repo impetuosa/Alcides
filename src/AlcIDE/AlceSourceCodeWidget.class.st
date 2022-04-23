@@ -41,7 +41,7 @@ AlceSourceCodeWidget class >> title [
 ]
 
 { #category : #visiting }
-AlceSourceCodeWidget >> accept: aModel [
+AlceSourceCodeWidget >> canFollowEntity: aModel [
 
 	(aModel isKindOf: JinAnchor) ifTrue: [ ^ true ].
 

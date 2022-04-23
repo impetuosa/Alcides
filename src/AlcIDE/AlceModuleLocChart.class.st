@@ -23,13 +23,13 @@ AlceModuleLocChart class >> title [
 ]
 
 { #category : #initialization }
-AlceModuleLocChart >> accept: anEntity [
-
-	^ anEntity isKindOf: AlcixAccessModule 
-]
-
-{ #category : #initialization }
 AlceModuleLocChart >> associationCounts [
 
 	^ metrics moduleGeneralCounters
+]
+
+{ #category : #initialization }
+AlceModuleLocChart >> canFollowEntity: anEntity [
+
+	^ anEntity isKindOf: AlcixAccessModule 
 ]

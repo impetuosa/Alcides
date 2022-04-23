@@ -32,7 +32,7 @@ AlceTagHierachical class >> title [
 ]
 
 { #category : #visiting }
-AlceTagHierachical >> accept: anEntity [
+AlceTagHierachical >> canFollowEntity: anEntity [
 
 	| ans |
 	(self hasWindow not or: [ self root isOpen not ]) ifTrue: [ ^ false ].

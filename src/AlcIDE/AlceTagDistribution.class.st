@@ -32,7 +32,7 @@ AlceTagDistribution class >> title [
 ]
 
 { #category : #visiting }
-AlceTagDistribution >> accept: anEntity [
+AlceTagDistribution >> canFollowEntity: anEntity [
 
 	| ans |
 	(anEntity isKindOf: AlcixModel) ifTrue: [ 

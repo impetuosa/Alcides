@@ -29,7 +29,7 @@ AlceProjectTree class >> title [
 ]
 
 { #category : #visiting }
-AlceProjectTree >> accept: aModel [
+AlceProjectTree >> canFollowEntity: aModel [
 
 	^ (aModel isKindOf: AlcixModel) or: [ 
 		  (aModel isKindOf: AlcixReference) or: [ 

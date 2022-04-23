@@ -42,7 +42,7 @@ AlceModelWidget class >> title [
 ]
 
 { #category : #actions }
-AlceModelWidget >> accept: aModel [ 
+AlceModelWidget >> canFollowEntity: aModel [ 
 	^ aModel isKindOf: AlcixModel
 ]
 

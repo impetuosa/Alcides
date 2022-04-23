@@ -15,7 +15,7 @@ AlceTanglingComplexityHighlight class >> title [
 ]
 
 { #category : #visiting }
-AlceTanglingComplexityHighlight >> accept: anObject [
+AlceTanglingComplexityHighlight >> canFollowEntity: anObject [
 
 	| ans |
 	(anObject isKindOf: AlcixAccessModule) ifTrue: [ 

@@ -13,17 +13,17 @@ AlceParetoChart class >> runDragMe [
 	^ self runMe
 ]
 
-{ #category : #accessing }
-AlceParetoChart >> accept: anEntity [
-
-	^ (anEntity isKindOf: AlcixModel) or: [ 
-		  anEntity isKindOf: AlcixEntity ]
-]
-
 { #category : #initialization }
 AlceParetoChart >> associationCounts [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+AlceParetoChart >> canFollowEntity: anEntity [
+
+	^ (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixEntity ]
 ]
 
 { #category : #initialization }

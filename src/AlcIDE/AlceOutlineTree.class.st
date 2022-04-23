@@ -29,16 +29,6 @@ AlceOutlineTree class >> title [
 ]
 
 { #category : #visiting }
-AlceOutlineTree >> accept: aModel [
-
-	^ { 
-		  AlcixEnum.
-		  AlcixModule.
-		  AlcixDataSource.
-		  AlcixUserType } anySatisfy: [ :c | aModel isKindOf: c ]
-]
-
-{ #category : #visiting }
 AlceOutlineTree >> anchorsorter [
 
 	^ [ :a :b | 
@@ -46,6 +36,16 @@ AlceOutlineTree >> anchorsorter [
 		  ifTrue: [ a printString threeWayCompareTo: b  printString]
 		  ifFalse: [ a anchor srcFrom threeWayCompareTo: b anchor srcFrom ] ]
 		  ascending
+]
+
+{ #category : #visiting }
+AlceOutlineTree >> canFollowEntity: aModel [
+
+	^ { 
+		  AlcixEnum.
+		  AlcixModule.
+		  AlcixDataSource.
+		  AlcixUserType } anySatisfy: [ :c | aModel isKindOf: c ]
 ]
 
 { #category : #visiting }

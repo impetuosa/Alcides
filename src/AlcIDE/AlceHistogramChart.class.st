@@ -13,17 +13,17 @@ AlceHistogramChart class >> runDragMe [
 	^ self runMe
 ]
 
-{ #category : #accessing }
-AlceHistogramChart >> accept: anEntity [
-
-	^ (anEntity isKindOf: AlcixModel) or: [ 
-		  anEntity isKindOf: AlcixEntity ]
-]
-
 { #category : #initialization }
 AlceHistogramChart >> associationCounts [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+AlceHistogramChart >> canFollowEntity: anEntity [
+
+	^ (anEntity isKindOf: AlcixModel) or: [ 
+		  anEntity isKindOf: AlcixEntity ]
 ]
 
 { #category : #initialization }

@@ -32,12 +32,6 @@ AlceLinkedChartWidget class >> title [
 	^ 'Alce Linking element Browser'
 ]
 
-{ #category : #visiting }
-AlceLinkedChartWidget >> accept: anEntity [
-
-	^ { AlcixModel } anySatisfy: [ :a | anEntity isKindOf: a ]
-]
-
 { #category : #'as yet unclassified' }
 AlceLinkedChartWidget >> calculateObjectsFor: element [
 
@@ -65,6 +59,12 @@ AlceLinkedChartWidget >> calculateObjectsFor: element [
 	buffer at: element put: group associations.
 	^ (group associations collect: [ :assoc | 
 		   assoc key -> assoc value size ]) asDictionary
+]
+
+{ #category : #visiting }
+AlceLinkedChartWidget >> canFollowEntity: anEntity [
+
+	^ { AlcixModel } anySatisfy: [ :a | anEntity isKindOf: a ]
 ]
 
 { #category : #'as yet unclassified' }

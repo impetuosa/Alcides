@@ -53,7 +53,7 @@ AlceInvocableWidget class >> title [
 ]
 
 { #category : #visiting }
-AlceInvocableWidget >> accept: aModel [
+AlceInvocableWidget >> canFollowEntity: aModel [
 
 	^ aModel isKindOf: AlcixInvocable
 ]

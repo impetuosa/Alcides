@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #visiting }
-AlceMetricRatioWidget >> accept: anEntity [
+AlceMetricRatioWidget >> canFollowEntity: anEntity [
 
 	^( (anEntity isKindOf: AlcixModel) or: [ 
 		  anEntity isKindOf: AlcixEntity ]) and: [ (anEntity isKindOf: AlcixDataSource ) not  ]
