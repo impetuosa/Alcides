@@ -14,5 +14,5 @@ BaselineOfAlcIDE >> baseline: spec [
 	spec
 		baseline: #Alce
 		with: [ spec repository: 'github://impetuosa/Alce/src' ].
-	spec package: #AlcIDE with: [ spec requires: #( Hooves Alce ) ]
+	spec package: #AlcIDE with: [ spec requires: #( "Hooves" Alce ) ]
 ]
