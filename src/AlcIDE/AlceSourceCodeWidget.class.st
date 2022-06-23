@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : #specs }
+AlceSourceCodeWidget class >> defaultLayout [
+	^ super defaultLayout
+		add: #viewport;
+		yourself
+]
+
+{ #category : #specs }
 AlceSourceCodeWidget class >> defaultSpec [
 	^ super defaultSpec
 		add: #viewport;

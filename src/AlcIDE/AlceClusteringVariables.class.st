@@ -1,80 +1,77 @@
 Class {
 	#name : #AlceClusteringVariables,
-	#superclass : #Object,
+	#superclass : #AlceClustering,
 	#instVars : [
-		'mooseModel',
-		'graph'
+		'traversed',
+		'context'
 	],
 	#category : #'AlcIDE-Clustering'
 }
 
-{ #category : #accessing }
-AlceClusteringVariables >> graph [
-	^ graph ifNil: [ graph := GTEIndexedAdjacencyListGraph new ]
-]
+{ #category : #visiting }
+AlceClusteringVariables >> initialize [
 
-{ #category : #accessing }
-AlceClusteringVariables >> mooseModel: anAlcixModel [
-
-	mooseModel := anAlcixModel.
-	mooseModel selectedColoringStrategy selectingCategory markedTags do: [ 
-		:t | t accept: self ]
-]
-
-{ #category : #'as yet unclassified' }
-AlceClusteringVariables >> object: anAlcixModule relatesAs: aString with: anAlceTagAssociationWrapDueTo [
-
-	| from to |
-	from := self graph addAndRefer: anAlcixModule.
-	to := self graph addAndRefer: anAlceTagAssociationWrapDueTo.
-	self graph addArc: (GTEDirectedNamedArc new
-			 name: aString asSymbol;
-			 from: from;
-			 to: to;
-			 yourself)
-]
-
-{ #category : #'as yet unclassified' }
-AlceClusteringVariables >> register:anAlcixAttribute architecturalRole: aType [ 
-
-	self
-		object: anAlcixAttribute
-		relatesAs: #architecturalRole
-		with: (self tagFor: aType)
-]
-
-{ #category : #'as yet unclassified' }
-AlceClusteringVariables >> tagFor: anAlcixModule [
-
-	| tags |
-	tags := ((mooseModel selectedColoringStrategy verticalColor 
-		          colorsFor: anAlcixModule) collect: #tag) asSet.
-	tags size = 1 ifTrue: [ ^ tags anyOne ].
-	tags size = 0 ifTrue: [ 
-		^ mooseModel selectedColoringStrategy selectingCategory markedTags 
-			  detect: [ :t | t name = 'Business' ] ].
-
-
-	^ tags detect: [ :t | (t name = 'Business') not ]
+	super initialize.
+	traversed := Set new
 ]
 
 { #category : #visiting }
-AlceClusteringVariables >> visitAccessModule: anAlcixAccessModule [
+AlceClusteringVariables >> isInterestingEntity: anEntity contextType: anUserType [
 
-	self
-		register: anAlcixAccessModule
-		architecturalRole: anAlcixAccessModule.
-	anAlcixAccessModule types do: [ :t | 
-		self object: t relatesAs: #belongsTo with: anAlcixAccessModule.
-		t accept: self ]
+	(anEntity candidate isKindOf: AlcixReference) ifTrue: [ ^ false ].
+	(anEntity candidate isKindOf: AlcixLiteral) ifTrue: [ ^ false ].
+	anEntity candidate isUnknown ifTrue: [ ^ false ].
+	anEntity candidate isParameter ifTrue: [ ^ false ].
+	anEntity candidate isLocalVariable ifTrue: [ ^ false ].
+
+	(anEntity candidate isKindOf: AlcixConstant) ifTrue: [ 
+		^ (anEntity candidate owner = anUserType) not ].
+	^ true
 ]
 
 { #category : #visiting }
-AlceClusteringVariables >> visitAccessProject: anAlcixAccessProject [
+AlceClusteringVariables >> registerAllInterestignChildsFrom: aCollection function: aFn as: aRelation [
 
-	anAlcixAccessProject modules do: [ :t | 
-		self object: t relatesAs: #belongsTo with: anAlcixAccessProject.
-		t accept: self ]
+	(aCollection select: [ :a | 
+		 self isInterestingEntity: a contextType: aFn userType ]) do: [ :ra | 
+		(ra candidate isKindOf: AlcixAssignment)
+			ifTrue: [ 
+				self
+					registerAllInterestignChildsFrom: ra candidate readElements
+					function: aFn
+					as: aRelation ]
+			ifFalse: [ 
+				self register: ra candidate architecturalRole: ra candidate type.
+				self object: aFn relatesAs: aRelation with: ra candidate ] ]
+]
+
+{ #category : #visiting }
+AlceClusteringVariables >> shouldAdd: anAlcixSubProcedure [
+
+	(anAlcixSubProcedure outgoingReadAccesses anySatisfy: [ :a | 
+		 self isInterestingEntity: a contextType: anAlcixSubProcedure ]) 
+		ifTrue: [ ^ true ].
+	^ anAlcixSubProcedure assignments anySatisfy: [ :a | 
+		  self
+			  isInterestingEntity: a writeElement first
+			  contextType: anAlcixSubProcedure userType ]
+]
+
+{ #category : #visiting }
+AlceClusteringVariables >> visitAccess: anAlcixAccess [
+
+	(self
+		 isInterestingEntity: anAlcixAccess
+		 contextType: context userType) ifTrue: [ 
+		self
+			register: anAlcixAccess candidate
+			architecturalRole: anAlcixAccess candidate type.
+		self
+			object: context
+			relatesAs: 'reads'
+			with: anAlcixAccess candidate ].
+
+	self visitCollection: anAlcixAccess arguments
 ]
 
 { #category : #visiting }
@@ -87,18 +84,6 @@ AlceClusteringVariables >> visitAttribute: anAlcixAttribute [
 ]
 
 { #category : #visiting }
-AlceClusteringVariables >> visitAttributeAccessor: anAlcixAttributeAccessor [
-
-	self visitFunction: anAlcixAttributeAccessor
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitClass: anAlcixClass [
-
-	self visitModule: anAlcixClass
-]
-
-{ #category : #visiting }
 AlceClusteringVariables >> visitConstant: anAlcixConstant [
 
 	self
@@ -108,121 +93,49 @@ AlceClusteringVariables >> visitConstant: anAlcixConstant [
 ]
 
 { #category : #visiting }
-AlceClusteringVariables >> visitEvent: anAlcixEvent [
-
-	self visitFunction: anAlcixEvent
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitExternalFunction: anAlcixExternalFunction [
-
-	self visitFunction: anAlcixExternalFunction
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitExternalSubProcedure: anAlcixExternalSubProcedure [
-
-	self visitSubProcedure: anAlcixExternalSubProcedure
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitFamixTag: aFamixTag [
-
-	self
-		object: aFamixTag
-		relatesAs: #architecturalColor
-		with: aFamixTag color
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitForm: anAlcixReport [
-
-	self visitModule: anAlcixReport
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitFunction: anAlcixFunction [
-
-	self visitSubProcedure: anAlcixFunction
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitLocalVariable: anAlcixLocalVariable [
-
-	self
-		register: anAlcixLocalVariable
-		architecturalRole: anAlcixLocalVariable type
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitModel: anAlcixModel [
-	anAlcixModel project accept: self
+AlceClusteringVariables >> visitInvocation: anAlcixInvocation [ 
+	self visitCollection: anAlcixInvocation arguments 
 ]
 
 { #category : #visiting }
 AlceClusteringVariables >> visitModule: anAlcixModule [
 
-	
-	self
-		register: anAlcixModule
-		architecturalRole: anAlcixModule .
+	self register: anAlcixModule architecturalRole: anAlcixModule.
 	anAlcixModule members do: [ :m | 
-		self object: m relatesAs: #belongsTo with: anAlcixModule.
 		m accept: self ].
 	anAlcixModule constants do: [ :m | 
-		self object: m relatesAs: #belongsTo with: anAlcixModule.
 		m accept: self ].
 	anAlcixModule invocables do: [ :m | 
-		self object: m relatesAs: #belongsTo with: anAlcixModule.
 		m accept: self ]
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitParameter: anAlcixParameter [
-
-	self
-		register: anAlcixParameter
-		architecturalRole: anAlcixParameter type
-
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitQuery: anAlcixQuery [
-
-	self visitTable: anAlcixQuery
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitReport: anAlcixReport [
-
-	self visitModule: anAlcixReport
 ]
 
 { #category : #visiting }
 AlceClusteringVariables >> visitSubProcedure: anAlcixSubProcedure [
 
+	context := anAlcixSubProcedure.
+	(self shouldAdd: anAlcixSubProcedure) ifFalse: [ ^ self ].
 	self
 		register: anAlcixSubProcedure
 		architecturalRole: anAlcixSubProcedure userType.
-	anAlcixSubProcedure localVariables , anAlcixSubProcedure constants
-	, anAlcixSubProcedure parameters do: [ :p | 
-		self object: p relatesAs: #belongsTo with: anAlcixSubProcedure.
-		p accept: self ]
-]
 
-{ #category : #visiting }
-AlceClusteringVariables >> visitTable: anAlcixTable [
+	self
+		registerAllInterestignChildsFrom:
+		anAlcixSubProcedure outgoingReadAccesses
+		function: anAlcixSubProcedure
+		as: #reads.
 
-	self register: anAlcixTable architecturalRole: anAlcixTable.
+	(anAlcixSubProcedure assignments select: [ :a | 
+		 self
+			 isInterestingEntity: a writeElement first
+			 contextType: anAlcixSubProcedure userType ]) do: [ :ra | 
+		self
+			registerAllInterestignChildsFrom: ra writeElement
+			function: anAlcixSubProcedure
+			as: #writes.
+		self
+			registerAllInterestignChildsFrom: ra readElements
+			function: anAlcixSubProcedure
+			as: #reads ].
 
-
-	anAlcixTable members do: [ :m | 
-		self object: m relatesAs: #belongsTo with: anAlcixTable.
-		m accept: self ]
-]
-
-{ #category : #visiting }
-AlceClusteringVariables >> visitTableField: anAlcixTableField [
-
-	self visitAttribute: anAlcixTableField
+	anAlcixSubProcedure outgoingInvocations do: [ :p | p accept: self ]
 ]

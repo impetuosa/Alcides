@@ -29,8 +29,8 @@ AlcIDE class >> currentApplication [
 	^ MiApplication current
 ]
 
-{ #category : #specs }
-AlcIDE class >> defaultSpec [
+{ #category : #layout }
+AlcIDE class >> defaultLayout [
 
 	^ SpPanedLayout newTopToBottom
 		  add: (SpPanedLayout newLeftToRight
@@ -160,6 +160,21 @@ AlcIDE >> propagate: aWidget [
 
 	| newSelection |
 	miSelectedItem := aWidget miSelectedItem.
+	newSelection := miSelectedItem.
+	newSelection ifNil: [ ^ self ].
+	(self allPresentersBut: aWidget) do: [ :w | 
+		w selectEntity: newSelection.
+		miSelectedItem := newSelection ].
+
+	self propagate.
+	miSelectedItem := nil
+]
+
+{ #category : #'instance creation' }
+AlcIDE >> propagate: anEntity from: aWidget [
+
+	| newSelection |
+	miSelectedItem := anEntity.
 	newSelection := miSelectedItem.
 	newSelection ifNil: [ ^ self ].
 	(self allPresentersBut: aWidget) do: [ :w | 

@@ -22,6 +22,17 @@ AlcePieChartWidget class >> buildCommandsGroupWith: presenterInstance forRoot: r
 ]
 
 { #category : #'world menu' }
+AlcePieChartWidget class >> defaultLayout [
+
+	^ self basicDefaultSpec
+		  add: (SpBoxLayout newLeftToRight
+				   add: #reference withConstraints: [:c | c width: 150];
+				   add: #viewport);
+		  add: #refresh height: self toolbarHeight;
+		  yourself
+]
+
+{ #category : #'world menu' }
 AlcePieChartWidget class >> defaultSpec [
 
 	^ self basicDefaultSpec

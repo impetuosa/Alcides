@@ -34,8 +34,8 @@ AlceAccessAnalysisTool class >> currentApplication [
 	^ MiApplication current
 ]
 
-{ #category : #specs }
-AlceAccessAnalysisTool class >> defaultSpec [
+{ #category : #layout }
+AlceAccessAnalysisTool class >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight
 		  add: (SpBoxLayout newTopToBottom
@@ -230,6 +230,21 @@ AlceAccessAnalysisTool >> propagate: aWidget [
 		lastPropagatingSelection := selecting.
 		lastPropagatingWidget := aWidget ].
 	miSelectedItem := selecting.
+	self propagate.
+	miSelectedItem := nil
+]
+
+{ #category : #'instance creation' }
+AlceAccessAnalysisTool >> propagate: anEntity from: aWidget [
+
+	| newSelection |
+	miSelectedItem := anEntity.
+	newSelection := miSelectedItem.
+	newSelection ifNil: [ ^ self ].
+	(self allPresentersBut: aWidget) do: [ :w | 
+		w selectEntity: newSelection.
+		miSelectedItem := newSelection ].
+
 	self propagate.
 	miSelectedItem := nil
 ]

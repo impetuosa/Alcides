@@ -8,8 +8,8 @@ Class {
 	#category : #'AlcIDE-Menu'
 }
 
-{ #category : #specs }
-AlceButtonListMenu class >> defaultSpec [
+{ #category : #layout }
+AlceButtonListMenu class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight
@@ -108,7 +108,15 @@ AlceButtonListMenu >> hierarhicalActions [
 
 		  (AlceAction new
 			   name: 'Architectural Dependencies';
-			   action: [ AlceTagHierachical runDragMe ]) }
+			   action: [ AlceTagHierachical runDragMe ]) . 
+			(AlceAction new
+			   name: 'Architectural Shared State ';
+			   action: [ AlceGraphClusteringToRoassalGraphHLWidget new clusteringState; open ]) . 
+			(AlceAction new
+			   name: 'Architectural Shared Behavior ';
+			   action: [ AlceGraphClusteringToRoassalGraphHLWidget new clusteringBehavior; open ]) . 
+			
+			 }
 ]
 
 { #category : #initialization }
@@ -135,7 +143,7 @@ AlceButtonListMenu >> modelActions [
 			   name: 'Open Model';
 			   action: [ 
 				   MiApplication current buses do: [ :b | 
-						   b refreshBrowsersWith: MooseModelRoot root entities anyOne ] ]) }
+						   b refreshBrowsersWith: MooseModelRoot root entities first ] ]) }
 ]
 
 { #category : #initialization }

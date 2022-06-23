@@ -23,9 +23,17 @@ AlceTreeWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootC
 ]
 
 { #category : #specs }
+AlceTreeWidget class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #tree;
+		  yourself
+]
+
+{ #category : #specs }
 AlceTreeWidget class >> defaultSpec [
 
-	^ super defaultSpec
+	^ SpBoxLayout newTopToBottom
 		  add: #tree;
 		  yourself
 ]

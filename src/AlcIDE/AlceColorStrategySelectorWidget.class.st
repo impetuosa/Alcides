@@ -14,6 +14,17 @@ Class {
 }
 
 { #category : #specs }
+AlceColorStrategySelectorWidget class >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newLeftToRight
+				   add: #strategies;
+				   add: #categories;
+				   yourself);
+		  add: #accept
+]
+
+{ #category : #specs }
 AlceColorStrategySelectorWidget class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom

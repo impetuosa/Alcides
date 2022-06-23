@@ -17,6 +17,19 @@ AlceTypeWidget class >> alceBrowsers [
 ]
 
 { #category : #specs }
+AlceTypeWidget class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #membersTable;
+		  add: (SpBoxLayout newHorizontal
+				   add: #invocableTable;
+				   add: #parametersTable;
+				   yourself);
+		  add: #typesTable;
+		  yourself
+]
+
+{ #category : #specs }
 AlceTypeWidget class >> defaultSpec [
 
 	^ super defaultSpec

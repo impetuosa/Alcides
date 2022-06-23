@@ -9,8 +9,8 @@ Class {
 	#category : #'AlcIDE-Menu'
 }
 
-{ #category : #specs }
-AlcePopOverMenuButton class >> defaultSpec [
+{ #category : #layout }
+AlcePopOverMenuButton class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight

@@ -7,8 +7,8 @@ Class {
 	#category : #'AlcIDE-Menu'
 }
 
-{ #category : #specs }
-AlceLabelEntry class >> defaultSpec [
+{ #category : #layout }
+AlceLabelEntry class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight
