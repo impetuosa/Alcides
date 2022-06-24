@@ -34,6 +34,9 @@ AlceClustering >> mooseModel: anAlcixModel [
 AlceClustering >> object: anAlcixModule relatesAs: aString with: anAlceTagAssociationWrapDueTo [
 
 	| from to |
+	((anAlceTagAssociationWrapDueTo respondsTo: #isUnknownOrUndefined) 
+		 and: [ anAlceTagAssociationWrapDueTo isUnknownOrUndefined ]) 
+		ifTrue: [ self halt ].
 	from := self graph addAndRefer: anAlcixModule.
 	to := self graph addAndRefer: anAlceTagAssociationWrapDueTo.
 	self graph addArc: (GTEDirectedNamedArc new
@@ -69,7 +72,7 @@ AlceClustering >> tagFor: anAlcixModule [
 		          colorsFor: anAlcixModule) collect: #tag) asSet.
 	tags size = 1 ifTrue: [ ^ tags anyOne ].
 	tags size = 0 ifTrue: [ 
-		self halt. 
+
 		^ mooseModel selectedColoringStrategy selectingCategory markedTags 
 			  detect: [ :t | t name = 'Business' ] ].
 

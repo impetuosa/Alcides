@@ -3,7 +3,7 @@ Class {
 	#superclass : #RSLayoutedComposite,
 	#instVars : [
 		'title',
-		'children'
+		'mychildren'
 	],
 	#category : #'AlcIDE-GraphWidgets'
 }
@@ -11,7 +11,7 @@ Class {
 { #category : #initialization }
 RSTitledComposite >> add: aChild [
 
-	children add: aChild.
+	mychildren add: aChild.
 	self postAdd
 ]
 
@@ -19,7 +19,7 @@ RSTitledComposite >> add: aChild [
 RSTitledComposite >> border: aBorder [
 
 	super border: aBorder.
-	children border: aBorder
+	mychildren border: aBorder
 ]
 
 { #category : #initialization }
@@ -30,7 +30,7 @@ RSTitledComposite >> color [
 
 { #category : #initialization }
 RSTitledComposite >> color: aColor [
-	children border color: aColor.
+	mychildren border color: aColor.
 	title settingColor: aColor
 ]
 
@@ -45,7 +45,7 @@ RSTitledComposite >> initialize [
 	super initialize.
 	title := RSTitle new.
 	title settingColor: Color green.
-	children := RSLayoutedComposite new.
+	mychildren := RSLayoutedComposite new.
 	self border: (RSBorder new
 			 width: 1;
 			 color: Color black muchDarker;
@@ -57,46 +57,46 @@ RSTitledComposite >> initialize [
 		          yourself.
 	super
 		add: title;
-		add: children
+		add: mychildren
 ]
 
 { #category : #initialization }
 RSTitledComposite >> layout: aLayout [
 
-	children layout: aLayout
+	mychildren layout: aLayout
 ]
 
 { #category : #initialization }
 RSTitledComposite >> postAdd [
 
-	children postAdd.
+	mychildren postAdd.
 	parent ifNotNil: [ 
 		(parent respondsTo: #noteChildAdded) ifTrue: [ 
 			parent noteChildAdded ] ].
 	layout on: { 
 			title.
-			children }.
+			mychildren }.
 	self adjustToChildren.
 
 
 	title setExtent: self extent x @ title extent y.
 	layout on: { 
 			title.
-			children }.
+			mychildren }.
 	self adjustToChildren
 ]
 
 { #category : #initialization }
 RSTitledComposite >> silentAdd: aChild [
 
-	children silentAdd: aChild.
+	mychildren silentAdd: aChild.
 
 ]
 
 { #category : #initialization }
 RSTitledComposite >> size [
 
-	^ children size 
+	^ mychildren size 
 ]
 
 { #category : #initialization }

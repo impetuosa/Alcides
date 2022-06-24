@@ -103,20 +103,17 @@ AlceButtonListMenu >> hierarhicalActions [
 
 	^ { 
 		  (AlceAction new
-			   name: 'Architectural Distribution';
-			   action: [ AlceTagDistribution runDragMe ]).
-
+			   name: ' Architectural Class Overview ';
+			   action: [ 
+				   AlceGraphClusteringToRoassalGraphWidget new
+					   clusteringBehavior;
+					   open ]).
 		  (AlceAction new
-			   name: 'Architectural Dependencies';
-			   action: [ AlceTagHierachical runDragMe ]) . 
-			(AlceAction new
-			   name: 'Architectural Shared State ';
-			   action: [ AlceGraphClusteringToRoassalGraphHLWidget new clusteringState; open ]) . 
-			(AlceAction new
 			   name: 'Architectural Shared Behavior ';
-			   action: [ AlceGraphClusteringToRoassalGraphHLWidget new clusteringBehavior; open ]) . 
-			
-			 }
+			   action: [ 
+				   AlceGraphClusteringToRoassalGraphHLWidget new
+					   clusteringBehavior;
+					   open ]) }
 ]
 
 { #category : #initialization }

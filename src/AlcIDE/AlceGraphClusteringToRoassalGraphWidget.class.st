@@ -3,7 +3,8 @@ Class {
 	#superclass : #MiDraggableRoassalWidget,
 	#instVars : [
 		'cluster',
-		'graphToRoassal'
+		'graphToRoassal',
+		'clusteringAlgorithm'
 	],
 	#category : #'AlcIDE-GraphWidgets'
 }
@@ -11,20 +12,19 @@ Class {
 { #category : #initialization }
 AlceGraphClusteringToRoassalGraphWidget >> canFollowEntity: aModel [
 
-	^ { 
-		  AlcixModule.
-		  AlcixAccessModule } anySatisfy: [ :a | aModel isKindOf: a ]
+	^ { AlcixModule } anySatisfy: [ :a | aModel isKindOf: a ]
 ]
 
 { #category : #initialization }
 AlceGraphClusteringToRoassalGraphWidget >> clusteringAlgorithm: anAlgo [
- 	cluster := anAlgo
+ 	clusteringAlgorithm := anAlgo
 ]
 
 { #category : #initialization }
 AlceGraphClusteringToRoassalGraphWidget >> clusteringBehavior [
 
-	self clusteringAlgorithm: AlceClusteringFunction new
+	
+	self clusteringAlgorithm: [ AlceClusteringNearHorizontal new ]
 ]
 
 { #category : #initialization }
@@ -37,6 +37,7 @@ AlceGraphClusteringToRoassalGraphWidget >> clusteringState [
 AlceGraphClusteringToRoassalGraphWidget >> loadChart: aCanvas withElement: anElement [
 
 	| project classes |
+	cluster := clusteringAlgorithm value.
 	cluster mooseModel: anElement mooseModel.
 	anElement accept: cluster.
 
@@ -59,8 +60,8 @@ AlceGraphClusteringToRoassalGraphWidget >> loadChart: aCanvas withElement: anEle
 
 	aCanvas addAll: classes.
 
-	(anElement isKindOf: AlcixAccessModule) ifFalse: [ "	
-	aCanvas addAll: graphToRoassal lines."
+	(anElement isKindOf: AlcixAccessModule) ifFalse: [ 
+	aCanvas addAll: graphToRoassal lines.
 		 ].
 	RSHorizontalLineLayout new on: aCanvas nodes.
 	aCanvas @ RSCanvasController.

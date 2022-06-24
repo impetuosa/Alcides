@@ -25,7 +25,7 @@ AlceGraphClusteringToRoassalGraphHLWidget >> clusteringAlgorithm: anAlgo [
 { #category : #initialization }
 AlceGraphClusteringToRoassalGraphHLWidget >> clusteringBehavior [
 
-	self clusteringAlgorithm: [ AlceClusteringFunction new ]
+	self clusteringAlgorithm: [ AlceClusteringNearHorizontal new ]
 ]
 
 { #category : #initialization }

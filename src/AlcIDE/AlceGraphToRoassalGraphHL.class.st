@@ -22,16 +22,18 @@ AlceGraphToRoassalGraphHL >> architectureComposites [
 AlceGraphToRoassalGraphHL >> architectureFor: aTag andClass: aClass [
 
 	| containers container clazz |
+	self assert: aClass isType.
 	containers := architectures
 		              at: aTag
 		              ifAbsentPut: [ OrderedCollection new ].
 
 	container := containers
-		             detect: [ :shape | shape rawModel = aClass container ]
+		             detect: [ :shape | 
+		             shape rawModel = aClass topContainer ]
 		             ifNone: [ 
 			             container := HNode new
-				                          name: aClass container name;
-				                          rawModel: aClass container;
+				                          name: aClass topContainer name;
+				                          rawModel: aClass topContainer;
 				                          color: aTag color;
 				                          yourself.
 			             containers add: container.
@@ -135,11 +137,8 @@ AlceGraphToRoassalGraphHL >> visitDirectedArcNamedArchitecturalRole: aGTEDirecte
 	(self isLanguageElement: ownerx) ifTrue: [ ^ self ].
 	buildingRoassalNode color: ownerx color.
 
-	(self
-		 architectureFor: ownerx
-		 andClass: (processing userType isUnknown
-				  ifTrue: [ processing ]
-				  ifFalse: [ processing userType ])) addChild: buildingRoassalNode
+	(self architectureFor: ownerx andClass: processing userType) 
+		addChild: buildingRoassalNode
 ]
 
 { #category : #visiting }

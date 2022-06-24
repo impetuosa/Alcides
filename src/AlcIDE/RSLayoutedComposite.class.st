@@ -42,8 +42,8 @@ RSLayoutedComposite >> noteChildAdded [
 { #category : #adding }
 RSLayoutedComposite >> postAdd [
 
-	childrenComposite ifNotNil: [ 
-		self layout on: childrenComposite.
+	children ifNotNil: [ 
+		self layout on: children.
 		self adjustToChildren.
 		self extent: self extent + 10 ]
 ]
@@ -74,5 +74,5 @@ RSLayoutedComposite >> silentAdd: aChild [
 { #category : #adding }
 RSLayoutedComposite >> size [
 
-	^ childrenComposite size
+	^ children size
 ]

@@ -3,7 +3,7 @@ Class {
 	#superclass : #AlceClustering,
 	#instVars : [
 		'traversed',
-		'context'
+		'processingFunction'
 	],
 	#category : #'AlcIDE-Clustering'
 }
@@ -18,12 +18,13 @@ AlceClusteringVariables >> initialize [
 { #category : #visiting }
 AlceClusteringVariables >> isInterestingEntity: anEntity contextType: anUserType [
 
+	anEntity candidate isUnknownOrUndefined ifTrue: [ ^ false ].
 	(anEntity candidate isKindOf: AlcixReference) ifTrue: [ ^ false ].
 	(anEntity candidate isKindOf: AlcixLiteral) ifTrue: [ ^ false ].
 	anEntity candidate isUnknown ifTrue: [ ^ false ].
 	anEntity candidate isParameter ifTrue: [ ^ false ].
 	anEntity candidate isLocalVariable ifTrue: [ ^ false ].
-
+	anEntity candidate type isUnknownOrUndefined ifTrue: [ ^ false ].
 	(anEntity candidate isKindOf: AlcixConstant) ifTrue: [ 
 		^ (anEntity candidate owner = anUserType) not ].
 	^ true
@@ -62,12 +63,12 @@ AlceClusteringVariables >> visitAccess: anAlcixAccess [
 
 	(self
 		 isInterestingEntity: anAlcixAccess
-		 contextType: context userType) ifTrue: [ 
+		 contextType: processingFunction userType) ifTrue: [ 
 		self
 			register: anAlcixAccess candidate
 			architecturalRole: anAlcixAccess candidate type.
 		self
-			object: context
+			object: processingFunction
 			relatesAs: 'reads'
 			with: anAlcixAccess candidate ].
 
@@ -112,7 +113,7 @@ AlceClusteringVariables >> visitModule: anAlcixModule [
 { #category : #visiting }
 AlceClusteringVariables >> visitSubProcedure: anAlcixSubProcedure [
 
-	context := anAlcixSubProcedure.
+	processingFunction := anAlcixSubProcedure.
 	(self shouldAdd: anAlcixSubProcedure) ifFalse: [ ^ self ].
 	self
 		register: anAlcixSubProcedure

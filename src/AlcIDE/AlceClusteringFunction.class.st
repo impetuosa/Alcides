@@ -54,7 +54,8 @@ AlceClusteringFunction >> visitInvocation: anAlcixInvocation [
 			with: anAlcixInvocation candidates first ].
 	self
 		register: anAlcixInvocation candidates first
-		architecturalRole: anAlcixInvocation candidates first userType
+		architecturalRole: anAlcixInvocation candidates first userType.
+	self visitCollection: anAlcixInvocation arguments
 ]
 
 { #category : #visiting }
