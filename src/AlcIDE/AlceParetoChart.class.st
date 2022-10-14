@@ -88,7 +88,15 @@ AlceParetoChart >> loadChart: aCanvas withElement: anElement [
 	hundred := 1 max: hundred.
 
 	c := RSChart new.
-	horizontal := RSHorizontalTick new fromNames: (all collect: #key).
+	all size < 10
+		ifTrue: [ 
+		horizontal := RSHorizontalTick new fromNames: (all collect: #key) ]
+		ifFalse: [ 
+			horizontal := RSHorizontalTick new fromNames:
+				              (all collectWithIndex: [ :each :index | 
+					               index - 1 \\ 10 = 0
+						               ifTrue: [ each key ]
+						               ifFalse: [ '' ] ]) ].
 	all size > 4 ifTrue: [ horizontal useVerticalLabel ].
 	c barHeights: values.
 	c addPlot: (RSLinePlot new

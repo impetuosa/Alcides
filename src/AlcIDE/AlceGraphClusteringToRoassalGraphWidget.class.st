@@ -37,6 +37,7 @@ AlceGraphClusteringToRoassalGraphWidget >> clusteringState [
 AlceGraphClusteringToRoassalGraphWidget >> loadChart: aCanvas withElement: anElement [
 
 	| project classes |
+	anElement ifNil: [ ^ self ].
 	cluster := clusteringAlgorithm value.
 	cluster mooseModel: anElement mooseModel.
 	anElement accept: cluster.

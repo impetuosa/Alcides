@@ -70,7 +70,7 @@ AlceTanglingComplexityHighlight >> newBorder [
 
 	^ RSBorder new
 		  color: Color black;
-		  width: 1;
+		  width: 5;
 		  yourself
 ]
 
@@ -102,19 +102,19 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 
 								                                  RSBox new
 									                                  extent:
-										                                  tang first ln asInteger
-										                                  @ tang second ln asInteger;
+										                                  (((tang first *10) ln   asInteger max: 1)
+										                                  @ ((tang second *10) ln   asInteger max: 1)) *10 ;
 									                                  @ popup;
 									                                  @ high;
 									                                  color:
 										                                  (Color black alpha:
 												                                   (mtric astSize ln / 10 
-													                                    max: 0.1));
+													                                    max: 0.01));
 									                                  model: met;
 									                                  yourself ]
 							                                  ifFalse: [ 
 								                                  RSBox new
-									                                  extent: 5 @ 5;
+									                                  extent: 50 @ 50;
 									                                  @ popup;
 									                                  @ high;
 									                                  color: Color red;
@@ -141,7 +141,7 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 
 			            pkg := RSComposite new
 				                   children: classes;
-				                   paint: Color transparent;
+				                   paint: Color transparent ;
 				                   model: p key;
 				                   @ popup;
 				                   border: self newBorder;
