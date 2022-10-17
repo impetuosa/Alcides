@@ -184,7 +184,7 @@ AlceTextAstComposer >> visitExplicitCall: anExplicitCall [
 AlceTextAstComposer >> visitExternalFunction: anExternalFunction [
 	self addAttributeKeyword: anExternalFunction libToken .
 	self addAttributeVisibility: anExternalFunction visibility .
-	self addAttributeKeyword: anExternalFunction aliasToken.
+	self addAttributeKeyword: anExternalFunction aLIASToken.
 	^ self visitProgram: anExternalFunction
 ]
 
