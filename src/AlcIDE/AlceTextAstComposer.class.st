@@ -210,15 +210,15 @@ AlceTextAstComposer >> visitForEach: aForEach [
 	self addAttributeKeyword: aForEach fORToken.
 	self addAttributeKeyword: aForEach eachToken.
 	self addAttributeKeyword: aForEach inToken.
-	self addAttributeNext: aForEach nextToken.
+	self addAttributeNext: aForEach nEXTToken .
 	^ self visitProgram: aForEach
 ]
 
 { #category : #visiting }
 AlceTextAstComposer >> visitForNext: aForNext [
 	self addAttributeKeyword: aForNext fORToken.
-	self addAttributeKeyword: aForNext toToken.
-	self addAttributeNext: aForNext nextToken.
+	self addAttributeKeyword: aForNext tOToken .
+	self addAttributeNext: aForNext nEXTToken.
 	self addAttributeOperator: aForNext equalToken .
 	^ self visitProgram: aForNext
 ]
@@ -377,7 +377,7 @@ AlceTextAstComposer >> visitOnErrorResumeNext: anOnErrorResumeNext [
 	self addAttributeOn: anOnErrorResumeNext onToken.
 	self addAttributeError: anOnErrorResumeNext eRRORToken.
 	self addAttributeResume: anOnErrorResumeNext resumeToken.
-	self addAttributeNext: anOnErrorResumeNext nextToken.
+	self addAttributeNext: anOnErrorResumeNext nEXTToken .
 
 	^ self visitProgram: anOnErrorResumeNext
 ]
