@@ -391,7 +391,6 @@ self halt.
 
 { #category : #visiting }
 AlceTextAstComposer >> visitOptionCompare: anOptionCompare [
-self halt.
 	
 	^ self visitProgram: anOptionCompare
 ]
