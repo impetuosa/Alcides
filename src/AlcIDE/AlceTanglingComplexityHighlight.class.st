@@ -122,7 +122,7 @@ AlceTanglingComplexityHighlight >> plotFor: aCollection [
 									                                  yourself ] ].
 					                       RSGridLayout on:
 						                       (methods sort:
-							                        [ :a | a extent x * a extent y ]
+							                        [ :a | a extent y / a extent x   ]
 								                        descending).
 					                       RSComposite new
 						                       model: cls;
