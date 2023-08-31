@@ -1,36 +1,32 @@
-# Alcides
+# Alce IDE
 IDE extentions for Alce
 
+Please, address [https://github.com/impetuosa/alce](https://github.com/impetuosa/alce) to learn how to load a Microsoft Access Alce model. 
 
-mooseModel := AlcixModel  allInstances anyOne.
 
-obje := AlceClusteringFunction new .
-obje mooseModel: mooseModel. 
-(mooseModel project modules first modules select: [: a | a name = 'Utilities' ]) do: [ :a |  a accept: obje ].
+## Architecture 
 
-	
-(plotter := AlceGraphHNodeMapper new
-	graph: obje graph;
-	doNotMap: [  : node | node isKindOf:Color ];
-	representReverseRelationNamed: #architecturalRole with: AGPMappingStrategy hnodeContainanceStrategy; 
-	representRelationNamed: #belongsTo with: AGPMappingStrategy hnodeDependenceStrategy;
-	representRelationNamed: #architecturalColor with: AGPMappingStrategy hnodecoloringStrategy) .
-	plotter build open.
-	
-	
-(plotter := AlceGraphPlotter new
-	graph: obje graph;
-	shapesLayout: RSGridLayout ;
-	interactionBuildingBlock:  [  : a | a popup;
-		@ (GraphGhostDraggable new 
-			color: Smalltalk ui theme caretColor);
-		@ (GraphOnTopWhenPositionChanged new);
-		@ (GraphResizeParentWhenChildMoves new);
-		yourself. ];
-	defaultEntityBuilder: [:cls | RSEllipse new  popup; model: cls; yourself] ;
-	doNotMap: [  : node | node isKindOf:Color ];
-	whenEntity:[ : e | e isKindOf: AlcixInvocable ] buildShapeWith: [:cls | | f  | f:=  RSBox new model: cls; popup; yourself.  f ] ;
-	representReverseRelationNamed: #architecturalRole with: AGPMappingStrategy containanceStrategy; 
-	representRelationNamed: #belongsTo with: AGPMappingStrategy linkingStrategy;
-	representRelationNamed: #architecturalColor with: AGPMappingStrategy coloringStrategy) .
-	plotter plot open.
+![resources/alce-stack.jpg](resources/alce-stack.jpg)
+
+
+## Loading 
+
+To load Alce IDE, just run the following metacello script. 
+
+```smalltalk
+Metacello new
+    	 repository: 'github://impetuosa/Alcides/src';
+    	baseline: 'AlcIDE';
+    	onWarningLog;
+    	load
+```
+
+
+Add Alce IDE as dependency as follow:
+```smalltalk
+	spec
+		baseline: 'AlcIDE'
+		with: [ spec repository: 'github://impetuosa/Alcides/src' ].
+
+```
+
